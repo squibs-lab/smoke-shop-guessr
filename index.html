@@ -652,6 +652,30 @@ function aimAt(p) {
   pano.setZoom(1);
   pano.setVisible(true);
 }
+// After a new photo loads, Google sometimes turns the camera back to the photo's own direction or to
+// where the previous photo was pointing, at an unpredictable moment. Keep it on the storefront for the
+// first few seconds of the round, and stop as soon as the player touches the view.
+let holdListener = null, holdTimer = 0;
+function holdAim(cur) {
+  releaseAim();
+  const want = { heading: cur.p.heading, pitch: aimPitch() };
+  const off = (a, b) => Math.abs(((a - b + 540) % 360) - 180);
+  pano.setPov(want);
+  pano.setZoom(1);
+  holdListener = pano.addListener("pov_changed", () => {
+    if (state.cur !== cur || !cur.paid) return releaseAim();
+    const p = pano.getPov();
+    if (off(p.heading, want.heading) > 1 || Math.abs(p.pitch - want.pitch) > 1) pano.setPov(want);
+  });
+  holdTimer = setTimeout(releaseAim, 3000);
+}
+function releaseAim() {
+  if (holdListener) { holdListener.remove(); holdListener = null; }
+  clearTimeout(holdTimer);
+}
+["pointerdown", "touchstart", "wheel", "keydown"].forEach(ev =>
+  document.getElementById("pano").addEventListener(ev, releaseAim, { capture: true, passive: true }));
+
 // Resolves true once the requested panorama has actually loaded, false on any problem or after 10s.
 function waitForPano(id) {
   return new Promise(resolve => {
@@ -684,11 +708,7 @@ async function showRound(cur, wantPaid) {
       if (!paid && !paidError && ++state.paidMisses >= 2) state.paidThisGame = false;
       if (paid) {
         state.paidMisses = 0;
-        // Google can reset the camera to the photo's own direction the first time the viewer
-        // appears, so aim at the storefront again once the photo has loaded
-        const aim = () => { if (state.cur === cur && cur.paid) { pano.setPov({ heading: cur.p.heading, pitch: aimPitch() }); pano.setZoom(1); } };
-        setTimeout(aim, 0);
-        setTimeout(aim, 500);
+        holdAim(cur);
       }
     } catch (e) {
       paidFailed("load: " + (e && e.message));
@@ -932,7 +952,7 @@ function bindUI() {
   $("#shareBtn").onclick = shareScore;
   $("#resetBtn").onclick = () => {
     if (!state.cur) return;
-    if (state.cur.paid) aimAt(state.cur.p); else showEmbed(state.cur.shop);
+    if (state.cur.paid) holdAim(state.cur); else showEmbed(state.cur.shop);
   };
   $("#skipBtn").onclick = () => skipShop(false);
   $("#loadBack").onclick = () => { state.phase = "idle"; show("start"); };
