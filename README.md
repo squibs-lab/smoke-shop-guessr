@@ -58,6 +58,24 @@ To turn paid off entirely, set `STREET_VIEW = "free"` at the top of the script.
 
 Open your Pages link. The start screen shows how many shops are on the map.
 
+## Reviewing shops
+
+Some matched shops aren't good rounds: a truck is parked in front, it isn't actually a smoke shop, or the camera faces the wrong way. `review.html` (at `/smoke-shop-guessr/review.html` on the live site) walks through them one at a time:
+
+- **Keep** (K): it's a good round.
+- **Keep with the view I've set** (A): turn the camera or walk to a better spot first, then save. Players get that exact photo and angle.
+- **Remove** (1 to 5): blocked, not a smoke shop, can't find it, closed or old photo, or something else.
+- **Back / Skip / Reset view**: ← → R.
+
+Decisions save in your browser as you go, so you can stop and come back. When you want them in the game, click **Download reviews.json** and either send the file to Claude or upload it to the repo (Add file → Upload files), replacing `reviews.json`. Uploading starts the Bake shop list job, which applies the reviews to `shops.json` in about a minute.
+
+How the lists fit together:
+- `shops-all.json`: every shop with Street View, rebuilt weekly. The review page goes through this list.
+- `reviews.json`: your decisions, keyed by OpenStreetMap id, so they carry over week to week.
+- `shops.json`: what the game plays: `shops-all.json` minus removed shops, with kept shops locked to the photo and angle you reviewed. Shops added to OpenStreetMap later show up under "Not reviewed yet".
+
+The review page uses paid Street View, which counts as 1 of the 160 daily loads per page load, however many shops you go through. If the day's loads are used up, it switches to the free Street View: keep and remove still work, but saving a new view doesn't.
+
 ## Testing on your own computer
 
 Opening `index.html` straight from your files works, with two limits:
@@ -68,8 +86,10 @@ Opening `index.html` straight from your files works, with two limits:
 ## Files
 
 - `index.html`: the whole game.
-- `shops.json`: the shop list, rebuilt weekly. Don't edit it by hand.
-- `scripts/bake-shops.mjs`: builds `shops.json`. Run it yourself with `STREETVIEW_KEY=... node scripts/bake-shops.mjs`.
-- `.github/workflows/bake-shops.yml`: the weekly job.
+- `review.html`: the shop review page.
+- `shops.json`, `shops-all.json`: the shop lists, rebuilt by the job. Don't edit them by hand.
+- `reviews.json`: your review decisions, exported from `review.html`.
+- `scripts/bake-shops.mjs`: builds the lists. Run it yourself with `STREETVIEW_KEY=... node scripts/bake-shops.mjs`, or `node scripts/bake-shops.mjs --apply-reviews` to only re-apply `reviews.json`.
+- `.github/workflows/bake-shops.yml`: the weekly job, which also runs when `reviews.json` changes.
 
 Shop data © OpenStreetMap contributors (ODbL). Street View © Google. Map tiles by OpenFreeMap.

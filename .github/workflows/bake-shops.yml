@@ -1,15 +1,25 @@
 name: Bake shop list
 
-# Rebuilds shops.json every Monday morning (New York time), and whenever you run it by hand
-# from the Actions tab. Free: GitHub Actions minutes are free for public repos, and the
-# Street View metadata lookups it makes are never billed.
+# Full rebuild of shops-all.json and shops.json every Monday morning (New York time), and whenever
+# you run it by hand from the Actions tab. Free: GitHub Actions minutes are free for public repos,
+# and the Street View metadata lookups it makes are never billed.
+#
+# When reviews.json changes (decisions from review.html), it only re-applies the reviews to the
+# existing shops-all.json, which takes a second and needs no key.
 on:
   schedule:
     - cron: "17 10 * * 1"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [reviews.json]
 
 permissions:
   contents: write
+
+concurrency:
+  group: bake-shops
+  cancel-in-progress: false
 
 jobs:
   bake:
@@ -21,17 +31,23 @@ jobs:
         with:
           node-version: 22
       - name: Build shops.json
-        run: node scripts/bake-shops.mjs
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ -f shops-all.json ]; then
+            node scripts/bake-shops.mjs --apply-reviews
+          else
+            node scripts/bake-shops.mjs
+          fi
         env:
           STREETVIEW_KEY: ${{ secrets.STREETVIEW_KEY }}
-      - name: Commit the new list if it changed
+      - name: Commit the new lists if they changed
         run: |
-          if git diff --quiet -- shops.json && git ls-files --error-unmatch shops.json >/dev/null 2>&1; then
-            echo "Shop list unchanged."
+          git add shops.json shops-all.json
+          if git diff --cached --quiet; then
+            echo "Shop lists unchanged."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add shops.json
           git commit -m "Update shop list"
+          git pull --rebase origin main
           git push

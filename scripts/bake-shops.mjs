@@ -6,15 +6,24 @@
 //    official panorama to each shop. Metadata requests are free and unlimited; they never
 //    load imagery. Shops with no Street View nearby are dropped, and each kept shop gets its
 //    panorama id, the camera heading that faces the storefront, and the photo date.
+//    Everything matched is saved to shops-all.json (what review.html goes through).
+// 3. Applies reviews.json (written by review.html) to make shops.json, what the game plays:
+//    removed shops are left out, and kept shops are locked to the photo and angle that were reviewed.
 //
 // Run locally:  STREETVIEW_KEY=AIza... node scripts/bake-shops.mjs
-// Runs weekly in GitHub Actions (.github/workflows/bake-shops.yml).
+//   Only re-apply reviews.json to the existing shops-all.json (no network, a second):
+//               node scripts/bake-shops.mjs --apply-reviews
+// Runs weekly in GitHub Actions (.github/workflows/bake-shops.yml), and with --apply-reviews
+// whenever reviews.json changes.
 
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const KEY = (process.env.STREETVIEW_KEY || "").trim();
 const OUT = process.env.OUT || new URL("../shops.json", import.meta.url);
+const ALL_OUT = process.env.ALL_OUT || new URL("../shops-all.json", import.meta.url);
+const REVIEWS = process.env.REVIEWS || new URL("../reviews.json", import.meta.url);
+const ATTRIBUTION = "Shop data © OpenStreetMap contributors (ODbL). Panorama ids from Google Street View.";
 const RADIUS_M = 50;
 const CONCURRENCY = 6;
 const USER_AGENT = "smoke-shop-guessr/1.0 (weekly shop list build)";
@@ -155,7 +164,59 @@ export async function matchPanoramas(shops, lookup = streetViewMetadata) {
   return results.filter(Boolean);
 }
 
+// reviews: { [shopId]: { status: "keep" | "reject", pano?, heading?, changed?, reason? } }
+export function applyReviews(shops, reviews = {}) {
+  const out = [];
+  let removed = 0, kept = 0, reangled = 0;
+  for (const s of shops) {
+    const r = reviews[s.id];
+    if (r && r.status === "reject") { removed++; continue; }
+    if (r && r.status === "keep") {
+      kept++;
+      const t = { ...s, reviewed: true };
+      if (r.pano) {
+        if (r.pano !== s.pano) t.date = ""; // a different photo than the one matched; its date isn't known
+        t.pano = r.pano;
+        if (typeof r.heading === "number") t.heading = Math.round(r.heading * 10) / 10;
+        if (r.changed) reangled++;
+      }
+      out.push(t);
+      continue;
+    }
+    out.push(s);
+  }
+  return { shops: out, removed, kept, reangled };
+}
+
+async function readJSON(path) {
+  try { return JSON.parse(await readFile(path, "utf8")); }
+  catch (e) { if (e.code === "ENOENT") return null; throw e; }
+}
+const shown = p => (p instanceof URL ? fileURLToPath(p) : p);
+
+async function writeGameList(all, updated) {
+  const reviewsFile = await readJSON(REVIEWS);
+  const reviews = (reviewsFile && reviewsFile.reviews) || {};
+  const r = applyReviews(all, reviews);
+  const body = {
+    updated,
+    attribution: ATTRIBUTION,
+    count: r.shops.length,
+    reviewed: r.kept,
+    shops: r.shops
+  };
+  await writeFile(OUT, JSON.stringify(body) + "\n");
+  console.log(`Reviews: ${r.kept} kept (${r.reangled} with a new view), ${r.removed} removed, ${all.length - r.kept - r.removed} not reviewed yet.`);
+  console.log(`Wrote ${r.shops.length} shops to ${shown(OUT)}.`);
+}
+
 export async function main() {
+  if (process.argv.includes("--apply-reviews")) {
+    const all = await readJSON(ALL_OUT);
+    if (!all || !Array.isArray(all.shops)) throw new Error(`${shown(ALL_OUT)} doesn't exist yet. Run the full build first.`);
+    return writeGameList(all.shops, all.updated);
+  }
+
   console.log("Asking OpenStreetMap for NYC smoke shops…");
   const shops = parseOverpass(await fetchOverpass());
   console.log(`Found ${shops.length} shops.`);
@@ -171,14 +232,10 @@ export async function main() {
     console.warn("STREETVIEW_KEY isn't set, so shops are saved without panoramas. The game will still work, but the camera won't face each storefront and some rounds may have no imagery.");
   }
 
-  const body = {
-    updated: new Date().toISOString(),
-    attribution: "Shop data © OpenStreetMap contributors (ODbL). Panorama ids from Google Street View.",
-    count: final.length,
-    shops: final
-  };
-  await writeFile(OUT, JSON.stringify(body) + "\n");
-  console.log(`Wrote ${final.length} shops to ${OUT instanceof URL ? fileURLToPath(OUT) : OUT}.`);
+  const updated = new Date().toISOString();
+  await writeFile(ALL_OUT, JSON.stringify({ updated, attribution: ATTRIBUTION, count: final.length, shops: final }) + "\n");
+  console.log(`Wrote ${final.length} shops to ${shown(ALL_OUT)}.`);
+  await writeGameList(final, updated);
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

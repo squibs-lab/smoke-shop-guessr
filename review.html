@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Shop Review</title>
+<meta name="description" content="Go through every shop in Smoke Shop Guessr and keep, fix or remove it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0714; --panel:#1a1022; --line:#33233f; --text:#f6eefe; --dim:#a69bb5;
+  --magenta:#ff3ec8; --amber:#ffb32b; --green:#3ddc84; --red:#ff5a6e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%;background:var(--ink);color:var(--text);font-family:"Barlow Condensed",system-ui,sans-serif;font-size:18px;-webkit-font-smoothing:antialiased}
+button,select{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.45}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+#app{display:grid;grid-template-columns:1fr 380px;height:100vh;height:100dvh}
+#view{position:relative;background:#000;min-height:0;overflow:hidden}
+#pano,#embed{position:absolute;inset:0;width:100%;height:100%;border:0}
+#viewMsg{position:absolute;left:12px;bottom:28px;z-index:3;background:rgba(13,7,20,.88);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--dim);font-size:16px;max-width:min(520px,calc(100% - 24px));line-height:1.3}
+
+#panel{background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0;overflow:auto}
+.head{padding:16px 18px 14px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.head h1{font-family:Bungee;font-weight:400;font-size:19px;line-height:1;color:#ffe3f6;text-shadow:0 0 10px rgba(255,62,200,.55)}
+.progress{height:6px;background:#2a1d34;border-radius:99px;overflow:hidden;display:flex}
+.progress i{display:block;height:100%;transition:width .25s ease}
+.progress .k{background:var(--green)}
+.progress .r{background:var(--red)}
+.counts{display:flex;gap:6px 14px;color:var(--dim);font-size:16px;flex-wrap:wrap}
+.counts b{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+.filter{display:flex;gap:8px;align-items:center;color:var(--dim);font-size:16px}
+select{background:#140c1b;border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:16px}
+
+.shop{padding:14px 18px;display:flex;flex-direction:column;gap:2px;border-bottom:1px solid var(--line)}
+.shop .pos{color:var(--dim);font-size:15px}
+.shop h2{font-family:Bungee;font-weight:400;font-size:21px;line-height:1.15;color:#ffe3f6;margin:4px 0}
+.shop p{color:var(--dim);font-size:17px}
+.shop a{color:var(--amber);text-decoration:none;font-weight:600;font-size:17px;margin-top:4px;align-self:flex-start}
+.shop a:hover{text-decoration:underline}
+.status{margin-top:8px;align-self:flex-start;padding:3px 10px;border-radius:99px;font-size:15px;font-weight:600}
+.status.keep{background:rgba(61,220,132,.14);color:var(--green)}
+.status.reject{background:rgba(255,90,110,.14);color:var(--red)}
+.empty{padding:22px 18px;color:var(--dim);line-height:1.4}
+.empty b{color:var(--text)}
+
+.acts{padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.group{color:var(--dim);font-size:15px;margin-top:6px}
+.btn{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:#140c1b;font-weight:600;font-size:18px;text-align:left}
+.btn:hover:not(:disabled){border-color:#5a3d70}
+.btn kbd{font:600 13px ui-monospace,Menlo,monospace;color:var(--dim);border:1px solid var(--line);border-radius:5px;padding:1px 6px;background:var(--ink);flex:none}
+.btn.keep{background:rgba(61,220,132,.13);border-color:rgba(61,220,132,.5)}
+.btn.keep:hover:not(:disabled){border-color:var(--green)}
+.btn.reject:hover:not(:disabled){border-color:rgba(255,90,110,.7)}
+.nav{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.nav .btn{justify-content:center;font-size:16px;gap:6px}
+
+.foot{margin-top:auto;padding:14px 18px 18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.foot p{color:var(--dim);font-size:15px;line-height:1.35}
+.foot .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.foot .btn{justify-content:center;font-size:16px}
+
+#toast{position:fixed;left:50%;top:18px;transform:translate(-50%,-10px);opacity:0;z-index:40;background:#2a1a36;border:1px solid #5a3d70;padding:8px 16px;border-radius:999px;font-weight:600;transition:all .18s ease;pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:820px){
+  #app{grid-template-columns:1fr;grid-template-rows:50vh 1fr}
+  #panel{border-left:0;border-top:1px solid var(--line)}
+  .btn kbd{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="view">
+    <div id="pano"></div>
+    <iframe id="embed" title="Street View" hidden referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <p id="viewMsg" hidden></p>
+  </div>
+
+  <aside id="panel" aria-label="Review">
+    <div class="head">
+      <h1>Shop review</h1>
+      <div class="progress" aria-hidden="true"><i class="k" id="barK"></i><i class="r" id="barR"></i></div>
+      <div class="counts" aria-live="polite">
+        <span><b id="cDone">0</b> of <b id="cTotal">0</b> reviewed</span>
+        <span><b id="cKept">0</b> kept</span>
+        <span><b id="cRemoved">0</b> removed</span>
+      </div>
+      <label class="filter">Showing
+        <select id="filter">
+          <option value="todo">Not reviewed yet</option>
+          <option value="all">All shops</option>
+          <option value="kept">Kept</option>
+          <option value="removed">Removed</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="shopBox" class="shop">
+      <span class="pos" id="pos"></span>
+      <h2 id="name">Loading shops</h2>
+      <p id="meta"></p>
+      <p id="addr"></p>
+      <a id="gmaps" target="_blank" rel="noopener">Open in Google Maps</a>
+      <span id="status" class="status" hidden></span>
+    </div>
+    <div id="emptyBox" class="empty" hidden></div>
+
+    <div class="acts" id="acts">
+      <button class="btn keep" id="keepBtn" type="button">Keep <kbd>K</kbd></button>
+      <button class="btn" id="angleBtn" type="button">Keep with the view I've set <kbd>A</kbd></button>
+      <span class="group">Remove because it's…</span>
+      <div id="reasons" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div class="nav">
+        <button class="btn" id="prevBtn" type="button"><kbd>←</kbd> Back</button>
+        <button class="btn" id="resetBtn" type="button">Reset view <kbd>R</kbd></button>
+        <button class="btn" id="nextBtn" type="button">Skip <kbd>→</kbd></button>
+      </div>
+    </div>
+
+    <div class="foot">
+      <p>Your decisions save in this browser as you go. To put them in the game, download the file and send it to Claude, or upload it to the repo as <b>reviews.json</b>.</p>
+      <div class="row">
+        <button class="btn" id="downloadBtn" type="button">Download reviews.json</button>
+        <button class="btn" id="copyBtn" type="button">Copy</button>
+      </div>
+    </div>
+  </aside>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+// Same browser key as the game (restricted to this site, Maps Embed API + Maps JavaScript API).
+const GOOGLE_KEY = "AIzaSyAfFtpAVkJVG2oO_K9Hm3xwPy4Ce_ZqJHg";
+const REASONS = [
+  ["blocked", "Blocked (truck, bus, scaffolding)"],
+  ["not-shop", "Not a smoke shop"],
+  ["cant-find", "Can't find the shop"],
+  ["closed", "Closed, or the photo is too old"],
+  ["other", "Something else"]
+];
+const LS_KEY = "ssg-review:v1";
+
+const $ = s => document.querySelector(s);
+let shops = [], server = {}, local = {}, list = [], idx = 0, filter = "todo";
+let G = null, pano = null, mode = "loading", shown = null;
+
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; } },
+  set(v) { try { localStorage.setItem(LS_KEY, JSON.stringify(v)); } catch (e) {} }
+};
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("on"), 1600);
+}
+async function loadJSON(url) {
+  try {
+    const r = await fetch(url + "?t=" + Date.now(), { cache: "no-store" });
+    if (r.ok) return await r.json();
+  } catch (e) {}
+  return null;
+}
+const KIND = {
+  "tobacco": "Tobacco shop", "e-cigarette": "Vape shop", "vape": "Vape shop", "vape_shop": "Vape shop",
+  "cannabis": "Dispensary", "headshop": "Head shop", "smoke_shop": "Smoke shop", "hookah": "Hookah shop"
+};
+const REASON_LABEL = Object.fromEntries(REASONS);
+
+/* ---------- decisions: the repo's reviews.json, plus anything newer from this browser ---------- */
+function decisionFor(id) {
+  const l = local[id], s = server[id];
+  const d = l && (!s || (l.at || "") >= (s.at || "")) ? l : s;
+  return d && d.status !== "clear" ? d : null;
+}
+function allDecisions() {
+  const out = {};
+  for (const id of new Set([...Object.keys(server), ...Object.keys(local)]).values()) {
+    const d = decisionFor(id);
+    if (d) out[id] = d;
+  }
+  return Object.fromEntries(Object.entries(out).sort(([a], [b]) => (a < b ? -1 : 1)));
+}
+function counts() {
+  let k = 0, r = 0;
+  for (const s of shops) {
+    const d = decisionFor(s.id);
+    if (d) d.status === "keep" ? k++ : r++;
+  }
+  return { k, r, total: shops.length };
+}
+function buildList() {
+  list = shops.filter(s => {
+    const d = decisionFor(s.id);
+    if (filter === "todo") return !d;
+    if (filter === "kept") return d && d.status === "keep";
+    if (filter === "removed") return d && d.status === "reject";
+    return true;
+  });
+  idx = 0;
+}
+
+/* ---------- Street View ---------- */
+// Paid viewer (one per page load, so a whole review session counts once) lets you save a new angle.
+// If Google refuses it (daily cap reached, key problem), fall back to the free embed.
+function loadGoogle() {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error("timed out")), 12000);
+    window.__reviewReady = () => { clearTimeout(t); G = google.maps; resolve(); };
+    const s = document.createElement("script");
+    s.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(GOOGLE_KEY) + "&v=weekly&loading=async&callback=__reviewReady";
+    s.async = true;
+    s.onerror = () => { clearTimeout(t); reject(new Error("didn't load")); };
+    document.head.appendChild(s);
+  });
+}
+(function watchGoogleErrors() {
+  const orig = console.error.bind(console);
+  console.error = (...args) => {
+    try {
+      const m = String(args[0] == null ? "" : args[0]).match(/Google Maps (?:JavaScript )?API error: (\w+)/);
+      if (m) toFree(m[1]);
+    } catch (e) {}
+    orig(...args);
+  };
+})();
+window.gm_authFailure = () => toFree("key refused");
+
+function toFree(why) {
+  if (mode === "free") return;
+  mode = "free";
+  $("#pano").hidden = true;
+  $("#embed").hidden = false;
+  $("#angleBtn").disabled = true;
+  const msg = $("#viewMsg");
+  msg.textContent = "Using the free Street View (" + why + "). Keep and remove still work; saving a new view is off until tomorrow.";
+  msg.hidden = false;
+  if (shown) showView(shown.shop);
+}
+function startPaid() {
+  pano = new G.StreetViewPanorama($("#pano"), {
+    addressControl: true, showRoadLabels: true, imageDateControl: true,
+    fullscreenControl: false, motionTracking: false, motionTrackingControl: false,
+    enableCloseButton: false, panControl: false, keyboardShortcuts: false,
+    zoomControlOptions: { position: G.ControlPosition.LEFT_CENTER }
+  });
+  mode = "paid";
+  $("#angleBtn").disabled = false;
+}
+
+// Google sometimes turns the camera away right after a photo loads; hold it for a moment unless you move it.
+let holdL = null, holdT = 0;
+function holdAim(heading) {
+  releaseAim();
+  const want = { heading, pitch: 0 };
+  const off = (a, b) => Math.abs(((a - b + 540) % 360) - 180);
+  pano.setPov(want);
+  pano.setZoom(1);
+  holdL = pano.addListener("pov_changed", () => {
+    const p = pano.getPov();
+    if (off(p.heading, want.heading) > 1 || Math.abs(p.pitch) > 1) pano.setPov(want);
+  });
+  holdT = setTimeout(releaseAim, 3000);
+}
+function releaseAim() { if (holdL) { holdL.remove(); holdL = null; } clearTimeout(holdT); }
+["pointerdown", "touchstart", "wheel"].forEach(ev => $("#pano").addEventListener(ev, releaseAim, { capture: true, passive: true }));
+
+function embedUrl(p, shop) {
+  const q = new URLSearchParams({ key: GOOGLE_KEY, pitch: "0", fov: "90", heading: String(Math.round(p.heading || 0)), location: `${shop.lat},${shop.lng}` });
+  if (p.pano) q.set("pano", p.pano);
+  return "https://www.google.com/maps/embed/v1/streetview?" + q.toString();
+}
+function showView(shop) {
+  const d = decisionFor(shop.id);
+  const p = d && d.status === "keep" && d.pano
+    ? { pano: d.pano, heading: typeof d.heading === "number" ? d.heading : shop.heading }
+    : { pano: shop.pano, heading: shop.heading };
+  shown = { shop, ...p };
+  if (mode === "paid") {
+    pano.setPano(p.pano);
+    pano.setVisible(true);
+    holdAim(p.heading);
+  } else if (mode === "free") {
+    $("#embed").src = embedUrl(p, shop);
+  }
+}
+
+/* ---------- screen ---------- */
+function render() {
+  const c = counts();
+  $("#cDone").textContent = (c.k + c.r).toLocaleString();
+  $("#cTotal").textContent = c.total.toLocaleString();
+  $("#cKept").textContent = c.k.toLocaleString();
+  $("#cRemoved").textContent = c.r.toLocaleString();
+  $("#barK").style.width = (c.total ? c.k / c.total * 100 : 0) + "%";
+  $("#barR").style.width = (c.total ? c.r / c.total * 100 : 0) + "%";
+
+  const s = list[idx];
+  $("#shopBox").hidden = !s;
+  $("#acts").hidden = !s;
+  $("#emptyBox").hidden = !!s;
+  if (!s) {
+    $("#emptyBox").innerHTML = filter === "todo"
+      ? "<b>Every shop has been reviewed.</b> Download reviews.json below and send it over to put your decisions in the game."
+      : "No shops in this list.";
+    return;
+  }
+  $("#pos").textContent = `${idx + 1} of ${list.length} in this list`;
+  $("#name").textContent = s.name;
+  $("#meta").textContent = [KIND[s.kind] || "Smoke shop", s.borough].filter(Boolean).join(" in ") + (s.date ? `, photo from ${s.date}` : "");
+  $("#addr").textContent = s.addr || "";
+  $("#addr").hidden = !s.addr;
+  $("#gmaps").href = `https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}`;
+  const d = decisionFor(s.id);
+  const st = $("#status");
+  st.hidden = !d;
+  if (d) {
+    st.className = "status " + (d.status === "keep" ? "keep" : "reject");
+    st.textContent = d.status === "keep" ? (d.changed ? "Kept with your view" : "Kept") : "Removed: " + (REASON_LABEL[d.reason] || d.reason || "no reason");
+  }
+  $("#prevBtn").disabled = idx === 0;
+  showView(s);
+}
+
+function decide(d) {
+  const s = list[idx];
+  if (!s) return;
+  local[s.id] = { ...d, name: s.name, at: new Date().toISOString() };
+  store.set(local);
+  toast(d.status === "keep" ? "Kept" : "Removed");
+  if (idx < list.length - 1) idx++;
+  else buildList();
+  render();
+}
+const round1 = n => Math.round(n * 10) / 10;
+function keep() {
+  if (!shown) return;
+  decide({ status: "keep", pano: shown.pano, heading: round1(shown.heading) });
+}
+function keepWithView() {
+  if (mode !== "paid") { toast("Saving a view needs the full Street View"); return; }
+  const id = pano.getPano();
+  if (!id) return;
+  decide({ status: "keep", pano: id, heading: round1(pano.getPov().heading), changed: true });
+}
+function removeShop(reason) { decide({ status: "reject", reason }); }
+function next() { if (idx < list.length - 1) { idx++; render(); } else toast("End of this list"); }
+function prev() { if (idx > 0) { idx--; render(); } }
+function resetView() { if (shown) showView(shown.shop); }
+
+function exportText() {
+  const reviews = allDecisions();
+  return JSON.stringify({ updated: new Date().toISOString(), count: Object.keys(reviews).length, reviews }, null, 1) + "\n";
+}
+
+function bind() {
+  $("#reasons").innerHTML = REASONS.map(([v, label], i) =>
+    `<button class="btn reject" type="button" data-r="${v}">${label} <kbd>${i + 1}</kbd></button>`).join("");
+  $("#reasons").addEventListener("click", e => { const b = e.target.closest("button"); if (b) removeShop(b.dataset.r); });
+  $("#keepBtn").onclick = keep;
+  $("#angleBtn").onclick = keepWithView;
+  $("#prevBtn").onclick = prev;
+  $("#nextBtn").onclick = next;
+  $("#resetBtn").onclick = resetView;
+  $("#filter").onchange = e => { filter = e.target.value; buildList(); render(); };
+  $("#downloadBtn").onclick = () => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([exportText()], { type: "application/json" }));
+    a.download = "reviews.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  };
+  $("#copyBtn").onclick = async () => {
+    try { await navigator.clipboard.writeText(exportText()); toast("Copied"); }
+    catch (e) { toast("Couldn't copy here. Use Download instead."); }
+  };
+  document.addEventListener("keydown", e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.target instanceof Element && e.target.closest("input,select,textarea")) return;
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (k === "k") keep();
+    else if (k === "a") keepWithView();
+    else if (/^[1-5]$/.test(k)) removeShop(REASONS[+k - 1][0]);
+    else if (k === "ArrowRight") next();
+    else if (k === "ArrowLeft") prev();
+    else if (k === "r") resetView();
+    else return;
+    e.preventDefault();
+  });
+}
+
+async function boot() {
+  bind();
+  const [all, reviews] = await Promise.all([
+    loadJSON("shops-all.json").then(j => j || loadJSON("shops.json")),
+    loadJSON("reviews.json")
+  ]);
+  shops = ((all && all.shops) || []).filter(s => s.pano);
+  server = (reviews && reviews.reviews) || {};
+  local = store.get();
+  buildList();
+  if (!shops.length) {
+    $("#name").textContent = "No shops found";
+    $("#meta").textContent = "shops-all.json didn't load. Run the Bake shop list job first.";
+    $("#acts").hidden = true;
+    return;
+  }
+  try {
+    await loadGoogle();
+    if (mode !== "free") startPaid();
+  } catch (e) {
+    toFree(e.message);
+  }
+  render();
+}
+boot();
+</script>
+</body>
+</html>
