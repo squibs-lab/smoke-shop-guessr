@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smoke Shop Guessr</title>
+<meta name="description" content="GeoGuessr, but every round is a New York City smoke shop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Barlow+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0714; --panel:#1a1022; --line:#33233f; --text:#f6eefe; --dim:#a69bb5;
+  --magenta:#ff3ec8; --led-red:#ff2a2a; --led-blue:#2d6bff; --amber:#ffb32b;
+  --crop:120px; /* how much of the top of the free Street View embed to hide (that's where its address card sits) */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%;background:var(--ink);color:var(--text);font-family:"Barlow Condensed",system-ui,sans-serif;font-size:18px;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+/* game layer */
+#game{position:fixed;inset:0;background:#000}
+#embedWrap{position:absolute;inset:0;overflow:hidden}
+#embed{position:absolute;left:0;top:calc(-1 * var(--crop));width:100%;height:calc(100% + var(--crop));border:0;display:block}
+#pano{position:absolute;inset:0;background:#000}
+#shield{position:absolute;inset:0;z-index:2}
+.corner-sign{position:absolute;top:14px;left:14px;z-index:4;font-family:Bungee;font-size:15px;line-height:1;color:#ffe3f6;padding:9px 12px 8px;background:rgba(13,7,20,.78);border:1px solid var(--line);border-radius:10px;text-shadow:0 0 6px var(--magenta),0 0 14px var(--magenta)}
+#hud{position:absolute;top:14px;right:14px;z-index:4;display:flex;gap:6px}
+#hud div{background:rgba(13,7,20,.82);border:1px solid var(--line);border-radius:10px;padding:5px 12px 6px;text-align:right;min-width:82px}
+#hud small{display:block;font-size:13px;color:var(--dim);font-weight:500}
+#hud b{font-weight:700;font-size:24px;line-height:1;font-variant-numeric:tabular-nums}
+.side-btns{position:absolute;left:14px;bottom:44px;z-index:4;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.side-btns button{height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:rgba(13,7,20,.82);font-weight:600;font-size:16px}
+.side-btns button:hover{border-color:var(--dim)}
+#guessWrap{position:absolute;right:14px;bottom:30px;z-index:4;width:300px;display:flex;flex-direction:column;gap:8px;opacity:.9;transition:width .18s ease,opacity .18s ease}
+#guessMap{height:190px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.55);transition:height .18s ease;background:#120b19;cursor:crosshair}
+#guessMap .maplibregl-canvas-container.maplibregl-interactive,#guessMap .maplibregl-canvas{cursor:crosshair}
+@media (hover:hover){
+  #guessWrap:hover{width:min(600px,calc(100vw - 28px));opacity:1}
+  #guessWrap:hover #guessMap{height:min(430px,58vh)}
+}
+#guessBtn{height:48px;border-radius:12px;border:0;background:var(--amber);color:#1d1003;font-family:Bungee;font-size:18px;box-shadow:0 0 22px rgba(255,179,43,.45)}
+#guessBtn:disabled{background:#241830;color:var(--dim);box-shadow:none;cursor:default;font-family:"Barlow Condensed";font-weight:600;font-size:18px}
+.pin{width:20px;height:20px;border-radius:50%;border:3px solid #fff;font:700 12px/14px "Barlow Condensed",sans-serif;text-align:center;color:#1d1003}
+.pin-guess{background:var(--magenta);box-shadow:0 0 0 4px rgba(255,62,200,.28),0 0 16px var(--magenta)}
+.pin-shop{background:var(--amber);box-shadow:0 0 0 4px rgba(255,179,43,.3),0 0 16px var(--amber)}
+.pin-shop.numbered{width:24px;height:24px;line-height:18px}
+.pin-guess.small{width:14px;height:14px;border-width:2px}
+.maplibregl-ctrl-attrib{font-family:system-ui,sans-serif;font-size:11px}
+
+/* overlay screens */
+.screen{position:fixed;inset:0;z-index:20;display:none}
+.screen.on{display:flex}
+#start{flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 18px 84px;overflow:auto;
+  background:radial-gradient(ellipse 60% 45% at 50% 30%,rgba(255,62,200,.17),transparent 70%),radial-gradient(ellipse 40% 30% at 50% 72%,rgba(45,107,255,.12),transparent 70%),var(--ink)}
+.storefront{display:flex;flex-direction:column;align-items:center;gap:26px;max-width:760px}
+.neon{font-family:Bungee;font-weight:400;line-height:.92;color:#ffe3f6;text-shadow:0 0 2px #fff,0 0 8px var(--magenta),0 0 20px var(--magenta),0 0 46px var(--magenta),0 0 90px rgba(255,62,200,.45)}
+.neon .big{display:block;font-size:clamp(46px,11vw,120px)}
+.neon .small{display:block;font-size:clamp(22px,4.6vw,48px);margin-top:.28em;color:#fff4d9;text-shadow:0 0 2px #fff,0 0 8px var(--amber),0 0 20px var(--amber),0 0 44px rgba(255,179,43,.6)}
+.blurb{color:var(--dim);font-size:20px;line-height:1.35;max-width:30em}
+.opts{display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:center}
+.opt{display:flex;align-items:center;gap:10px}
+.opt>span{font-size:17px;color:var(--dim)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#140c1b}
+.seg button{background:none;border:0;color:var(--dim);padding:6px 15px;border-radius:999px;font-size:17px;font-weight:600}
+.seg button.on{color:var(--text);background:#2a1a36;box-shadow:inset 0 0 0 1px #5a3d70}
+.led{font-family:Bungee;font-size:clamp(40px,7vw,64px);letter-spacing:.1em;line-height:1;padding:.28em .9em .24em;border-radius:16px;
+  background:#07040b radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.7px) 0 0/5px 5px;border:5px solid #1b2236;color:#3b2626;transition:transform .15s ease}
+.led.lit{border-color:var(--led-blue);color:#ffe0e0;text-shadow:0 0 3px #fff,0 0 10px var(--led-red),0 0 24px var(--led-red),0 0 52px var(--led-red);
+  box-shadow:0 0 10px var(--led-blue),0 0 34px rgba(45,107,255,.55),inset 0 0 16px rgba(45,107,255,.45);animation:switchOn 1.1s steps(1,end) 1,buzz 9s 3s infinite}
+.led.lit:hover{transform:scale(1.035)}
+.led:disabled{cursor:default}
+@keyframes switchOn{0%{opacity:.25}12%{opacity:1}18%{opacity:.3}30%{opacity:1}36%{opacity:.5}44%,100%{opacity:1}}
+@keyframes buzz{0%,96%,100%{opacity:1}97%{opacity:.55}98%{opacity:1}99%{opacity:.7}}
+#status{font-size:17px;color:var(--dim);min-height:1.4em}
+#status.err{color:#ff9aa8}
+#status button{background:none;border:0;color:var(--amber);text-decoration:underline;font-weight:600}
+.credit{font-size:14px;color:#6f6480}
+.ticker{position:absolute;left:0;right:0;bottom:0;overflow:hidden;white-space:nowrap;background:#090510;border-top:1px solid #2a1834;padding:11px 0 9px}
+.ticker-track{display:inline-flex;animation:tick 60s linear infinite}
+.ticker span{font-family:Bungee;font-size:15px;letter-spacing:.08em;color:var(--amber);text-shadow:0 0 8px rgba(255,179,43,.55)}
+@keyframes tick{to{transform:translateX(-50%)}}
+#setup{align-items:center;justify-content:center;padding:24px 18px;overflow:auto;background:var(--ink)}
+.setup{max-width:520px;display:flex;flex-direction:column;gap:18px}
+.setup .neon .big{font-size:clamp(34px,8vw,58px)}
+.setup p{color:var(--dim);line-height:1.4}
+.setup p b{color:var(--text);font-weight:600}
+.setup code{font-family:ui-monospace,Menlo,monospace;font-size:.85em;color:var(--text);background:#22152c;padding:1px 5px;border-radius:5px}
+#keyForm{display:flex;gap:8px}
+#keyInput{flex:1;min-width:0;height:48px;border-radius:12px;border:1px solid var(--line);background:#140c1b;color:var(--text);padding:0 14px;font:500 17px ui-monospace,Menlo,monospace}
+#keyForm button{height:48px;padding:0 18px;border-radius:12px;border:0;background:var(--amber);color:#1d1003;font-weight:700;font-size:18px}
+#keyErr{color:#ff9aa8}
+#loading{flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px;background:rgba(13,7,20,.92)}
+#loading .neon{font-size:clamp(26px,5vw,44px);animation:buzz 1.8s infinite}
+#loadMsg{color:var(--dim);max-width:28em;font-size:19px}
+#loadBack{height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:none;font-weight:600}
+#result{align-items:center;justify-content:center;padding:16px;background:rgba(10,5,15,.84);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.result-card{width:min(1100px,100%);height:min(660px,calc(100vh - 32px));height:min(660px,calc(100dvh - 32px));display:grid;grid-template-columns:1.45fr 1fr;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6)}
+#rmap{height:100%;min-height:240px;background:#120b19}
+.info{padding:26px 26px 22px;display:flex;flex-direction:column;gap:18px;overflow:auto}
+.pts{display:flex;align-items:baseline;gap:8px}
+.pts b{font-family:Bungee;font-weight:400;font-size:58px;line-height:1;color:#fff4d9;text-shadow:0 0 18px rgba(255,179,43,.55);font-variant-numeric:tabular-nums}
+.pts small{color:var(--dim);font-size:20px}
+.bar{height:8px;background:#2a1d34;border-radius:99px;overflow:hidden;margin-top:-6px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--magenta),var(--amber));transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.dist{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dist b{font-size:30px;font-weight:700}
+.dist span{color:var(--dim);font-size:19px}
+.verdict{font-size:22px;font-weight:500;color:#ffd0ef}
+.note{color:var(--dim);font-size:18px;line-height:1.35}
+.shop{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:3px}
+.shop h2{font-family:Bungee;font-weight:400;font-size:24px;line-height:1.1;color:#ffe3f6;margin-bottom:4px}
+.shop p{color:var(--dim);font-size:18px}
+.shop a{color:var(--amber);font-weight:600;margin-top:6px;text-decoration:none;align-self:flex-start}
+.shop a:hover{text-decoration:underline}
+.spacer{flex:1}
+.cta{height:52px;border-radius:12px;border:0;background:var(--amber);color:#1d1003;font-family:Bungee;font-size:19px;box-shadow:0 0 22px rgba(255,179,43,.35)}
+.cta.ghost{background:none;color:var(--text);border:1px solid var(--line);box-shadow:none;font-family:"Barlow Condensed";font-weight:700;font-size:19px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rounds{list-style:none;display:flex;flex-direction:column;gap:6px}
+.rounds li{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:center;padding:9px 12px;background:#140c1b;border:1px solid var(--line);border-radius:10px}
+.rounds .n{font-family:Bungee;color:var(--amber);font-size:15px}
+.rounds .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.rounds .nm small{display:block;color:var(--dim);font-weight:400;font-size:16px}
+.rounds .p{font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;z-index:40;background:#2a1a36;border:1px solid #5a3d70;padding:10px 18px;border-radius:999px;font-weight:600;transition:all .2s ease;pointer-events:none}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:760px){
+  html,body{font-size:17px}
+  .corner-sign{font-size:12px;padding:7px 9px 6px}
+  #hud div{min-width:70px;padding:4px 10px 5px}
+  #hud b{font-size:20px}
+  #guessWrap{left:12px;right:12px;width:auto;bottom:28px;opacity:1}
+  #guessMap{height:30vh}
+  .side-btns{top:62px;bottom:auto;left:14px}
+  .result-card{grid-template-columns:1fr;grid-template-rows:36vh 1fr}
+  .info{padding:18px}
+  .pts b{font-size:46px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<main id="game" aria-label="Game">
+  <div id="embedWrap" hidden>
+    <iframe id="embed" title="Street View of a New York smoke shop" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <div id="pano" hidden></div>
+  <div id="shield" hidden></div>
+  <div class="corner-sign" aria-hidden="true">Smoke Shop Guessr</div>
+  <div id="hud" aria-live="polite">
+    <div><small>Round</small><b id="hudRound">1/5</b></div>
+    <div><small>Score</small><b id="hudScore">0</b></div>
+  </div>
+  <div class="side-btns">
+    <button id="resetBtn" type="button" hidden>Back to start</button>
+    <button id="skipBtn" type="button" hidden>Skip this shop</button>
+  </div>
+  <div id="guessWrap">
+    <div id="guessMap" aria-label="Map: click where you think this shop is"></div>
+    <button id="guessBtn" type="button" disabled>Drop a pin on the map</button>
+  </div>
+</main>
+
+<section class="screen" id="setup" aria-label="Setup">
+  <div class="setup">
+    <div class="neon"><span class="big">Smoke Shop Guessr</span></div>
+    <p>The rounds come from Google Street View, so the game needs a Google Maps API key with the <b>Maps Embed API</b> turned on. That API is free.</p>
+    <form id="keyForm">
+      <input id="keyInput" placeholder="Paste your key (AIza…)" autocomplete="off" spellcheck="false" aria-label="Google Maps API key">
+      <button type="submit">Save key</button>
+    </form>
+    <p id="keyErr" hidden></p>
+    <p>The key is saved in this browser only. Before the site goes online, paste the key into <code>GOOGLE_KEY</code> at the top of the script.</p>
+  </div>
+</section>
+
+<section class="screen" id="start" aria-label="Start">
+  <div class="storefront">
+    <h1 class="neon"><span class="big">Smoke Shop</span><span class="small">Guessr</span></h1>
+    <p class="blurb">Five rounds, five New York smoke shops. You're standing outside one. Find it on the map.</p>
+    <div class="opts">
+      <div class="opt"><span>Game</span>
+        <div class="seg" data-key="mode" role="group" aria-label="Game type">
+          <button type="button" data-v="random" class="on">Random</button>
+          <button type="button" data-v="daily">Daily, <span id="dailyDate"></span></button>
+        </div>
+      </div>
+      <div class="opt"><span>Rules</span>
+        <div class="seg" data-key="move" role="group" aria-label="Movement rules" id="rulesSeg"></div>
+      </div>
+    </div>
+    <button id="playBtn" class="led" type="button" disabled aria-label="Start game">CLOSED</button>
+    <p id="status" aria-live="polite">Turning the sign on</p>
+    <p class="credit">Shop data © OpenStreetMap contributors. Street View © Google.</p>
+  </div>
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>SMOKE SHOP ✦ VAPE ✦ HOOKAH ✦ CBD ✦ EXOTIC SNACKS ✦ ATM INSIDE ✦ GRINDERS ✦ PHONE CASES ✦ LOTTO ✦ ICE COLD DRINKS ✦ OPEN 24/7 ✦&nbsp;</span>
+      <span>SMOKE SHOP ✦ VAPE ✦ HOOKAH ✦ CBD ✦ EXOTIC SNACKS ✦ ATM INSIDE ✦ GRINDERS ✦ PHONE CASES ✦ LOTTO ✦ ICE COLD DRINKS ✦ OPEN 24/7 ✦&nbsp;</span>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="loading" aria-label="Loading">
+  <div class="neon" id="loadTitle">Finding a smoke shop</div>
+  <p id="loadMsg"></p>
+  <button id="loadBack" type="button" hidden>Back to the start</button>
+</section>
+
+<section class="screen" id="result" aria-label="Result">
+  <div class="result-card">
+    <div id="rmap"></div>
+    <div id="roundInfo" class="info">
+      <div class="pts"><b id="rPts">0</b><small>of 5,000</small></div>
+      <div class="bar"><i id="rBar"></i></div>
+      <div class="dist"><b id="rDist"></b><span id="rDistSub"></span></div>
+      <p class="verdict" id="rVerdict"></p>
+      <div class="shop">
+        <h2 id="rName"></h2>
+        <p id="rKind"></p>
+        <p id="rAddr"></p>
+        <p id="rDate"></p>
+        <a id="rLink" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div class="spacer"></div>
+      <button id="nextBtn" class="cta" type="button">Next shop</button>
+    </div>
+    <div id="finalInfo" class="info" hidden>
+      <div class="pts"><b id="fPts">0</b><small id="fOf">of 25,000</small></div>
+      <p class="verdict" id="fVerdict"></p>
+      <p class="note" id="fNote" hidden></p>
+      <ol class="rounds" id="fList"></ol>
+      <div class="spacer"></div>
+      <div class="actions">
+        <button id="shareBtn" class="cta ghost" type="button">Copy score</button>
+        <button id="againBtn" class="cta" type="button">Play again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="toast" role="status"></div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+// Browser key. Restrict it to your website and to the Maps Embed API only:
+// the Embed API is free and unlimited, so a stolen key can't cost you anything.
+const GOOGLE_KEY = "";
+
+// "embed"   = free, unlimited Street View through the Maps Embed API (default).
+// "dynamic" = paid Maps JavaScript API Street View. Hides street names natively and
+//             adds a stand-still mode, but every game costs money. Only switch if you need it.
+const IMAGERY = "embed";
+
+// Only applies to "dynamic": random games allowed per browser per day (daily game is always 1).
+const RANDOM_GAMES_PER_DAY_DYNAMIC = 3;
+
+const ROUNDS = 5;
+const MAX_PTS = 5000;
+const DECAY_KM = 2.5;      // how fast points fall off with distance (NYC-sized)
+const PANO_RADIUS_M = 50;  // how far from the shop a Street View spot can be
+const NYC = { lat: 40.7128, lng: -73.95 };
+
+const MAPLIBRE_JS = "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js";
+const MAPLIBRE_CSS = "https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css";
+// Free vector map tiles, no key. Tries each style until one answers.
+const MAP_STYLES = [
+  "https://tiles.openfreemap.org/styles/dark",
+  "https://tiles.openfreemap.org/styles/fiord",
+  "https://tiles.openfreemap.org/styles/positron"
+];
+const MAP_BOUNDS = [[-74.6, 40.35], [-73.4, 41.1]]; // keep the guess map around NYC
+
+const SHOPS_URL = "shops.json"; // baked weekly by the GitHub job; falls back to live OpenStreetMap
+const CACHE_KEY = "ssg:shops:v2";
+const KEY_KEY = "ssg:gmaps-key";
+const CACHE_MS = 24 * 3600 * 1000;
+const OVERPASS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter"
+];
+const SHOP_FILTER = `
+  nwr["shop"~"^(tobacco|e-cigarette|cannabis|headshop|smoke_shop|vape|vape_shop|hookah)$"](AREA);
+  nwr["shop"]["name"~"smoke|vape|hookah|head ?shop|tobacco|cigar",i](AREA);`;
+const Q_AREA = `[out:json][timeout:90];area(id:3600175905)->.nyc;(${SHOP_FILTER.replaceAll("AREA", "area.nyc")});out center tags;`;
+const NOT_SMOKE_SHOPS = /smoked|smokehouse|bbq|barbe?cue|fish|meat|salmon/i;
+
+const KIND = {
+  "tobacco": "Tobacco shop", "e-cigarette": "Vape shop", "vape": "Vape shop", "vape_shop": "Vape shop",
+  "cannabis": "Dispensary", "headshop": "Head shop", "smoke_shop": "Smoke shop", "hookah": "Hookah shop"
+};
+const RULES = IMAGERY === "embed"
+  ? [["move", "Walk around"], ["nmpz", "No looking around"]]
+  : [["move", "Walk around"], ["nomove", "Stand still"], ["nmpz", "No looking around"]];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const $ = s => document.querySelector(s);
+let shops = [], shopsBaked = false, shopsReady = false;
+let gmap = null, rmap = null, guessMarker = null;
+const rMarkers = [];
+let G = null, sv = null, pano = null, googlePromise = null, mapLibrePromise = null, stylePromise = null;
+let keySource = "", everPlayed = false;
+const state = { mode: "random", move: "move", gameMode: "random", order: [], cursor: 0, rounds: [], cur: null, guess: null, phase: "idle", fromSave: false };
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  getJSON(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+  setJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ll = o => ({ lat: o.lat, lng: o.lng });
+const sum = () => state.rounds.reduce((a, r) => a + r.pts, 0);
+
+function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); }
+function anyScreenOn() { return !!document.querySelector(".screen.on"); }
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("on"), 2200);
+}
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src; s.async = true; s.onload = resolve; s.onerror = () => reject(new Error("Couldn't load " + src));
+    document.head.appendChild(s);
+  });
+}
+function loadCss(href) {
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
+}
+function nyDate(fmt) {
+  const d = new Date();
+  if (fmt === "short") return new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric" }).format(d);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+}
+function km(a, b) {
+  const R = 6371, r = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function bearing(a, b) {
+  const r = Math.PI / 180;
+  const p1 = a.lat * r, p2 = b.lat * r, dl = (b.lng - a.lng) * r;
+  const y = Math.sin(dl) * Math.cos(p2);
+  const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+  return (Math.atan2(y, x) / r + 360) % 360;
+}
+function score(d) { return d < 0.025 ? MAX_PTS : Math.round(MAX_PTS * Math.exp(-d / DECAY_KM)); }
+function fmtDist(d) {
+  const mi = d * 0.621371;
+  if (d < 0.025) return { main: "At the door", sub: "within 80 feet" };
+  if (mi < 2) {
+    const blocks = Math.max(1, Math.round(mi * 20));
+    return { main: `${mi < 1 ? mi.toFixed(2) : mi.toFixed(1)} mi`, sub: `about ${blocks} block${blocks === 1 ? "" : "s"}` };
+  }
+  return { main: `${mi.toFixed(1)} mi`, sub: `${d.toFixed(1)} km` };
+}
+function fmtDate(s) {
+  if (!s) return "";
+  const [y, m] = s.split("-");
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  return m ? `${months[+m - 1]} ${y}` : y;
+}
+function boroughFrom(zip, city) {
+  const z = parseInt(String(zip || "").slice(0, 3), 10);
+  if (z >= 100 && z <= 102) return "Manhattan";
+  if (z === 103) return "Staten Island";
+  if (z === 104) return "The Bronx";
+  if (z === 112) return "Brooklyn";
+  if ([110, 111, 113, 114, 116].includes(z)) return "Queens";
+  const c = String(city || "").toLowerCase();
+  if (c.includes("brooklyn")) return "Brooklyn";
+  if (c.includes("bronx")) return "The Bronx";
+  if (c.includes("staten")) return "Staten Island";
+  if (c.includes("queens")) return "Queens";
+  if (c.includes("manhattan")) return "Manhattan";
+  return "";
+}
+function roundVerdict(p) {
+  if (p >= 5000) return "You can smell it from here.";
+  if (p >= 4500) return "Same block, different neon.";
+  if (p >= 3500) return "Right neighborhood.";
+  if (p >= 2000) return "A couple of stops off.";
+  if (p >= 800) return "Wrong train.";
+  if (p >= 150) return "Wrong borough, probably.";
+  return "Were you even in New York?";
+}
+function finalVerdict(t) {
+  const f = t / (ROUNDS * MAX_PTS);
+  if (f >= 0.88) return "You've bought papers at every one of these.";
+  if (f >= 0.6) return "Certified bodega cat.";
+  if (f >= 0.32) return "You know your way around.";
+  if (f >= 0.12) return "Tourist behavior.";
+  return "Have you been to New York?";
+}
+function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function shuffle(arr, rng) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+function countUp(el, to) {
+  const t0 = performance.now(), dur = 900;
+  const step = t => {
+    const k = Math.min(1, (t - t0) / dur);
+    el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))).toLocaleString();
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+function getKey() {
+  const k = GOOGLE_KEY.trim();
+  if (k) { keySource = "file"; return k; }
+  keySource = "browser";
+  return (store.get(KEY_KEY) || "").trim();
+}
+
+/* ============================================================
+   SHOP DATA
+   1. shops.json, baked weekly with Street View panoramas already matched (free).
+   2. Fallback for local testing: live OpenStreetMap, cached a day in this browser.
+   ============================================================ */
+function parseOverpass(els) {
+  const seen = new Set(), out = [];
+  for (const el of els) {
+    const t = el.tags || {};
+    const lat = el.lat ?? el.center?.lat, lng = el.lon ?? el.center?.lon;
+    if (lat == null || lng == null) continue;
+    if (t.name && NOT_SMOKE_SHOPS.test(t.name)) continue;
+    const name = t.name || t.brand || "Smoke shop with no name";
+    const key = name.toLowerCase() + "|" + lat.toFixed(4) + "|" + lng.toFixed(4);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({
+      id: el.type[0] + el.id, lat, lng, name, kind: t.shop || "",
+      addr: [t["addr:housenumber"], t["addr:street"]].filter(Boolean).join(" "),
+      borough: boroughFrom(t["addr:postcode"], t["addr:city"])
+    });
+  }
+  out.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  return out;
+}
+async function overpass(q) {
+  let lastErr;
+  for (const url of OVERPASS) {
+    try {
+      const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" }, body: "data=" + encodeURIComponent(q) });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return (await r.json()).elements || [];
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error("Overpass unreachable");
+}
+async function loadShops() {
+  try {
+    const r = await fetch(SHOPS_URL, { cache: "no-cache" });
+    if (r.ok) {
+      const j = await r.json();
+      if (Array.isArray(j.shops) && j.shops.length) {
+        shops = j.shops; shopsBaked = j.shops.some(s => s.pano);
+        shopsReady = true; checkReady(); return;
+      }
+    }
+  } catch (e) { /* no shops.json yet (or opened as a local file) */ }
+
+  const cached = store.getJSON(CACHE_KEY);
+  if (cached && Date.now() - cached.t < CACHE_MS && cached.shops && cached.shops.length) {
+    shops = cached.shops; shopsReady = true; checkReady(); return;
+  }
+  setStatus("Counting every smoke shop in the five boroughs");
+  try {
+    const list = parseOverpass(await overpass(Q_AREA));
+    if (!list.length) throw new Error("No shops came back");
+    shops = list;
+    store.setJSON(CACHE_KEY, { t: Date.now(), shops });
+    shopsReady = true; checkReady();
+  } catch (e) {
+    console.error(e);
+    setStatus("OpenStreetMap didn't answer, so there are no shops to play yet.", true, loadShops);
+  }
+}
+
+/* ============================================================
+   FREE MAPS (MapLibre + OpenFreeMap), loaded only when a game starts
+   ============================================================ */
+function ensureMapLibre() {
+  if (!mapLibrePromise) {
+    loadCss(MAPLIBRE_CSS);
+    mapLibrePromise = loadScript(MAPLIBRE_JS);
+  }
+  return mapLibrePromise;
+}
+function pickStyle() {
+  if (!stylePromise) stylePromise = (async () => {
+    for (const u of MAP_STYLES) {
+      try { const r = await fetch(u); if (r.ok) return u; } catch (e) {}
+    }
+    return MAP_STYLES[0];
+  })();
+  return stylePromise;
+}
+// Shops are drawn on these maps as points of interest, so the POI layers would give the answer away.
+function hidePOIs(map) {
+  const st = map.getStyle();
+  if (!st || !st.layers) return;
+  for (const l of st.layers) {
+    if (l["source-layer"] === "poi" && map.getLayoutProperty(l.id, "visibility") !== "none") {
+      map.setLayoutProperty(l.id, "visibility", "none");
+    }
+  }
+}
+async function makeMap(el, onClick) {
+  await ensureMapLibre();
+  const style = await pickStyle();
+  const map = new maplibregl.Map({
+    container: el, style, center: [NYC.lng, NYC.lat], zoom: 9.6, minZoom: 8.5, maxBounds: MAP_BOUNDS,
+    dragRotate: false, pitchWithRotate: false, touchPitch: false, attributionControl: { compact: true }
+  });
+  map.touchZoomRotate.disableRotation();
+  if (map.keyboard && map.keyboard.disableRotation) map.keyboard.disableRotation();
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+  map.on("styledata", () => hidePOIs(map));
+  map.ready = new Promise(res => map.once("load", res));
+  if (onClick) map.on("click", e => onClick({ lat: e.lngLat.lat, lng: e.lngLat.lng }));
+  return map;
+}
+function marker(map, pos, cls, label) {
+  const wrap = document.createElement("div");
+  wrap.style.pointerEvents = "none";
+  const pin = document.createElement("div");
+  pin.className = "pin " + cls;
+  pin.textContent = label || "";
+  wrap.appendChild(pin);
+  return new maplibregl.Marker({ element: wrap, anchor: "center" }).setLngLat([pos.lng, pos.lat]).addTo(map);
+}
+function setLines(map, pairs) {
+  const data = { type: "FeatureCollection", features: pairs.map(([a, b]) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [[a.lng, a.lat], [b.lng, b.lat]] } })) };
+  const src = map.getSource("guess-lines");
+  if (src) { src.setData(data); return; }
+  map.addSource("guess-lines", { type: "geojson", data });
+  map.addLayer({ id: "guess-lines", type: "line", source: "guess-lines", paint: { "line-color": "#ffffff", "line-width": 2, "line-dasharray": [2, 2] } });
+}
+function fitTo(map, pts) {
+  const b = new maplibregl.LngLatBounds();
+  pts.forEach(p => b.extend([p.lng, p.lat]));
+  map.resize();
+  map.fitBounds(b, { padding: 70, maxZoom: 16, duration: 0 });
+}
+
+/* ============================================================
+   STREET VIEW
+   embed: free iframe, one URL per round. Top strip is cropped off-screen (address card).
+   dynamic: paid. One panorama object per visit, created on the first round and reused.
+   ============================================================ */
+function embedUrl(shop, key) {
+  const p = new URLSearchParams({ key, pitch: "8", fov: "80" });
+  if (shop.pano) { p.set("pano", shop.pano); p.set("heading", String(Math.round(shop.heading))); }
+  p.set("location", `${shop.lat},${shop.lng}`); // only used if the panorama id is missing or retired
+  return "https://www.google.com/maps/embed/v1/streetview?" + p.toString();
+}
+function showEmbed(shop) {
+  return new Promise(resolve => {
+    const f = $("#embed");
+    const t = setTimeout(resolve, 7000);
+    f.onload = () => { clearTimeout(t); resolve(); };
+    f.src = embedUrl(shop, getKey());
+  });
+}
+
+function ensureGoogle() {
+  if (!googlePromise) googlePromise = new Promise((resolve, reject) => {
+    window.__ssgMapsReady = () => {
+      G = google.maps;
+      sv = new G.StreetViewService();
+      resolve();
+    };
+    loadScript("https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(getKey()) + "&v=weekly&callback=__ssgMapsReady")
+      .catch(reject);
+  });
+  return googlePromise;
+}
+function ensurePano() {
+  if (pano) return;
+  pano = new G.StreetViewPanorama($("#pano"), {
+    visible: false, addressControl: false, showRoadLabels: false, fullscreenControl: false,
+    motionTracking: false, motionTrackingControl: false, enableCloseButton: false,
+    panControl: false, imageDateControl: false,
+    zoomControlOptions: { position: G.ControlPosition.LEFT_CENTER }
+  });
+  // a retired panorama id shows up here; swap in a different shop for free-of-charge recovery
+  pano.addListener("status_changed", () => {
+    const s = pano.getStatus();
+    if (state.phase === "guess" && s && s !== "OK") skipShop(true);
+  });
+}
+async function lookupPano(shop) {
+  if (shop.pano) return { pano: shop.pano, heading: shop.heading, date: shop.date || "" };
+  try {
+    const res = await sv.getPanorama({ location: ll(shop), radius: PANO_RADIUS_M, source: G.StreetViewSource.OUTDOOR, preference: G.StreetViewPreference.NEAREST });
+    const data = res && res.data;
+    if (!data || !data.location || !data.location.pano) return null;
+    if (data.copyright && !/google/i.test(data.copyright)) return null;
+    const pos = { lat: data.location.latLng.lat(), lng: data.location.latLng.lng() };
+    if (km(pos, shop) > PANO_RADIUS_M / 1000 + 0.015) return null;
+    return { pano: data.location.pano, heading: bearing(pos, shop), date: data.imageDate || "" };
+  } catch (e) {
+    if (e && /OVER_QUERY_LIMIT/.test(String(e.code || e.message))) throw e;
+    return null;
+  }
+}
+function aimAt(p) {
+  pano.setPano(p.pano);
+  pano.setPov({ heading: p.heading, pitch: 8 });
+  pano.setZoom(1);
+  pano.setVisible(true);
+}
+function applyMoveMode() {
+  const walking = state.move === "move", nmpz = state.move === "nmpz";
+  $("#shield").hidden = !nmpz;
+  $("#resetBtn").hidden = !walking;
+  if (IMAGERY === "dynamic" && pano) {
+    pano.setOptions({ linksControl: walking, clickToGo: walking, keyboardShortcuts: walking, disableDoubleClickZoom: !walking, scrollwheel: !nmpz, zoomControl: !nmpz });
+  }
+}
+window.gm_authFailure = () => {
+  if (everPlayed) closedForToday();
+  else keyProblem("Google rejected the key. Check that the Maps JavaScript API is enabled, billing is on, and the key allows this site.");
+};
+function keyProblem(msg) {
+  if (keySource === "browser") store.del(KEY_KEY);
+  const err = $("#keyErr");
+  err.textContent = msg + (keySource === "file" ? " The key is set in GOOGLE_KEY at the top of the script." : "");
+  err.hidden = false;
+  state.phase = "idle";
+  show("setup");
+}
+function closedForToday() {
+  state.phase = "idle";
+  $("#loadTitle").textContent = "Closed for today";
+  $("#loadMsg").textContent = "The shop hit its daily limit. Come back tomorrow.";
+  $("#loadBack").hidden = false;
+  show("loading");
+}
+
+/* ============================================================
+   GAME FLOW
+   ============================================================ */
+function setStatus(msg, isErr, retry) {
+  const el = $("#status");
+  el.classList.toggle("err", !!isErr);
+  el.textContent = msg + (retry ? " " : "");
+  if (retry) {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = "Try again"; b.onclick = retry;
+    el.appendChild(b);
+  }
+}
+function checkReady() {
+  if (!shopsReady) return;
+  const btn = $("#playBtn");
+  btn.disabled = false; btn.textContent = "OPEN"; btn.classList.add("lit");
+  setStatus(`${shops.length.toLocaleString()} smoke shops on the map. Tap the sign to play.`);
+}
+const dailyKey = () => "ssg:daily:" + nyDate();
+const randomKey = () => "ssg:random:" + nyDate();
+
+async function startGame() {
+  if (!shopsReady) return;
+  if (!getKey()) { show("setup"); return; }
+
+  if (state.mode === "daily") {
+    const saved = store.getJSON(dailyKey());
+    if (saved && Array.isArray(saved.rounds) && saved.rounds.length) {
+      state.gameMode = "daily"; state.rounds = saved.rounds; state.fromSave = true;
+      await ensureMapLibre();
+      return renderFinal();
+    }
+  } else if (IMAGERY === "dynamic") {
+    const played = +(store.get(randomKey()) || 0);
+    if (played >= RANDOM_GAMES_PER_DAY_DYNAMIC) {
+      setStatus(`That's all ${RANDOM_GAMES_PER_DAY_DYNAMIC} random games for today. The daily game resets at midnight.`, true);
+      return;
+    }
+  }
+
+  $("#loadTitle").textContent = "Finding a smoke shop";
+  $("#loadMsg").textContent = ""; $("#loadBack").hidden = true;
+  show("loading");
+  try {
+    if (!gmap) {
+      gmap = await makeMap($("#guessMap"), placeGuess);
+      gmap.getCanvas().style.cursor = "crosshair";
+    }
+    if (IMAGERY === "dynamic") { await ensureGoogle(); ensurePano(); }
+  } catch (e) {
+    console.error(e);
+    $("#loadMsg").textContent = "Part of the game didn't load. Check your connection and try again.";
+    $("#loadBack").hidden = false;
+    return;
+  }
+
+  $("#embedWrap").hidden = IMAGERY !== "embed";
+  $("#pano").hidden = IMAGERY !== "dynamic";
+  $("#skipBtn").hidden = state.mode !== "random";
+
+  const list = shopsBaked ? shops.filter(s => s.pano) : shops.slice();
+  state.gameMode = state.mode;
+  state.fromSave = false;
+  if (state.mode === "daily") shuffle(list, mulberry32(hashStr("smoke-shop-guessr|" + nyDate())));
+  else {
+    shuffle(list, Math.random);
+    if (IMAGERY === "dynamic") store.set(randomKey(), String(+(store.get(randomKey()) || 0) + 1));
+  }
+  state.order = list; state.cursor = 0; state.rounds = []; state.cur = null;
+  everPlayed = true;
+  nextRound();
+}
+
+async function nextRound() {
+  state.phase = "loading";
+  $("#loadTitle").textContent = "Finding a smoke shop";
+  $("#loadMsg").textContent = ""; $("#loadBack").hidden = true;
+  show("loading");
+
+  let found = null, tries = 0;
+  try {
+    while (!found && state.cursor < state.order.length && tries < 40) {
+      const shop = state.order[state.cursor++]; tries++;
+      if (IMAGERY === "embed") { found = { shop, p: { pano: shop.pano || "", heading: shop.heading || 0, date: shop.date || "" } }; break; }
+      const p = await lookupPano(shop);
+      if (p) found = { shop, p };
+    }
+  } catch (e) { return closedForToday(); }
+
+  if (!found) {
+    $("#loadMsg").textContent = tries >= 40
+      ? "Street View isn't answering for these shops right now. Try again in a bit."
+      : "Every shop on the list has been used up.";
+    $("#loadBack").hidden = false; state.phase = "idle"; return;
+  }
+
+  state.cur = found; state.guess = null;
+  if (guessMarker) { guessMarker.remove(); guessMarker = null; }
+  const btn = $("#guessBtn"); btn.disabled = true; btn.textContent = "Drop a pin on the map";
+  applyMoveMode();
+  if (IMAGERY === "embed") await showEmbed(found.shop);
+  else aimAt(found.p);
+  gmap.resize();
+  gmap.jumpTo({ center: [NYC.lng, NYC.lat], zoom: 9.6 });
+  updateHud();
+  state.phase = "guess";
+  show(null);
+}
+
+function skipShop(auto) {
+  if (state.phase !== "guess") return;
+  if (!auto) toast("Skipped. Here's another one.");
+  nextRound();
+}
+
+function updateHud() {
+  $("#hudRound").textContent = `${Math.min(state.rounds.length + 1, ROUNDS)}/${ROUNDS}`;
+  $("#hudScore").textContent = sum().toLocaleString();
+}
+function placeGuess(pos) {
+  if (state.phase !== "guess") return;
+  state.guess = pos;
+  if (!guessMarker) guessMarker = marker(gmap, pos, "pin-guess");
+  else guessMarker.setLngLat([pos.lng, pos.lat]);
+  const btn = $("#guessBtn"); btn.disabled = false; btn.textContent = "Guess";
+}
+function submitGuess() {
+  if (state.phase !== "guess" || !state.guess) return;
+  state.phase = "result";
+  const { shop, p } = state.cur;
+  const d = km(state.guess, shop);
+  state.rounds.push({
+    shop: { name: shop.name, kind: shop.kind, addr: shop.addr, borough: shop.borough || "", lat: shop.lat, lng: shop.lng },
+    guess: state.guess, km: d, pts: score(d), date: p.date
+  });
+  if (state.gameMode === "daily" && state.rounds.length === ROUNDS) store.setJSON(dailyKey(), { rounds: state.rounds });
+  renderResult();
+}
+
+async function resultMap() {
+  if (!rmap) rmap = await makeMap($("#rmap"));
+  await rmap.ready;
+  rMarkers.forEach(m => m.remove()); rMarkers.length = 0;
+  return rmap;
+}
+
+async function renderResult() {
+  const r = state.rounds[state.rounds.length - 1];
+  $("#roundInfo").hidden = false; $("#finalInfo").hidden = true;
+  show("result");
+
+  countUp($("#rPts"), r.pts);
+  const bar = $("#rBar");
+  bar.style.transition = "none"; bar.style.width = "0"; void bar.offsetWidth;
+  bar.style.transition = ""; bar.style.width = (r.pts / MAX_PTS * 100) + "%";
+  const d = fmtDist(r.km);
+  $("#rDist").textContent = d.main;
+  $("#rDistSub").textContent = r.km < 0.025 ? d.sub : `${d.sub} away`;
+  $("#rVerdict").textContent = roundVerdict(r.pts);
+  $("#rName").textContent = r.shop.name;
+  $("#rKind").textContent = (KIND[r.shop.kind] || "Smoke shop") + (r.shop.borough ? ` in ${r.shop.borough}` : "");
+  $("#rAddr").textContent = r.shop.addr || ""; $("#rAddr").hidden = !r.shop.addr;
+  $("#rDate").textContent = r.date ? `Street View photo from ${fmtDate(r.date)}` : ""; $("#rDate").hidden = !r.date;
+  $("#rLink").href = `https://www.google.com/maps/search/?api=1&query=${r.shop.lat},${r.shop.lng}`;
+  $("#nextBtn").textContent = state.rounds.length < ROUNDS ? "Next shop" : "See final score";
+  updateHud();
+
+  const map = await resultMap();
+  setLines(map, [[r.guess, r.shop]]);
+  rMarkers.push(marker(map, r.guess, "pin-guess"), marker(map, r.shop, "pin-shop"));
+  fitTo(map, [r.guess, r.shop]);
+}
+
+async function renderFinal() {
+  state.phase = "final";
+  $("#roundInfo").hidden = true; $("#finalInfo").hidden = false;
+  show("result");
+
+  const total = sum();
+  countUp($("#fPts"), total);
+  $("#fOf").textContent = `of ${(ROUNDS * MAX_PTS).toLocaleString()}`;
+  $("#fVerdict").textContent = finalVerdict(total);
+  $("#fNote").hidden = !state.fromSave;
+  $("#fNote").textContent = "You've already played today's shops. New ones at midnight, or play a random game.";
+  $("#againBtn").textContent = state.gameMode === "daily" ? "Play a random game" : "Play again";
+  $("#fList").innerHTML = state.rounds.map((r, i) => {
+    const b = r.shop.borough;
+    return `<li><span class="n">${i + 1}</span><span class="nm">${esc(r.shop.name)}<small>${esc(fmtDist(r.km).main)} off${b ? " in " + esc(b) : ""}</small></span><span class="p">${r.pts.toLocaleString()}</span></li>`;
+  }).join("");
+
+  const map = await resultMap();
+  setLines(map, state.rounds.map(r => [r.guess, r.shop]));
+  const pts = [];
+  state.rounds.forEach((r, i) => {
+    rMarkers.push(marker(map, r.guess, "pin-guess small"), marker(map, r.shop, "pin-shop numbered", String(i + 1)));
+    pts.push(r.guess, r.shop);
+  });
+  fitTo(map, pts);
+}
+
+async function shareScore() {
+  const total = sum();
+  const squares = state.rounds.map(r => (r.pts >= 4000 ? "🟩" : r.pts >= 2000 ? "🟨" : "🟥")).join("");
+  const label = state.gameMode === "daily" ? `Daily, ${nyDate("short")}` : "Random game";
+  const url = location.protocol.startsWith("http") ? "\n" + location.origin + location.pathname : "";
+  const text = `Smoke Shop Guessr (${label})\n${total.toLocaleString()} / ${(ROUNDS * MAX_PTS).toLocaleString()}\n${squares}${url}`;
+  if (navigator.share && matchMedia("(pointer:coarse)").matches) {
+    try { await navigator.share({ text }); return; } catch (e) { if (e.name === "AbortError") return; }
+  }
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove();
+  }
+  toast("Score copied");
+}
+
+/* ============================================================
+   WIRING
+   ============================================================ */
+function bindUI() {
+  $("#rulesSeg").innerHTML = RULES.map(([v, label], i) => `<button type="button" data-v="${v}"${i === 0 ? ' class="on"' : ""}>${label}</button>`).join("");
+  document.querySelectorAll(".seg").forEach(seg => {
+    seg.addEventListener("click", e => {
+      const b = e.target.closest("button");
+      if (!b) return;
+      seg.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
+      state[seg.dataset.key] = b.dataset.v;
+    });
+  });
+  $("#playBtn").onclick = startGame;
+  $("#guessBtn").onclick = submitGuess;
+  $("#nextBtn").onclick = () => (state.rounds.length < ROUNDS ? nextRound() : renderFinal());
+  $("#againBtn").onclick = () => {
+    if (state.gameMode === "daily") {
+      state.mode = "random";
+      document.querySelectorAll('.seg[data-key="mode"] button').forEach(x => x.classList.toggle("on", x.dataset.v === "random"));
+    }
+    state.phase = "idle"; show("start");
+  };
+  $("#shareBtn").onclick = shareScore;
+  $("#resetBtn").onclick = () => {
+    if (!state.cur) return;
+    if (IMAGERY === "embed") showEmbed(state.cur.shop); else aimAt(state.cur.p);
+  };
+  $("#skipBtn").onclick = () => skipShop(false);
+  $("#loadBack").onclick = () => { state.phase = "idle"; show("start"); };
+  $("#keyForm").onsubmit = e => {
+    e.preventDefault();
+    const v = $("#keyInput").value.trim();
+    if (!v) return;
+    store.set(KEY_KEY, v);
+    location.reload();
+  };
+  document.addEventListener("keydown", e => {
+    if (e.key !== " " && e.key !== "Enter") return;
+    if (e.target instanceof Element && e.target.closest("input,textarea,button,a")) return;
+    if (state.phase === "guess" && state.guess && !anyScreenOn()) { e.preventDefault(); submitGuess(); }
+    else if (state.phase === "result" && $("#result").classList.contains("on")) { e.preventDefault(); $("#nextBtn").click(); }
+  });
+}
+
+function boot() {
+  $("#dailyDate").textContent = nyDate("short");
+  bindUI();
+  show("start");
+  loadShops();
+}
+boot();
+</script>
+</body>
+</html>
