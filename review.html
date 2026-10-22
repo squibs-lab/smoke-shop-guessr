@@ -45,6 +45,16 @@ select{background:#140c1b;border:1px solid var(--line);border-radius:8px;padding
 .shop p{color:var(--dim);font-size:17px}
 .shop a{color:var(--amber);text-decoration:none;font-weight:600;font-size:17px;margin-top:4px;align-self:flex-start}
 .shop a:hover{text-decoration:underline}
+.years{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.years .btn{min-height:38px;font-size:16px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.chip{flex:none;min-width:58px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:#140c1b;text-align:center;line-height:1.05}
+.chip b{display:block;font-size:17px;font-weight:700}
+.chip small{display:block;color:var(--dim);font-size:13px}
+.chip:hover{border-color:#5a3d70}
+.chip.on{border-color:var(--amber);background:rgba(255,179,43,.12);box-shadow:0 0 12px rgba(255,179,43,.25)}
+.chip.newest small::after{content:" · now"}
+.yearsNote{color:var(--dim);font-size:15px}
 .status{margin-top:8px;align-self:flex-start;padding:3px 10px;border-radius:99px;font-size:15px;font-weight:600}
 .status.keep{background:rgba(61,220,132,.14);color:var(--green)}
 .status.reject{background:rgba(255,90,110,.14);color:var(--red)}
@@ -112,6 +122,11 @@ select{background:#140c1b;border:1px solid var(--line);border-radius:8px;padding
       <p id="addr"></p>
       <a id="gmaps" target="_blank" rel="noopener">Open in Google Maps</a>
       <span id="status" class="status" hidden></span>
+      <div class="years">
+        <button class="btn" id="yearsBtn" type="button">Show other years <kbd>Y</kbd></button>
+        <div class="chips" id="chips" role="group" aria-label="Photo years" hidden></div>
+        <span class="yearsNote" id="yearsNote" hidden></span>
+      </div>
     </div>
     <div id="emptyBox" class="empty" hidden></div>
 
@@ -152,7 +167,18 @@ const LS_KEY = "ssg-review:v1";
 
 const $ = s => document.querySelector(s);
 let shops = [], server = {}, local = {}, list = [], idx = 0, filter = "todo";
-let G = null, pano = null, mode = "loading", shown = null;
+let G = null, pano = null, sv = null, mode = "loading", shown = null;
+const years = {}; // shop id -> [{ pano, date: "YYYY-MM" }], oldest first, loaded on request
+
+function bearing(a, b) {
+  const r = Math.PI / 180;
+  const p1 = a.lat * r, p2 = b.lat * r, dl = (b.lng - a.lng) * r;
+  const y = Math.sin(dl) * Math.cos(p2);
+  const x = Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl);
+  return (Math.atan2(y, x) / r + 360) % 360;
+}
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const fmtDate = d => { if (!d) return ""; const [y, m] = d.split("-"); return m ? `${MONTHS[+m - 1]} ${y}` : y; };
 
 const store = {
   get() { try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch (e) { return {}; } },
@@ -240,8 +266,10 @@ function toFree(why) {
   $("#pano").hidden = true;
   $("#embed").hidden = false;
   $("#angleBtn").disabled = true;
+  $("#yearsBtn").disabled = true;
+  $("#chips").hidden = true;
   const msg = $("#viewMsg");
-  msg.textContent = "Using the free Street View (" + why + "). Keep and remove still work; saving a new view is off until tomorrow.";
+  msg.textContent = "Using the free Street View (" + why + "). Keep and remove still work; saving a new view and other years are off until tomorrow.";
   msg.hidden = false;
   if (shown) showView(shown.shop);
 }
@@ -281,9 +309,10 @@ function embedUrl(p, shop) {
 function showView(shop) {
   const d = decisionFor(shop.id);
   const p = d && d.status === "keep" && d.pano
-    ? { pano: d.pano, heading: typeof d.heading === "number" ? d.heading : shop.heading }
-    : { pano: shop.pano, heading: shop.heading };
-  shown = { shop, ...p };
+    ? { pano: d.pano, heading: typeof d.heading === "number" ? d.heading : shop.heading, date: d.date || (d.pano === shop.pano ? shop.date : "") }
+    : { pano: shop.pano, heading: shop.heading, date: shop.date || "" };
+  // base: the photo "Keep" keeps. pano/heading/date: what's on screen right now.
+  shown = { shop, base: { ...p }, ...p };
   if (mode === "paid") {
     pano.setPano(p.pano);
     pano.setVisible(true);
@@ -291,6 +320,86 @@ function showView(shop) {
   } else if (mode === "free") {
     $("#embed").src = embedUrl(p, shop);
   }
+  renderYears();
+}
+
+/* ---------- other years ---------- */
+// Google's lookup returns older photos of the same spot in an undocumented "time" list. Each entry has
+// the photo id and a Date under a name that changes between versions, so find the Date by type.
+function parseYears(data, shop) {
+  const out = [];
+  for (const t of (data && data.time) || []) {
+    const when = t && Object.values(t).find(v => v instanceof Date);
+    if (!t || !t.pano || !when) continue;
+    out.push({ pano: t.pano, date: `${when.getFullYear()}-${String(when.getMonth() + 1).padStart(2, "0")}` });
+  }
+  if (!out.some(e => e.pano === shop.pano)) out.push({ pano: shop.pano, date: shop.date || (data && data.imageDate) || "" });
+  const seen = new Set();
+  return out.filter(e => !seen.has(e.pano) && seen.add(e.pano)).sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+}
+async function loadYears() {
+  const s = list[idx];
+  if (!s || years[s.id]) return;
+  if (mode !== "paid") { toast("Other years need the full Street View"); return; }
+  const btn = $("#yearsBtn");
+  btn.disabled = true;
+  btn.firstChild.textContent = "Loading years… ";
+  try {
+    sv = sv || new G.StreetViewService();
+    const res = await sv.getPanorama({ pano: s.pano });
+    years[s.id] = parseYears(res && res.data, s);
+  } catch (e) {
+    years[s.id] = [];
+  }
+  btn.firstChild.textContent = "Show other years ";
+  btn.disabled = mode !== "paid";
+  if (list[idx] === s) renderYears();
+}
+function renderYears() {
+  const s = list[idx];
+  const ys = s && years[s.id];
+  const chips = $("#chips"), note = $("#yearsNote"), btn = $("#yearsBtn");
+  if (mode !== "paid") { btn.hidden = false; chips.hidden = true; note.hidden = true; return; }
+  btn.hidden = !!ys;
+  chips.hidden = !ys || ys.length < 2;
+  note.hidden = !ys || ys.length >= 2;
+  if (!ys) return;
+  if (ys.length < 2) { note.textContent = "No other years of Street View at this spot."; return; }
+  const newest = ys[ys.length - 1].pano;
+  chips.innerHTML = ys.map((e, i) => {
+    const [y, m] = e.date.split("-");
+    return `<button type="button" class="chip${e.pano === shown.pano ? " on" : ""}${e.pano === newest ? " newest" : ""}" data-i="${i}" aria-pressed="${e.pano === shown.pano}"><b>${y || "?"}</b><small>${m ? MONTHS[+m - 1] : ""}</small></button>`;
+  }).join("");
+  const on = chips.querySelector(".chip.on");
+  if (on && on.scrollIntoView) on.scrollIntoView({ block: "nearest", inline: "center" });
+}
+function showYear(i) {
+  const s = list[idx];
+  const ys = s && years[s.id];
+  if (!ys || !ys[i] || mode !== "paid") return;
+  const e = ys[i];
+  shown.pano = e.pano;
+  shown.date = e.date;
+  pano.setPano(e.pano);
+  pano.setVisible(true);
+  // older photos were often taken from a slightly different spot: aim at the shop from wherever this one is
+  const once = pano.addListener("position_changed", () => {
+    once.remove();
+    const pos = pano.getPosition();
+    if (!pos || shown.pano !== e.pano) return;
+    shown.heading = bearing({ lat: pos.lat(), lng: pos.lng() }, s);
+    holdAim(shown.heading);
+  });
+  setTimeout(() => once.remove(), 8000);
+  renderYears();
+}
+function stepYear(dir) {
+  const s = list[idx];
+  const ys = s && years[s.id];
+  if (!ys) { loadYears(); return; }
+  const i = ys.findIndex(e => e.pano === shown.pano);
+  const j = Math.min(ys.length - 1, Math.max(0, (i < 0 ? ys.length - 1 : i) + dir));
+  if (j !== i) showYear(j);
 }
 
 /* ---------- screen ---------- */
@@ -324,7 +433,9 @@ function render() {
   st.hidden = !d;
   if (d) {
     st.className = "status " + (d.status === "keep" ? "keep" : "reject");
-    st.textContent = d.status === "keep" ? (d.changed ? "Kept with your view" : "Kept") : "Removed: " + (REASON_LABEL[d.reason] || d.reason || "no reason");
+    st.textContent = d.status === "keep"
+      ? (d.changed ? "Kept with your view" + (d.date ? `, ${fmtDate(d.date)} photo` : "") : "Kept")
+      : "Removed: " + (REASON_LABEL[d.reason] || d.reason || "no reason");
   }
   $("#prevBtn").disabled = idx === 0;
   showView(s);
@@ -341,15 +452,21 @@ function decide(d) {
   render();
 }
 const round1 = n => Math.round(n * 10) / 10;
+// Keep: the current photo as matched (or as you saved it before), whatever year is on screen.
 function keep() {
   if (!shown) return;
-  decide({ status: "keep", pano: shown.pano, heading: round1(shown.heading) });
+  const b = shown.base;
+  decide({ status: "keep", pano: b.pano, heading: round1(b.heading), ...(b.date ? { date: b.date } : {}) });
 }
+// Keep with the view I've set: exactly what's on screen, including another year or a spot you walked to.
 function keepWithView() {
   if (mode !== "paid") { toast("Saving a view needs the full Street View"); return; }
   const id = pano.getPano();
   if (!id) return;
-  decide({ status: "keep", pano: id, heading: round1(pano.getPov().heading), changed: true });
+  const s = list[idx];
+  const known = ((s && years[s.id]) || []).find(e => e.pano === id);
+  const date = known ? known.date : id === shown.base.pano ? shown.base.date : "";
+  decide({ status: "keep", pano: id, heading: round1(pano.getPov().heading), changed: true, ...(date ? { date } : {}) });
 }
 function removeShop(reason) { decide({ status: "reject", reason }); }
 function next() { if (idx < list.length - 1) { idx++; render(); } else toast("End of this list"); }
@@ -370,6 +487,8 @@ function bind() {
   $("#prevBtn").onclick = prev;
   $("#nextBtn").onclick = next;
   $("#resetBtn").onclick = resetView;
+  $("#yearsBtn").onclick = loadYears;
+  $("#chips").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) showYear(+b.dataset.i); });
   $("#filter").onchange = e => { filter = e.target.value; buildList(); render(); };
   $("#downloadBtn").onclick = () => {
     const a = document.createElement("a");
@@ -392,6 +511,9 @@ function bind() {
     else if (k === "ArrowRight") next();
     else if (k === "ArrowLeft") prev();
     else if (k === "r") resetView();
+    else if (k === "y") loadYears();
+    else if (k === "[") stepYear(-1);
+    else if (k === "]") stepYear(1);
     else return;
     e.preventDefault();
   });

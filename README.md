@@ -65,6 +65,7 @@ Some matched shops aren't good rounds: a truck is parked in front, it isn't actu
 - **Keep** (K): it's a good round.
 - **Keep with the view I've set** (A): turn the camera or walk to a better spot first, then save. Players get that exact photo and angle.
 - **Remove** (1 to 5): blocked, not a smoke shop, can't find it, closed or old photo, or something else.
+- **Other years** (Y, then [ and ] to step older and newer): Google's older photos of the same spot, for checking whether the shop used to be there, or picking a year where it's clearly visible. The camera turns to face the shop from wherever each older photo was taken. "Keep with the view I've set" saves the year on screen, and the game shows that photo with its date. Plain Keep always keeps the current photo.
 - **Back / Skip / Reset view**: ← → R.
 
 Decisions save in your browser as you go, so you can stop and come back. When you want them in the game, click **Download reviews.json** and either send the file to Claude or upload it to the repo (Add file → Upload files), replacing `reviews.json`. Uploading starts the Bake shop list job, which applies the reviews to `shops.json` in about a minute.
@@ -74,7 +75,7 @@ How the lists fit together:
 - `reviews.json`: your decisions, keyed by OpenStreetMap id, so they carry over week to week.
 - `shops.json`: what the game plays: `shops-all.json` minus removed shops, with kept shops locked to the photo and angle you reviewed. Shops added to OpenStreetMap later show up under "Not reviewed yet".
 
-The review page uses paid Street View, which counts as 1 of the 160 daily loads per page load, however many shops you go through. If the day's loads are used up, it switches to the free Street View: keep and remove still work, but saving a new view doesn't.
+The review page uses paid Street View, which counts as 1 of the 160 daily loads per page load, however many shops you go through. Other years come from an undocumented part of Google's Street View lookup, so they're only fetched when you press Y, and Google could change or remove them without notice. If the day's loads are used up, it switches to the free Street View: keep and remove still work, but saving a new view doesn't.
 
 ## Testing on your own computer
 

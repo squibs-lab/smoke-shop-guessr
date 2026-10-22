@@ -164,7 +164,7 @@ export async function matchPanoramas(shops, lookup = streetViewMetadata) {
   return results.filter(Boolean);
 }
 
-// reviews: { [shopId]: { status: "keep" | "reject", pano?, heading?, changed?, reason? } }
+// reviews: { [shopId]: { status: "keep" | "reject", pano?, heading?, date?, changed?, reason? } }
 export function applyReviews(shops, reviews = {}) {
   const out = [];
   let removed = 0, kept = 0, reangled = 0;
@@ -175,7 +175,9 @@ export function applyReviews(shops, reviews = {}) {
       kept++;
       const t = { ...s, reviewed: true };
       if (r.pano) {
-        if (r.pano !== s.pano) t.date = ""; // a different photo than the one matched; its date isn't known
+        // a different photo than the one matched (another year, or a spot walked to): use its date if known
+        if (r.date) t.date = r.date;
+        else if (r.pano !== s.pano) t.date = "";
         t.pano = r.pano;
         if (typeof r.heading === "number") t.heading = Math.round(r.heading * 10) / 10;
         if (r.changed) reangled++;
