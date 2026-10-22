@@ -133,7 +133,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   #hud div{min-width:70px;padding:4px 10px 5px}
   #hud b{font-size:20px}
   #guessWrap{left:12px;right:12px;width:auto;bottom:28px;opacity:1}
-  #guessMap{height:30vh}
+  #guessMap{height:26vh}
   .side-btns{top:62px;bottom:auto;left:14px}
   .result-card{grid-template-columns:1fr;grid-template-rows:36vh 1fr}
   .info{padding:18px}
@@ -534,6 +534,11 @@ async function makeMap(el, onClick) {
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
   map.on("styledata", () => hidePOIs(map));
   map.ready = new Promise(res => map.once("load", res));
+  // keep the credits behind their ⓘ button instead of open over the small map
+  map.once("load", () => {
+    const attrib = el.querySelector(".maplibregl-ctrl-attrib");
+    if (attrib) attrib.classList.remove("maplibregl-compact-show");
+  });
   if (onClick) map.on("click", e => onClick({ lat: e.lngLat.lat, lng: e.lngLat.lng }));
   return map;
 }
@@ -566,7 +571,9 @@ function fitTo(map, pts) {
    dynamic: paid. One panorama object per visit, created on the first round and reused.
    ============================================================ */
 function embedUrl(shop, key) {
-  const p = new URLSearchParams({ key, pitch: "8", fov: "80" });
+  // On tall phone screens the guess map covers the bottom of the view, so aim lower to lift the storefront up.
+  const portrait = window.innerHeight > window.innerWidth * 1.2;
+  const p = new URLSearchParams({ key, pitch: portrait ? "-8" : "8", fov: "80" });
   if (shop.pano) { p.set("pano", shop.pano); p.set("heading", String(Math.round(shop.heading))); }
   p.set("location", `${shop.lat},${shop.lng}`); // only used if the panorama id is missing or retired
   return "https://www.google.com/maps/embed/v1/streetview?" + p.toString();
