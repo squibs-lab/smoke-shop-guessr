@@ -1,5 +1,3335 @@
 {
- "updated": null,
- "count": 0,
- "reviews": {}
+ "updated": "2026-10-22T20:35:21.876Z",
+ "count": 486,
+ "reviews": {
+  "n10089662121": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "Highflix",
+   "at": "2026-10-22T19:29:02.689Z"
+  },
+  "n10096688664": {
+   "status": "keep",
+   "pano": "WXP7jJ7MLnJJoWvN7Rfo8w",
+   "heading": 267.1,
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T18:58:31.596Z"
+  },
+  "n10101672684": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Nucleus Dispensary",
+   "at": "2026-10-22T19:29:05.113Z"
+  },
+  "n10109714821": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:29:52.462Z"
+  },
+  "n10114990224": {
+   "status": "keep",
+   "pano": "SiPwOfCcfpmBFowKUXOhhQ",
+   "heading": 131,
+   "changed": true,
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T18:59:07.677Z"
+  },
+  "n10157828505": {
+   "status": "reject",
+   "reason": "closed",
+   "name": "Bud Bar",
+   "at": "2026-10-22T19:30:06.695Z"
+  },
+  "n10179186545": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "590 Convenience",
+   "at": "2026-10-22T18:59:48.673Z"
+  },
+  "n10179186546": {
+   "status": "keep",
+   "pano": "cF9o7v0YjUk9X0jh2AwMOw",
+   "heading": 104.6,
+   "name": "Vape n Cloud",
+   "at": "2026-10-22T18:59:50.690Z"
+  },
+  "n10195939289": {
+   "status": "keep",
+   "pano": "LqIinqZHTGg-dvuH3PUdxg",
+   "heading": 247.4,
+   "changed": true,
+   "name": "New Dorp Abu Sam Exotic Snacks",
+   "at": "2026-10-22T19:00:00.300Z"
+  },
+  "n10195939298": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Be.",
+   "at": "2026-10-22T19:00:15.455Z"
+  },
+  "n10202100377": {
+   "status": "keep",
+   "pano": "m3il1O4YdlCsOOXVpOA9sA",
+   "heading": 58.6,
+   "changed": true,
+   "name": "Bedstuy Exotics",
+   "at": "2026-10-22T19:00:29.343Z"
+  },
+  "n10202439496": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Kaya Bliss",
+   "at": "2026-10-22T19:00:42.691Z"
+  },
+  "n10208425291": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sana'a Hookah Plus",
+   "at": "2026-10-22T19:00:59.951Z"
+  },
+  "n10234347024": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Awesome Smoke",
+   "at": "2026-10-22T19:01:17.217Z"
+  },
+  "n10247709089": {
+   "status": "reject",
+   "reason": "cant-find",
+   "name": "Edge Off",
+   "at": "2026-10-22T19:01:33.973Z"
+  },
+  "n10247853729": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "G&W Mini Shop",
+   "at": "2026-10-22T19:01:44.447Z"
+  },
+  "n10249792626": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Hookz Depot",
+   "at": "2026-10-22T19:02:00.912Z"
+  },
+  "n10261359093": {
+   "status": "keep",
+   "pano": "omUavuUGPcVl8XxVh6PyYg",
+   "heading": 69.6,
+   "changed": true,
+   "name": "Quick Pick Tobacco Convenience",
+   "at": "2026-10-22T19:02:14.848Z"
+  },
+  "n10270363608": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Partly Cloudy",
+   "at": "2026-10-22T19:02:27.792Z"
+  },
+  "n10287737753": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "Edibles 'n All",
+   "at": "2026-10-22T19:02:56.915Z"
+  },
+  "n10292347691": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Vapors Choice",
+   "at": "2026-10-22T19:03:05.601Z"
+  },
+  "n10315606387": {
+   "status": "reject",
+   "reason": "cant-find",
+   "name": "Flatbush Exotics 3",
+   "at": "2026-10-22T19:03:14.988Z"
+  },
+  "n10552675730": {
+   "status": "keep",
+   "pano": "h8BdyNUpbvaVW4e8UhJfyw",
+   "heading": 38.6,
+   "name": "The coughyshop",
+   "at": "2026-10-22T19:03:19.958Z"
+  },
+  "n10563636922": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Empire Smoke Shop",
+   "at": "2026-10-22T19:03:36.975Z"
+  },
+  "n10563636949": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Noise Bud Bar",
+   "at": "2026-10-22T19:03:54.062Z"
+  },
+  "n10566116014": {
+   "status": "keep",
+   "pano": "QKW_xjmta65_7LBEwAZ4DA",
+   "heading": 177.3,
+   "name": "Plaza Exotic",
+   "at": "2026-10-22T19:03:57.189Z"
+  },
+  "n10594665955": {
+   "status": "keep",
+   "pano": "Dlfhx6neThkghouBsBnYOQ",
+   "heading": 40.4,
+   "name": "Pre Roll World CBD",
+   "at": "2026-10-22T19:04:00.192Z"
+  },
+  "n10595013927": {
+   "status": "reject",
+   "reason": "cant-find",
+   "name": "Best Budds",
+   "at": "2026-10-22T19:04:14.315Z"
+  },
+  "n10595049993": {
+   "status": "keep",
+   "pano": "nlXLPPq3qWxYoglyNNEIIA",
+   "heading": 100.7,
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:04:20.525Z"
+  },
+  "n10595131234": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Deli & Smoke Shop",
+   "at": "2026-10-22T19:04:44.880Z"
+  },
+  "n10599778259": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Flatbush Smoke Shop",
+   "at": "2026-10-22T19:05:01.244Z"
+  },
+  "n10599778267": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Flower",
+   "at": "2026-10-22T19:05:11.773Z"
+  },
+  "n10715794473": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Pharm.NYC",
+   "at": "2026-10-22T19:05:17.625Z"
+  },
+  "n10718159628": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hollywood Exotics",
+   "at": "2026-10-22T19:05:25.315Z"
+  },
+  "n10722347706": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "R&R Convenience",
+   "at": "2026-10-22T19:05:34.011Z"
+  },
+  "n10755612113": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "East Side Smoke Shop",
+   "at": "2026-10-22T19:05:35.623Z"
+  },
+  "n10757661190": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Truffle Tree",
+   "at": "2026-10-22T19:05:36.754Z"
+  },
+  "n10759517306": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cigar Afición",
+   "at": "2026-10-22T19:05:44.647Z"
+  },
+  "n10759517315": {
+   "status": "keep",
+   "pano": "9XJEmKdCeWlrnE7cR-LTMA",
+   "heading": 358.2,
+   "name": "My Smoke Shop",
+   "at": "2026-10-22T19:05:47.124Z"
+  },
+  "n10759831071": {
+   "status": "keep",
+   "pano": "f-knR9ccfZU61cXmeLsPOw",
+   "heading": 122.1,
+   "changed": true,
+   "name": "Island Exotic Snacks",
+   "at": "2026-10-22T19:06:09.299Z"
+  },
+  "n10759848855": {
+   "status": "keep",
+   "pano": "KcpOa5N2e5j1uXmAkXlgEw",
+   "heading": 43.8,
+   "changed": true,
+   "name": "Richmond Smoke Snack & Drink",
+   "at": "2026-10-22T19:06:26.091Z"
+  },
+  "n10762002908": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "A&F Tobacco & Grocery",
+   "at": "2026-10-22T19:06:42.690Z"
+  },
+  "n10764506319": {
+   "status": "reject",
+   "reason": "other",
+   "name": "Sam Natural Deli & Tobacco",
+   "at": "2026-10-22T19:07:03.899Z"
+  },
+  "n10767181156": {
+   "status": "keep",
+   "pano": "EpBOTlXnc0jp7aGwUr6ePA",
+   "heading": 282.4,
+   "changed": true,
+   "name": "General Vape",
+   "at": "2026-10-22T19:07:11.915Z"
+  },
+  "n10771646590": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sammy’s Smoke Shop",
+   "at": "2026-10-22T19:07:31.692Z"
+  },
+  "n10777014285": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "CBD Kratom",
+   "at": "2026-10-22T19:08:06.040Z"
+  },
+  "n10800228718": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "Budega",
+   "at": "2026-10-22T19:08:18.923Z"
+  },
+  "n10803109634": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hookah Nation NYC",
+   "at": "2026-10-22T19:08:30.864Z"
+  },
+  "n10803109641": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:08:42.547Z"
+  },
+  "n10803109649": {
+   "status": "keep",
+   "pano": "Wzr_PLLoKH7GAkVjZCEfmg",
+   "heading": 257.1,
+   "changed": true,
+   "name": "Gas City",
+   "at": "2026-10-22T19:09:10.115Z"
+  },
+  "n10822825618": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Maui Wowie Brooklyn",
+   "at": "2026-10-22T19:09:36.178Z"
+  },
+  "n10825169310": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Vaping Club",
+   "at": "2026-10-22T19:09:42.625Z"
+  },
+  "n10834170805": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Berry Convenience Smoke Shop",
+   "at": "2026-10-22T19:09:55.180Z"
+  },
+  "n10836183974": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "High End",
+   "at": "2026-10-22T19:10:06.408Z"
+  },
+  "n10884411104": {
+   "status": "keep",
+   "pano": "9ORMoiHu2OEn39x1CLfC6Q",
+   "heading": 284.1,
+   "name": "Hills Smokes",
+   "at": "2026-10-22T19:10:25.086Z"
+  },
+  "n10884431246": {
+   "status": "keep",
+   "pano": "XKI7011tCH-ow6RgDALSbQ",
+   "heading": 139.9,
+   "name": "One Stop Tobacco Shop",
+   "at": "2026-10-22T19:10:41.284Z"
+  },
+  "n10908603337": {
+   "status": "keep",
+   "pano": "nzqJa8IcCGu9-TBM0QPPMQ",
+   "heading": 251.4,
+   "name": "MP Hookah Supplies",
+   "at": "2026-10-22T19:11:03.124Z"
+  },
+  "n10908811000": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Inhale Cannabis Club",
+   "at": "2026-10-22T19:11:08.141Z"
+  },
+  "n10964542764": {
+   "status": "keep",
+   "pano": "08ODdwJZv2usD5m3Tk9IHA",
+   "heading": 180.6,
+   "changed": true,
+   "name": "Tobacco & Vape",
+   "at": "2026-10-22T19:11:18.739Z"
+  },
+  "n10970086889": {
+   "status": "reject",
+   "reason": "other",
+   "name": "Cool Breezze",
+   "at": "2026-10-22T19:11:25.284Z"
+  },
+  "n10982848005": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke & Draft",
+   "at": "2026-10-22T19:13:07.438Z"
+  },
+  "n11003412891": {
+   "status": "keep",
+   "pano": "Ot0eHiQ9dnjH9o6owt1JNw",
+   "heading": 142.6,
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:13:14.435Z"
+  },
+  "n11003443957": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fiend City",
+   "at": "2026-10-22T19:13:24.357Z"
+  },
+  "n11011316887": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "ismoke",
+   "at": "2026-10-22T19:13:28.634Z"
+  },
+  "n11013357423": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:13:30.175Z"
+  },
+  "n11014744778": {
+   "status": "keep",
+   "pano": "N1x9VVqWErSXfUaTaBz7dA",
+   "heading": 206.6,
+   "name": "Broadway Beer & Smoke",
+   "at": "2026-10-22T19:13:38.497Z"
+  },
+  "n11040332658": {
+   "status": "keep",
+   "pano": "ADPmuCnWmyciR_bGNT71eQ",
+   "heading": 74.7,
+   "changed": true,
+   "name": "Vape Shoppe",
+   "at": "2026-10-22T19:13:41.408Z"
+  },
+  "n11040468153": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "I Smoke",
+   "at": "2026-10-22T19:13:47.965Z"
+  },
+  "n11040468183": {
+   "status": "keep",
+   "pano": "0j_cpmr-el5Ar9-oz7q23Q",
+   "heading": 35.3,
+   "name": "Bay Cigars & Tobacco",
+   "at": "2026-10-22T19:13:56.295Z"
+  },
+  "n11040482707": {
+   "status": "keep",
+   "pano": "QWoJ8Mv98piGw71fgYDiPg",
+   "heading": 168.1,
+   "name": "Kings Vapes",
+   "at": "2026-10-22T19:14:01.882Z"
+  },
+  "n11079239442": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jungle on Mars",
+   "at": "2026-10-22T19:14:08.427Z"
+  },
+  "n11083609732": {
+   "status": "keep",
+   "pano": "nYnHWfvO0oxpuyy6AJEsvg",
+   "heading": 86.3,
+   "name": "Smoker's Hub",
+   "at": "2026-10-22T19:14:38.127Z"
+  },
+  "n11085624353": {
+   "status": "reject",
+   "reason": "cant-find",
+   "name": "Paradise Island Smoke Palace",
+   "at": "2026-10-22T19:14:46.542Z"
+  },
+  "n11093526767": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Tobacco n Vape",
+   "at": "2026-10-22T19:14:47.863Z"
+  },
+  "n11117676692": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "420 Slushie Box",
+   "at": "2026-10-22T19:14:53.682Z"
+  },
+  "n11119828688": {
+   "status": "keep",
+   "pano": "Sp7-GbxiFRrXegZ3zXzwzA",
+   "heading": 250.7,
+   "name": "NYC Smoke Shop Vape Shop",
+   "at": "2026-10-22T19:14:57.329Z"
+  },
+  "n11119847348": {
+   "status": "reject",
+   "reason": "cant-find",
+   "name": "Jeeter Juice",
+   "at": "2026-10-22T19:15:07.543Z"
+  },
+  "n11126359144": {
+   "status": "reject",
+   "reason": "other",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:15:13.722Z"
+  },
+  "n11135192388": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Lex Shoppe",
+   "at": "2026-10-22T19:30:41.096Z"
+  },
+  "n11135214721": {
+   "status": "keep",
+   "pano": "ZuLBqH0YkX-OVieejitYvA",
+   "heading": 43.4,
+   "changed": true,
+   "date": "2024-08",
+   "name": "Valley Vibes Smoke Shop",
+   "at": "2026-10-22T19:30:59.988Z"
+  },
+  "n11140060457": {
+   "status": "keep",
+   "pano": "cTs3LG6Fu4hhxO0PcCu96g",
+   "heading": 124.5,
+   "changed": true,
+   "name": "Double H Smoke Shop",
+   "at": "2026-10-22T19:31:27.350Z"
+  },
+  "n11154841811": {
+   "status": "keep",
+   "pano": "0A6snK1seC6thRrBV3hjFw",
+   "heading": 233.5,
+   "changed": true,
+   "name": "Alex's Tobacco Shoppe",
+   "at": "2026-10-22T19:31:49.095Z"
+  },
+  "n11159616315": {
+   "status": "keep",
+   "pano": "Rse0OxMS-zY5rUmBP4Pfsw",
+   "heading": 150.1,
+   "date": "2023-03",
+   "name": "Nassau Street Convenience",
+   "at": "2026-10-22T19:31:52.291Z"
+  },
+  "n11165858502": {
+   "status": "keep",
+   "pano": "OoKa1wFE34yLu-CUPRzVEw",
+   "heading": 96.2,
+   "date": "2018-06",
+   "name": "County Grocery Store",
+   "at": "2026-10-22T19:31:54.957Z"
+  },
+  "n11175739962": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Exclusive Smokes",
+   "at": "2026-10-22T19:31:56.601Z"
+  },
+  "n11196341023": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Zaza City Smoke",
+   "at": "2026-10-22T19:32:20.574Z"
+  },
+  "n11196443975": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Baby Jeeter",
+   "at": "2026-10-22T19:32:22.235Z"
+  },
+  "n11196465617": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hi Society",
+   "at": "2026-10-22T19:32:28.132Z"
+  },
+  "n11198938705": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "SoHo Cigar Bar",
+   "at": "2026-10-22T19:32:29.591Z"
+  },
+  "n11236586108": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:32:41.693Z"
+  },
+  "n11241869769": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jubilee Smoke & Vape",
+   "at": "2026-10-22T19:32:43.666Z"
+  },
+  "n11253152013": {
+   "status": "keep",
+   "pano": "fOPPu8zeOp10KHt1As7HGw",
+   "heading": 38,
+   "changed": true,
+   "date": "2022-07",
+   "name": "Bayside Smoke Shop",
+   "at": "2026-10-22T19:32:47.636Z"
+  },
+  "n11276300579": {
+   "status": "keep",
+   "pano": "l982c4reg0YXWJwKWbP73g",
+   "heading": 231.4,
+   "date": "2024-11",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:32:58.526Z"
+  },
+  "n11300470987": {
+   "status": "keep",
+   "pano": "rXWLbM4Yu27jhmk3V-cDNQ",
+   "heading": 249.8,
+   "date": "2022-11",
+   "name": "E Smoke & Convenience",
+   "at": "2026-10-22T19:33:00.445Z"
+  },
+  "n11306264348": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Seneca Cannabis",
+   "at": "2026-10-22T19:33:03.812Z"
+  },
+  "n11330280687": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "CBDBKNY",
+   "at": "2026-10-22T19:33:15.093Z"
+  },
+  "n11399352956": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Twinn Leaf",
+   "at": "2026-10-22T19:33:21.206Z"
+  },
+  "n11407799577": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fly High",
+   "at": "2026-10-22T19:33:59.090Z"
+  },
+  "n11418605766": {
+   "status": "keep",
+   "pano": "Bwt2kEchdeGM49zRUvqdGQ",
+   "heading": 317.5,
+   "changed": true,
+   "name": "Columbia Smoke Shop",
+   "at": "2026-10-22T19:34:16.661Z"
+  },
+  "n11423769875": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hot Spot Convenience",
+   "at": "2026-10-22T19:34:43.207Z"
+  },
+  "n11429546304": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke N E Vape",
+   "at": "2026-10-22T19:34:44.775Z"
+  },
+  "n11510389395": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Gotham",
+   "at": "2026-10-22T19:34:48.778Z"
+  },
+  "n11574107313": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Dispensary",
+   "at": "2026-10-22T19:34:49.679Z"
+  },
+  "n11575232985": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Budway Buddies",
+   "at": "2026-10-22T19:34:51.184Z"
+  },
+  "n11576387809": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Hot Spot 1",
+   "at": "2026-10-22T19:34:52.187Z"
+  },
+  "n11576387810": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "461 Convenience",
+   "at": "2026-10-22T19:34:56.408Z"
+  },
+  "n11580520838": {
+   "status": "keep",
+   "pano": "je3jBKsfEEQPv2OIxH8i_w",
+   "heading": 164.5,
+   "changed": true,
+   "date": "2024-06",
+   "name": "La Budega",
+   "at": "2026-10-22T19:35:40.049Z"
+  },
+  "n11580520839": {
+   "status": "keep",
+   "pano": "3ZgQHLr4Q0H00LfRD6VG8Q",
+   "heading": 193.3,
+   "changed": true,
+   "date": "2022-10",
+   "name": "Exotic Smoke Shop",
+   "at": "2026-10-22T19:35:47.121Z"
+  },
+  "n11580928145": {
+   "status": "keep",
+   "pano": "j5HeC-AbZfsQGxZnBh74Gw",
+   "heading": 147.7,
+   "changed": true,
+   "date": "2024-09",
+   "name": "Pure Leaf Cannabis Club",
+   "at": "2026-10-22T19:35:55.358Z"
+  },
+  "n11605806663": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hills Shoppe",
+   "at": "2026-10-22T19:36:11.963Z"
+  },
+  "n11618220246": {
+   "status": "keep",
+   "pano": "-Zocz1Vl89d8sQ6FqKzt1Q",
+   "heading": 332.3,
+   "changed": true,
+   "date": "2010-01",
+   "name": "Jubilee Convenience",
+   "at": "2026-10-22T19:36:27.734Z"
+  },
+  "n11620002945": {
+   "status": "keep",
+   "pano": "8AXNeO9G_u8gFWkg-xdM7g",
+   "heading": 188.9,
+   "changed": true,
+   "date": "2024-09",
+   "name": "Forest Hills Craft Beer & Smoke",
+   "at": "2026-10-22T19:36:40.592Z"
+  },
+  "n11634706073": {
+   "status": "reject",
+   "reason": "other",
+   "name": "Woodside Candy & Beverage Corp",
+   "at": "2026-10-22T19:36:59.171Z"
+  },
+  "n11667095749": {
+   "status": "keep",
+   "pano": "sxFyEJF3LRb0bMyFLXrBKA",
+   "heading": 1.1,
+   "changed": true,
+   "date": "2024-09",
+   "name": "Renaissant",
+   "at": "2026-10-22T19:37:18.153Z"
+  },
+  "n11667208385": {
+   "status": "keep",
+   "pano": "wq1G0sMuvp22Moatmg8vKg",
+   "heading": 159.7,
+   "date": "2019-10",
+   "name": "Forest Convenience & Vape",
+   "at": "2026-10-22T19:37:20.492Z"
+  },
+  "n11667208476": {
+   "status": "keep",
+   "pano": "sndolx2bHerHAjQpO8HBCw",
+   "heading": 174.6,
+   "date": "2024-11",
+   "name": "Optima Convenience Smoke Shop",
+   "at": "2026-10-22T19:37:23.554Z"
+  },
+  "n11681803437": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Zaza Exotics & Smoke",
+   "at": "2026-10-22T19:37:36.838Z"
+  },
+  "n11699296497": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Santana Premium Cigars",
+   "at": "2026-10-22T19:37:46.376Z"
+  },
+  "n11756646515": {
+   "status": "keep",
+   "pano": "4pKreyiiFJDZsOfXlPXBrQ",
+   "heading": 331.2,
+   "date": "2026-06",
+   "name": "Ganja Garden",
+   "at": "2026-10-22T19:37:58.791Z"
+  },
+  "n11764456730": {
+   "status": "keep",
+   "pano": "T1E9NihbU02jCvdA3-c2PA",
+   "heading": 310.7,
+   "changed": true,
+   "date": "2024-11",
+   "name": "One Stop Gift Shop",
+   "at": "2026-10-22T19:38:15.169Z"
+  },
+  "n11777198889": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Green Sky Exotics",
+   "at": "2026-10-22T19:38:38.286Z"
+  },
+  "n11780624358": {
+   "status": "keep",
+   "pano": "G6nr-fugcdDe-swJ6ngGaA",
+   "heading": 43.2,
+   "changed": true,
+   "date": "2024-08",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:38:48.781Z"
+  },
+  "n11800330885": {
+   "status": "keep",
+   "pano": "XBkEFhN1Trii3y6zhJr63g",
+   "heading": 10.5,
+   "date": "2024-08",
+   "name": "Cave Smoke",
+   "at": "2026-10-22T19:38:50.997Z"
+  },
+  "n11806738059": {
+   "status": "keep",
+   "pano": "bPdUIa51Bb1jkhlGXUCdUA",
+   "heading": 40.8,
+   "changed": true,
+   "date": "2026-04",
+   "name": "Mr Exotix",
+   "at": "2026-10-22T19:39:03.233Z"
+  },
+  "n11810077771": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:39:18.379Z"
+  },
+  "n11815084275": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Puff at Ralph",
+   "at": "2026-10-22T19:39:39.557Z"
+  },
+  "n11824939608": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Off The Scale",
+   "at": "2026-10-22T19:39:58.960Z"
+  },
+  "n11829497823": {
+   "status": "keep",
+   "pano": "3Qr-5PAaWhL4DbeOQwCC8w",
+   "heading": 248.1,
+   "date": "2024-11",
+   "name": "Da Gas Depot",
+   "at": "2026-10-22T19:40:02.959Z"
+  },
+  "n11829497825": {
+   "status": "keep",
+   "pano": "TWYo1Z5XluxbNhuuwvxWiA",
+   "heading": 260.9,
+   "date": "2024-11",
+   "name": "We Outside Convenience",
+   "at": "2026-10-22T19:40:18.917Z"
+  },
+  "n11846294518": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke & OOO's",
+   "at": "2026-10-22T19:40:35.158Z"
+  },
+  "n11851294562": {
+   "status": "keep",
+   "pano": "wUq67b2-ZfZDZteuMayQIA",
+   "heading": 326.8,
+   "date": "2022-08",
+   "name": "Smoke & Lotto",
+   "at": "2026-10-22T19:40:37.631Z"
+  },
+  "n11854027862": {
+   "status": "keep",
+   "pano": "JJEPIuLQIgtDvNuEVnfSdA",
+   "heading": 132.9,
+   "date": "2026-04",
+   "name": "26 Tobacco",
+   "at": "2026-10-22T19:40:39.861Z"
+  },
+  "n11863298141": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "AGM Green Oasis",
+   "at": "2026-10-22T19:40:55.943Z"
+  },
+  "n11881123112": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Con Bud",
+   "at": "2026-10-22T19:41:10.095Z"
+  },
+  "n11882575263": {
+   "status": "keep",
+   "pano": "CKisXFgSwNGTmHZTT0yMZw",
+   "heading": 80.8,
+   "changed": true,
+   "name": "Sleepy Hollows Exotics",
+   "at": "2026-10-22T19:41:26.335Z"
+  },
+  "n11884247853": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Puff City",
+   "at": "2026-10-22T19:41:58.697Z"
+  },
+  "n11891610141": {
+   "status": "keep",
+   "pano": "kxAXeVPVesjdtd4ldgHc_w",
+   "heading": 153,
+   "changed": true,
+   "date": "2024-09",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:42:34.534Z"
+  },
+  "n11920664879": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:42:37.363Z"
+  },
+  "n12003990774": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Glass Shop",
+   "at": "2026-10-22T19:42:47.637Z"
+  },
+  "n12013171284": {
+   "status": "keep",
+   "pano": "XHAHaXilbM2eO3Tz51-fIQ",
+   "heading": 144.2,
+   "changed": true,
+   "date": "2022-08",
+   "name": "Head Stash",
+   "at": "2026-10-22T19:42:54.274Z"
+  },
+  "n12017854178": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Candy & Tobacco Beauty Supply",
+   "at": "2026-10-22T19:43:05.233Z"
+  },
+  "n12034795629": {
+   "status": "keep",
+   "pano": "aMvO2-YUFL9vfravnzzWeg",
+   "heading": 308.5,
+   "date": "2026-04",
+   "name": "Fly High Exotic",
+   "at": "2026-10-22T19:43:10.207Z"
+  },
+  "n12042692462": {
+   "status": "keep",
+   "pano": "LbjFHy6R9BnkJNCi7XJVsA",
+   "heading": 109.8,
+   "changed": true,
+   "date": "2022-07",
+   "name": "2 Orbit",
+   "at": "2026-10-22T19:43:21.006Z"
+  },
+  "n12077638857": {
+   "status": "keep",
+   "pano": "0-NGpMmS8BBrxK2561xblA",
+   "heading": 155.7,
+   "date": "2021-07",
+   "name": "Zaina's",
+   "at": "2026-10-22T19:43:26.624Z"
+  },
+  "n12077644692": {
+   "status": "keep",
+   "pano": "G_-NA-z0sgkTZL27lcG05Q",
+   "heading": 132.7,
+   "date": "2024-09",
+   "name": "Evergreen Convenience",
+   "at": "2026-10-22T19:43:29.204Z"
+  },
+  "n12123675447": {
+   "status": "keep",
+   "pano": "39jP8v4lpKXuq8r6OHn_2w",
+   "heading": 328.4,
+   "changed": true,
+   "name": "Astoria Smoke Shop",
+   "at": "2026-10-22T19:43:41.775Z"
+  },
+  "n12141656540": {
+   "status": "keep",
+   "pano": "Go5sPLabNptOKMCxUA2dDg",
+   "heading": 33.3,
+   "date": "2022-09",
+   "name": "Vape & Snacks",
+   "at": "2026-10-22T19:43:58.296Z"
+  },
+  "n12152923160": {
+   "status": "keep",
+   "pano": "3wkDmgmBcEaNz5cnKC2EPg",
+   "heading": 316.5,
+   "changed": true,
+   "date": "2026-04",
+   "name": "Smoke Beer & Lotto",
+   "at": "2026-10-22T19:44:04.753Z"
+  },
+  "n12154623892": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Alto Cannabis Dispensary",
+   "at": "2026-10-22T19:44:07.416Z"
+  },
+  "n12162696263": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Urban Weeds",
+   "at": "2026-10-22T19:44:17.712Z"
+  },
+  "n12195829071": {
+   "status": "keep",
+   "pano": "BhBwOVmahjnqS4gGRwUDrQ",
+   "heading": 307.8,
+   "date": "2024-08",
+   "name": "The Flowery",
+   "at": "2026-10-22T19:44:29.277Z"
+  },
+  "n12200038379": {
+   "status": "keep",
+   "pano": "RhY_jI6pB5SIajsWSSOQBA",
+   "heading": 314.8,
+   "date": "2026-03",
+   "name": "Queens Convenience & Tobacco Shop",
+   "at": "2026-10-22T19:44:36.145Z"
+  },
+  "n12203221678": {
+   "status": "keep",
+   "pano": "ACA4LuUapb7NtT31KFwFwQ",
+   "heading": 239.3,
+   "date": "2024-08",
+   "name": "Terp Bros",
+   "at": "2026-10-22T19:44:40.503Z"
+  },
+  "n12203233723": {
+   "status": "keep",
+   "pano": "lffiZUdzLVdIC0M0eSZE2g",
+   "heading": 208.5,
+   "changed": true,
+   "date": "2024-08",
+   "name": "Ditmas2",
+   "at": "2026-10-22T19:44:44.687Z"
+  },
+  "n12232805300": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Green Genius NYC",
+   "at": "2026-10-22T19:44:48.497Z"
+  },
+  "n12249145234": {
+   "status": "keep",
+   "pano": "AQxwmbQZ3ux9PPMqC7Pubw",
+   "heading": 307.4,
+   "date": "2010-07",
+   "name": "Diraj News",
+   "at": "2026-10-22T19:45:03.123Z"
+  },
+  "n12299701832": {
+   "status": "keep",
+   "pano": "Pqu6GD3dQHsLt3Wpe7ScRw",
+   "heading": 67.3,
+   "date": "2024-08",
+   "name": "E Smoke & Convenience",
+   "at": "2026-10-22T19:45:06.130Z"
+  },
+  "n12312608069": {
+   "status": "keep",
+   "pano": "tru5a6k7AtRUU0clbDqrnQ",
+   "heading": 333,
+   "changed": true,
+   "name": "Our Smoke & Vapes",
+   "at": "2026-10-22T19:45:23.680Z"
+  },
+  "n12327785122": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Village Craft Beer & Smoke II",
+   "at": "2026-10-22T19:45:31.073Z"
+  },
+  "n12385679582": {
+   "status": "keep",
+   "pano": "TIQP5aFHeq7yK9k75WiuQQ",
+   "heading": 242.5,
+   "date": "2018-06",
+   "name": "Smoker's Choice",
+   "at": "2026-10-22T19:45:33.511Z"
+  },
+  "n12397583904": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Nug Hub",
+   "at": "2026-10-22T19:45:42.920Z"
+  },
+  "n12437003547": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Chronic Brooklyn",
+   "at": "2026-10-22T19:45:44.661Z"
+  },
+  "n12453106751": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Beleaf",
+   "at": "2026-10-22T19:45:47.606Z"
+  },
+  "n12608250856": {
+   "status": "keep",
+   "pano": "t-gIAnNuV3ZuzrEcXKMA0g",
+   "heading": 188.2,
+   "date": "2026-04",
+   "name": "Cigarillo Three",
+   "at": "2026-10-22T19:45:53.778Z"
+  },
+  "n12626503678": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Bliss + Lex",
+   "at": "2026-10-22T19:46:01.218Z"
+  },
+  "n12634538045": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "J&A Vapes",
+   "at": "2026-10-22T19:46:08.014Z"
+  },
+  "n12677264719": {
+   "status": "keep",
+   "pano": "pNOvDD04BOoANLfsQXmowQ",
+   "heading": 290.7,
+   "date": "2024-11",
+   "name": "Hy-Tobacco",
+   "at": "2026-10-22T19:46:11.019Z"
+  },
+  "n12779215576": {
+   "status": "keep",
+   "pano": "I_MKjDZ6tuz0g-CHmygSHA",
+   "heading": 99.7,
+   "date": "2026-08",
+   "name": "High Dankery",
+   "at": "2026-10-22T19:46:16.582Z"
+  },
+  "n12806797692": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Gotham Dispensary",
+   "at": "2026-10-22T19:46:19.021Z"
+  },
+  "n12806952455": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "CBD & Smoke",
+   "at": "2026-10-22T19:46:23.960Z"
+  },
+  "n12829436298": {
+   "status": "keep",
+   "pano": "EFP6Aa_ysg-FRB-pqDwtzw",
+   "heading": 198.7,
+   "date": "2024-08",
+   "name": "Broadway Smoke & Beer",
+   "at": "2026-10-22T19:46:26.855Z"
+  },
+  "n12845042872": {
+   "status": "keep",
+   "pano": "-rNYLeBIaXLFnA07s1O3Pw",
+   "heading": 64.4,
+   "changed": true,
+   "date": "2023-03",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:46:35.263Z"
+  },
+  "n12854283510": {
+   "status": "keep",
+   "pano": "EJ3jHw8LPg11ulsInfEcvQ",
+   "heading": 103.5,
+   "date": "2026-09",
+   "name": "P.U",
+   "at": "2026-10-22T19:46:55.277Z"
+  },
+  "n12854303561": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:46:57.215Z"
+  },
+  "n12884903529": {
+   "status": "keep",
+   "pano": "k5-CtU-qH6f8el25WtS4NA",
+   "heading": 51.7,
+   "date": "2026-07",
+   "name": "85th Smoke Shop",
+   "at": "2026-10-22T19:46:59.099Z"
+  },
+  "n12887338579": {
+   "status": "keep",
+   "pano": "NksmcTRsfB1-HAUGoILoeQ",
+   "heading": 123.9,
+   "changed": true,
+   "date": "2024-11",
+   "name": "Sky High Smoke & Snack",
+   "at": "2026-10-22T19:47:03.497Z"
+  },
+  "n12889674714": {
+   "status": "keep",
+   "pano": "7m5gYah3sBP09iLzcTf_ig",
+   "heading": 81.2,
+   "changed": true,
+   "date": "2022-08",
+   "name": "Bradley Convenience",
+   "at": "2026-10-22T19:47:12.307Z"
+  },
+  "n12950507957": {
+   "status": "keep",
+   "pano": "60f--BW_dT2yenG1uJNFFw",
+   "heading": 272.8,
+   "changed": true,
+   "date": "2026-08",
+   "name": "S.I. Naturals",
+   "at": "2026-10-22T19:47:17.174Z"
+  },
+  "n12964696403": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Carmine's Cigars",
+   "at": "2026-10-22T19:47:19.738Z"
+  },
+  "n12964696467": {
+   "status": "keep",
+   "pano": "S99MklaAjtzIDAYWKoIhAQ",
+   "heading": 50.9,
+   "changed": true,
+   "date": "2024-11",
+   "name": "Todt Hill Mini Mart",
+   "at": "2026-10-22T19:47:27.188Z"
+  },
+  "n12969610536": {
+   "status": "keep",
+   "pano": "Vj1l64X3580E_DeR_dXhhA",
+   "heading": 176,
+   "date": "2024-11",
+   "name": "Snakzz Convenience",
+   "at": "2026-10-22T19:47:29.431Z"
+  },
+  "n12969610541": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Castleton Gift Shop",
+   "at": "2026-10-22T19:47:32.518Z"
+  },
+  "n12971671543": {
+   "status": "keep",
+   "pano": "tqk96nxEEWlSAY18oJ4CTg",
+   "heading": 23.2,
+   "date": "2024-11",
+   "name": "General Vape",
+   "at": "2026-10-22T19:47:38.104Z"
+  },
+  "n12971671639": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Rosario Family Cigars",
+   "at": "2026-10-22T19:47:40.944Z"
+  },
+  "n12988546271": {
+   "status": "keep",
+   "pano": "flHjkmM48KuuiYYO9PWsjw",
+   "heading": 182.4,
+   "changed": true,
+   "date": "2022-08",
+   "name": "Vape & Smoke Shop",
+   "at": "2026-10-22T19:47:46.040Z"
+  },
+  "n13023118499": {
+   "status": "keep",
+   "pano": "nZryZII3XgcFEXYB5nvUIA",
+   "heading": 24.4,
+   "changed": true,
+   "date": "2026-05",
+   "name": "Zaza",
+   "at": "2026-10-22T19:47:49.314Z"
+  },
+  "n13039825046": {
+   "status": "keep",
+   "pano": "JGyUXHaYtssDOSZIclo2Ow",
+   "heading": 286,
+   "changed": true,
+   "name": "Bliss Exotics",
+   "at": "2026-10-22T19:48:00.745Z"
+  },
+  "n13040315324": {
+   "status": "keep",
+   "pano": "yi35KaMEKro_3RRDKIkecQ",
+   "heading": 265.6,
+   "date": "2024-11",
+   "name": "Exotics & Convenience",
+   "at": "2026-10-22T19:48:02.874Z"
+  },
+  "n13040315339": {
+   "status": "keep",
+   "pano": "tOi0AJFkANUPjd8X-I6BgA",
+   "heading": 253.9,
+   "date": "2024-11",
+   "name": "Smoke Lab Exotics",
+   "at": "2026-10-22T19:48:04.438Z"
+  },
+  "n13048630551": {
+   "status": "keep",
+   "pano": "zIeipruI-eUr2WQDA7f3kw",
+   "heading": 330.4,
+   "date": "2024-11",
+   "name": "SFO Convenience Corp",
+   "at": "2026-10-22T19:48:07.461Z"
+  },
+  "n13048630571": {
+   "status": "keep",
+   "pano": "YQIEuoTsepiMrfpGxFmlxw",
+   "heading": 319.9,
+   "changed": true,
+   "date": "2022-08",
+   "name": "Tompkins Exotics",
+   "at": "2026-10-22T19:48:09.084Z"
+  },
+  "n13056235077": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Dispo",
+   "at": "2026-10-22T19:48:19.162Z"
+  },
+  "n13059688103": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "RNR Dispensary",
+   "at": "2026-10-22T19:48:25.424Z"
+  },
+  "n13087041190": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "High Stone",
+   "at": "2026-10-22T19:48:36.134Z"
+  },
+  "n13146234087": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Greencup",
+   "at": "2026-10-22T19:48:45.730Z"
+  },
+  "n13158800441": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:48:59.336Z"
+  },
+  "n13164192985": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Seaweed",
+   "at": "2026-10-22T19:49:09.812Z"
+  },
+  "n13184510094": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sweet High Heavens Tobacco Shop Plus",
+   "at": "2026-10-22T19:49:13.046Z"
+  },
+  "n13186710835": {
+   "status": "keep",
+   "pano": "AoVisx7rBNOBgJ_1fjtIYQ",
+   "heading": 267.4,
+   "changed": true,
+   "date": "2024-11",
+   "name": "Arrochar Smoke Shop & Beer",
+   "at": "2026-10-22T19:49:35.401Z"
+  },
+  "n13191522478": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Castleton Cafe CBD",
+   "at": "2026-10-22T19:49:39.035Z"
+  },
+  "n13298372678": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Royal 4/20 Convenience",
+   "at": "2026-10-22T19:49:43.990Z"
+  },
+  "n13306841385": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Munchies Dispensary NY",
+   "at": "2026-10-22T19:49:45.619Z"
+  },
+  "n13328866465": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Ignyte",
+   "at": "2026-10-22T19:49:47.066Z"
+  },
+  "n13357695193": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Puro Vita",
+   "at": "2026-10-22T19:49:48.800Z"
+  },
+  "n13367873501": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "AK Convenience",
+   "at": "2026-10-22T19:49:51.468Z"
+  },
+  "n13550914366": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sky High Club",
+   "at": "2026-10-22T19:49:52.703Z"
+  },
+  "n13572901544": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "First Things First Quickstop",
+   "at": "2026-10-22T19:49:54.771Z"
+  },
+  "n13714066605": {
+   "status": "keep",
+   "pano": "yfLMGgjbn6I4wj-CkimpQQ",
+   "heading": 210.5,
+   "date": "2026-08",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:49:59.923Z"
+  },
+  "n13759516723": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hii NYC",
+   "at": "2026-10-22T19:50:01.760Z"
+  },
+  "n13913035431": {
+   "status": "keep",
+   "pano": "diwTOq6AeiWbJ_04JTXayw",
+   "heading": 102.9,
+   "changed": true,
+   "date": "2021-05",
+   "name": "Cumberland Store",
+   "at": "2026-10-22T19:50:15.602Z"
+  },
+  "n13924411279": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cannabis Realm",
+   "at": "2026-10-22T19:50:26.063Z"
+  },
+  "n13963353277": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hinsdale Convenience Shop",
+   "at": "2026-10-22T19:50:33.615Z"
+  },
+  "n13969025223": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Happy Munkey",
+   "at": "2026-10-22T19:50:50.865Z"
+  },
+  "n13976267582": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Flowery",
+   "at": "2026-10-22T19:50:52.954Z"
+  },
+  "n14027553380": {
+   "status": "keep",
+   "pano": "CN6JQMEZXN8BDrLywSxTQA",
+   "heading": 105.4,
+   "changed": true,
+   "date": "2026-08",
+   "name": "Brooklyn Urban Dispensary",
+   "at": "2026-10-22T19:51:01.616Z"
+  },
+  "n14208090590": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:51:04.123Z"
+  },
+  "n14244103025": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Green Flower Wellness",
+   "at": "2026-10-22T19:51:09.409Z"
+  },
+  "n14244323017": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:51:16.288Z"
+  },
+  "n14250839901": {
+   "status": "keep",
+   "pano": "BNbCBKFTrakeVYejDSfazw",
+   "heading": 254.9,
+   "changed": true,
+   "name": "Soho Greenhouse Dispensary",
+   "at": "2026-10-22T19:51:40.106Z"
+  },
+  "n14250898501": {
+   "status": "keep",
+   "pano": "d4J_LNPxJAM9Z4sCqUTybw",
+   "heading": 23.8,
+   "date": "2026-09",
+   "name": "Stashmaster Dispensary",
+   "at": "2026-10-22T19:51:46.199Z"
+  },
+  "n2011783750": {
+   "status": "keep",
+   "pano": "r91RJjp8UDTB75bn6s4jVg",
+   "heading": 247.2,
+   "changed": true,
+   "name": "Hush Rush",
+   "at": "2026-10-22T19:52:05.223Z"
+  },
+  "n2312065720": {
+   "status": "keep",
+   "pano": "ruae2q3Ri9wlOPhXGQZUwQ",
+   "heading": 318.2,
+   "date": "2026-07",
+   "name": "The Smoker’s Shop",
+   "at": "2026-10-22T19:52:07.235Z"
+  },
+  "n2494057255": {
+   "status": "keep",
+   "pano": "xrA_mxCM-jhRgHeYA_3o9Q",
+   "heading": 312,
+   "date": "2024-10",
+   "name": "Smith Convenience",
+   "at": "2026-10-22T19:52:16.473Z"
+  },
+  "n2494078803": {
+   "status": "keep",
+   "pano": "Ot0eHiQ9dnjH9o6owt1JNw",
+   "heading": 155,
+   "date": "2026-09",
+   "name": "Exotic Smokers Choice",
+   "at": "2026-10-22T19:52:19.226Z"
+  },
+  "n2494088689": {
+   "status": "keep",
+   "pano": "v_wyrNSy0NFztovLrLln6A",
+   "heading": 202.9,
+   "date": "2026-09",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:52:30.427Z"
+  },
+  "n2494150981": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jesi Mart",
+   "at": "2026-10-22T19:52:34.185Z"
+  },
+  "n2494156918": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Victory Convenience & Smoke Shop",
+   "at": "2026-10-22T19:52:38.280Z"
+  },
+  "n2523856235": {
+   "status": "keep",
+   "pano": "lMNl1jyqWRCpqQ3ugsAiAA",
+   "heading": 103.2,
+   "date": "2018-08",
+   "name": "SI Convenience Store Corp.",
+   "at": "2026-10-22T19:52:40.035Z"
+  },
+  "n2523856237": {
+   "status": "keep",
+   "pano": "CQ2IxXZ2K-ae3U-KoXidfw",
+   "heading": 105.5,
+   "date": "2018-08",
+   "name": "General Vape",
+   "at": "2026-10-22T19:52:42.023Z"
+  },
+  "n2535746174": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sanctuary Garden",
+   "at": "2026-10-22T19:52:53.311Z"
+  },
+  "n2541393239": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "J&A Vapes",
+   "at": "2026-10-22T19:52:58.612Z"
+  },
+  "n2545070083": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Pink Leaves",
+   "at": "2026-10-22T19:53:04.252Z"
+  },
+  "n2547207664": {
+   "status": "keep",
+   "pano": "jcUg_HlcHVq0J4cIyGroQg",
+   "heading": 339.1,
+   "date": "2026-07",
+   "name": "Smoke Shope",
+   "at": "2026-10-22T19:53:15.496Z"
+  },
+  "n2547631348": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Bud Up",
+   "at": "2026-10-22T19:53:23.699Z"
+  },
+  "n2549878726": {
+   "status": "keep",
+   "pano": "zpLH9r1J_rWhOIagf_jilg",
+   "heading": 69.6,
+   "changed": true,
+   "date": "2024-10",
+   "name": "Spork",
+   "at": "2026-10-22T19:53:34.394Z"
+  },
+  "n2549890574": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Flatbush Convenience",
+   "at": "2026-10-22T19:53:46.494Z"
+  },
+  "n2549932958": {
+   "status": "keep",
+   "pano": "4kTVHTl1y6c9x3e8Iuzf8g",
+   "heading": 24.3,
+   "date": "2024-09",
+   "name": "Smiley Exotics",
+   "at": "2026-10-22T19:53:49.606Z"
+  },
+  "n2550065296": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cloud 9 Smoke & Vape",
+   "at": "2026-10-22T19:54:03.560Z"
+  },
+  "n2550074050": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Aboodies",
+   "at": "2026-10-22T19:54:08.626Z"
+  },
+  "n2550147612": {
+   "status": "keep",
+   "pano": "54BRCepxock8LqqI-kEPMQ",
+   "heading": 256.1,
+   "date": "2026-09",
+   "name": "Ganja Dispensary",
+   "at": "2026-10-22T19:54:21.024Z"
+  },
+  "n2550149658": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Stuy Cigar Convenience Shop",
+   "at": "2026-10-22T19:54:24.019Z"
+  },
+  "n2550153215": {
+   "status": "keep",
+   "pano": "_YOS8zVMrS2Bit3II8yoQg",
+   "heading": 187,
+   "date": "2024-10",
+   "name": "Dr. Exotic",
+   "at": "2026-10-22T19:54:27.124Z"
+  },
+  "n2550565266": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Budega",
+   "at": "2026-10-22T19:54:28.882Z"
+  },
+  "n2550581164": {
+   "status": "keep",
+   "pano": "1DJWbeVcYstRQOe7x1Xz-w",
+   "heading": 310.5,
+   "date": "2026-09",
+   "name": "Newstand Vape & Convenience",
+   "at": "2026-10-22T19:54:35.704Z"
+  },
+  "n2550990527": {
+   "status": "keep",
+   "pano": "NPkt5yjMHCm3F1POSdqBTA",
+   "heading": 131.6,
+   "date": "2024-10",
+   "name": "Yahoo Smoke Beer Shop",
+   "at": "2026-10-22T19:54:40.724Z"
+  },
+  "n2551250606": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Barua Gift & Grocery",
+   "at": "2026-10-22T19:54:50.482Z"
+  },
+  "n2551542900": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Al's Cigars",
+   "at": "2026-10-22T19:54:52.383Z"
+  },
+  "n2552836606": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Millennial Girl",
+   "at": "2026-10-22T19:54:59.326Z"
+  },
+  "n2553343303": {
+   "status": "keep",
+   "pano": "auJ4mshpMudZ2UUWhq9GcA",
+   "heading": 332.1,
+   "date": "2026-05",
+   "name": "Oakland Smoke Shop",
+   "at": "2026-10-22T19:55:04.795Z"
+  },
+  "n2553402381": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Life Made A Little Easier",
+   "at": "2026-10-22T19:55:07.260Z"
+  },
+  "n2553569043": {
+   "status": "keep",
+   "pano": "Pnq0eyghunxavtxe2PFOvA",
+   "heading": 359.7,
+   "date": "2022-11",
+   "name": "Sammy Tobacco",
+   "at": "2026-10-22T19:55:10.098Z"
+  },
+  "n2553569059": {
+   "status": "keep",
+   "pano": "pIylfd52_Rpgf5BYBBgy6Q",
+   "heading": 4.6,
+   "date": "2024-10",
+   "name": "Elevation",
+   "at": "2026-10-22T19:55:22.033Z"
+  },
+  "n2561792458": {
+   "status": "keep",
+   "pano": "8SULZtWcnAr5Yjq2Gg8_Ng",
+   "heading": 31.3,
+   "date": "2024-11",
+   "name": "New Star Tobacco",
+   "at": "2026-10-22T19:55:26.541Z"
+  },
+  "n2561887676": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "42 Convenience and More",
+   "at": "2026-10-22T19:55:29.703Z"
+  },
+  "n2562069605": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Prospect Tobacco & Vape",
+   "at": "2026-10-22T19:55:31.444Z"
+  },
+  "n2562932464": {
+   "status": "keep",
+   "pano": "2XQLFuCSotOId3nD6y15qA",
+   "heading": 2.6,
+   "date": "2026-10",
+   "name": "E Smoke & Convenience",
+   "at": "2026-10-22T19:55:37.840Z"
+  },
+  "n2563514059": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fiend City",
+   "at": "2026-10-22T19:55:49.618Z"
+  },
+  "n2566614097": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Dead Garden",
+   "at": "2026-10-22T19:55:51.296Z"
+  },
+  "n2566649184": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Plug - Brooklyn",
+   "at": "2026-10-22T19:55:56.982Z"
+  },
+  "n2566664976": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "N1 Hookah",
+   "at": "2026-10-22T19:56:03.908Z"
+  },
+  "n2567915660": {
+   "status": "keep",
+   "pano": "LAFI1uMSaSPi3FnfJH50HQ",
+   "heading": 180.1,
+   "date": "2024-11",
+   "name": "532 Smoke Shop",
+   "at": "2026-10-22T19:56:09.028Z"
+  },
+  "n2567981737": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T19:56:11.245Z"
+  },
+  "n2568049512": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Heru's",
+   "at": "2026-10-22T19:56:20.509Z"
+  },
+  "n2568049572": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fusion Touch",
+   "at": "2026-10-22T19:56:29.556Z"
+  },
+  "n2568092532": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "Foggy Vibez",
+   "at": "2026-10-22T19:56:40.736Z"
+  },
+  "n2568194166": {
+   "status": "keep",
+   "pano": "w6A88ANIO_faZfoc4bwnNA",
+   "heading": 64,
+   "date": "2026-09",
+   "name": "Emerson Convenience",
+   "at": "2026-10-22T19:56:53.142Z"
+  },
+  "n2568591506": {
+   "status": "keep",
+   "pano": "1uP0iQ2jA1YnwSe-8rE2gQ",
+   "heading": 20.7,
+   "date": "2026-09",
+   "name": "King of Fulton Deli & Tobacco",
+   "at": "2026-10-22T19:56:58.927Z"
+  },
+  "n2568667592": {
+   "status": "keep",
+   "pano": "vTukj7Y1ugJe_XvKbM2ULw",
+   "heading": 218.6,
+   "changed": true,
+   "date": "2022-10",
+   "name": "Knickerbicker Convenience Shop",
+   "at": "2026-10-22T19:57:12.387Z"
+  },
+  "n2568752303": {
+   "status": "reject",
+   "reason": "blocked",
+   "name": "Parkslope Candy",
+   "at": "2026-10-22T19:57:15.567Z"
+  },
+  "n2568839658": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Glass Haus",
+   "at": "2026-10-22T19:57:25.389Z"
+  },
+  "n2568867306": {
+   "status": "keep",
+   "pano": "nn9GzNRSzKI8nmkxaYhpCA",
+   "heading": 274.4,
+   "changed": true,
+   "date": "2021-07",
+   "name": "800 Smoke Shop",
+   "at": "2026-10-22T19:57:36.632Z"
+  },
+  "n2568899224": {
+   "status": "keep",
+   "pano": "-UxEQ_Oj_vIvrLbrdo0pAg",
+   "heading": 252.8,
+   "changed": true,
+   "name": "Franklin V Shop",
+   "at": "2026-10-22T19:57:47.080Z"
+  },
+  "n2568918242": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jungle King",
+   "at": "2026-10-22T19:58:00.644Z"
+  },
+  "n2570596617": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Convenience",
+   "at": "2026-10-22T19:58:08.909Z"
+  },
+  "n2570613838": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Merrick Convenience & Beer",
+   "at": "2026-10-22T19:58:12.443Z"
+  },
+  "n2572920416": {
+   "status": "keep",
+   "pano": "kEsnvrEd0rzjGH1M-dFSFw",
+   "heading": 42.7,
+   "date": "2022-07",
+   "name": "Finest Deli & Smoke Shop",
+   "at": "2026-10-22T19:58:16.804Z"
+  },
+  "n2572981675": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hanson News Stand",
+   "at": "2026-10-22T19:58:18.919Z"
+  },
+  "n2572981740": {
+   "status": "keep",
+   "pano": "LaVZ-FxqxrBbOqH8a_uGdw",
+   "heading": 45.5,
+   "changed": true,
+   "date": "2022-11",
+   "name": "Smoking Cave",
+   "at": "2026-10-22T19:58:23.637Z"
+  },
+  "n2589331455": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Foreign Smokers",
+   "at": "2026-10-22T19:58:26.157Z"
+  },
+  "n2704105155": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Shop Convenience Store",
+   "at": "2026-10-22T19:58:27.924Z"
+  },
+  "n2704131519": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Garden",
+   "at": "2026-10-22T19:58:29.159Z"
+  },
+  "n2706939875": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hotel Shoppee",
+   "at": "2026-10-22T19:58:58.420Z"
+  },
+  "n2709878723": {
+   "status": "keep",
+   "pano": "7cj4FBZnY2hLdSo_EJ5WYQ",
+   "heading": 298.1,
+   "changed": true,
+   "name": "Pink Treezzz",
+   "at": "2026-10-22T19:59:11.267Z"
+  },
+  "n2718064491": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Tramway Smoke Shop",
+   "at": "2026-10-22T19:59:13.225Z"
+  },
+  "n2722751295": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Kaya Bliss Dispensary",
+   "at": "2026-10-22T19:59:16.445Z"
+  },
+  "n2723749978": {
+   "status": "keep",
+   "pano": "-8BvRbxzXptRqJXsM6isXA",
+   "heading": 114.6,
+   "date": "2026-08",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T19:59:26.349Z"
+  },
+  "n2759308677": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Pure Blossoms Cannabis",
+   "at": "2026-10-22T19:59:44.165Z"
+  },
+  "n2761671631": {
+   "status": "keep",
+   "pano": "euZ_-zQflaO2xpEjcQ7wrQ",
+   "heading": 129.9,
+   "changed": true,
+   "name": "Broadway Tobacco House",
+   "at": "2026-10-22T20:00:05.679Z"
+  },
+  "n2762477484": {
+   "status": "keep",
+   "pano": "oKIXjYKfTRrXUY593VpRAw",
+   "heading": 125.5,
+   "changed": true,
+   "date": "2023-09",
+   "name": "TRU Cannabis",
+   "at": "2026-10-22T20:00:24.904Z"
+  },
+  "n2797527514": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Candy & Tobacco",
+   "at": "2026-10-22T20:00:27.208Z"
+  },
+  "n2823256892": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Grocery",
+   "at": "2026-10-22T20:00:29.043Z"
+  },
+  "n2824828351": {
+   "status": "keep",
+   "pano": "QWR3aQNBAI0ru7WZizediQ",
+   "heading": 178.7,
+   "date": "2026-04",
+   "name": "Jeeter Runtz",
+   "at": "2026-10-22T20:00:38.817Z"
+  },
+  "n2827624727": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Matter Medical Supply",
+   "at": "2026-10-22T20:00:50.119Z"
+  },
+  "n2838596361": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "California Honey",
+   "at": "2026-10-22T20:00:54.181Z"
+  },
+  "n2839628089": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Goodies",
+   "at": "2026-10-22T20:01:02.817Z"
+  },
+  "n2843029579": {
+   "status": "keep",
+   "pano": "gqOap8PWfEzNdCnTzR5WKQ",
+   "heading": 60.8,
+   "changed": true,
+   "date": "2022-06",
+   "name": "Lux Exotic",
+   "at": "2026-10-22T20:01:07.437Z"
+  },
+  "n2843250909": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:01:24.847Z"
+  },
+  "n2844224368": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:01:33.129Z"
+  },
+  "n2844895650": {
+   "status": "keep",
+   "pano": "CAzRSLfLGlranpdSpjdoJw",
+   "heading": 16,
+   "changed": true,
+   "date": "2024-09",
+   "name": "Green Joy Effect",
+   "at": "2026-10-22T20:01:40.053Z"
+  },
+  "n2844936135": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "High Life Dispensary Shop",
+   "at": "2026-10-22T20:01:48.977Z"
+  },
+  "n2844942094": {
+   "status": "keep",
+   "pano": "FPwzsC13Z26YcNUN9WI7mA",
+   "heading": 270.3,
+   "date": "2026-04",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T20:01:53.245Z"
+  },
+  "n2844971037": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Spark City",
+   "at": "2026-10-22T20:01:55.697Z"
+  },
+  "n2844971060": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sunnyside Clouds",
+   "at": "2026-10-22T20:02:07.616Z"
+  },
+  "n2845010833": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fumes Puff",
+   "at": "2026-10-22T20:02:13.945Z"
+  },
+  "n2845023711": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "B Za",
+   "at": "2026-10-22T20:02:16.970Z"
+  },
+  "n2846344685": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "E Smoke & Convenience",
+   "at": "2026-10-22T20:02:19.450Z"
+  },
+  "n2846661367": {
+   "status": "keep",
+   "pano": "-D82L8UH3HT6obAKHZku6w",
+   "heading": 124.6,
+   "changed": true,
+   "date": "2024-08",
+   "name": "Convenience Smoke Shop",
+   "at": "2026-10-22T20:02:25.518Z"
+  },
+  "n2846908927": {
+   "status": "keep",
+   "pano": "2GJqe6eHz5hNFZHPLzYRRQ",
+   "heading": 328.5,
+   "changed": true,
+   "date": "2024-08",
+   "name": "Munchiez Convenience",
+   "at": "2026-10-22T20:02:29.218Z"
+  },
+  "n2857070562": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Park Convenience Smoke Shop",
+   "at": "2026-10-22T20:02:35.855Z"
+  },
+  "n2862264565": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Liberty Smoke Shop",
+   "at": "2026-10-22T20:02:37.611Z"
+  },
+  "n2869525905": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Farmer's Convenience Corner Store",
+   "at": "2026-10-22T20:02:40.236Z"
+  },
+  "n2869588662": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Anderson's",
+   "at": "2026-10-22T20:02:43.656Z"
+  },
+  "n2870464741": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jay Convenience",
+   "at": "2026-10-22T20:02:45.915Z"
+  },
+  "n2870708976": {
+   "status": "keep",
+   "pano": "rL4N9rNI2BVZHVpvXU-Cqw",
+   "heading": 343.4,
+   "date": "2024-10",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T20:02:49.915Z"
+  },
+  "n2870824994": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Gas-Pac Exotics",
+   "at": "2026-10-22T20:02:53.513Z"
+  },
+  "n2870834158": {
+   "status": "keep",
+   "pano": "8js0D8e6bFY6zaVHO72v1Q",
+   "heading": 57,
+   "date": "2026-06",
+   "name": "Ever Green Beverage Garden",
+   "at": "2026-10-22T20:03:01.706Z"
+  },
+  "n2870834159": {
+   "status": "keep",
+   "pano": "L73jvQgqR928vw4_UwwXZw",
+   "heading": 78.5,
+   "changed": true,
+   "date": "2022-08",
+   "name": "Cali Smoke Shop",
+   "at": "2026-10-22T20:03:08.450Z"
+  },
+  "n2871487478": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Choice",
+   "at": "2026-10-22T20:03:10.620Z"
+  },
+  "n2897876737": {
+   "status": "keep",
+   "pano": "crT2orBjRsDRwSks9DmALg",
+   "heading": 277,
+   "date": "2026-04",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:03:39.582Z"
+  },
+  "n3190227166": {
+   "status": "keep",
+   "pano": "sOQANYkG01Zi9YwzIIoA5w",
+   "heading": 268.8,
+   "changed": true,
+   "date": "2022-07",
+   "name": "Flower World NYC",
+   "at": "2026-10-22T20:03:51.145Z"
+  },
+  "n3500174732": {
+   "status": "keep",
+   "pano": "v1A29xJszmBcW1G4_R9tDg",
+   "heading": 242.1,
+   "changed": true,
+   "date": "2022-09",
+   "name": "Formats Organic Convenience",
+   "at": "2026-10-22T20:03:56.086Z"
+  },
+  "n3677073032": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Matawana",
+   "at": "2026-10-22T20:04:04.208Z"
+  },
+  "n3810255757": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "OC Dispensary",
+   "at": "2026-10-22T20:04:09.784Z"
+  },
+  "n3863046657": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Steinway Convenience Smoke Shop",
+   "at": "2026-10-22T20:04:18.402Z"
+  },
+  "n3971304163": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cool Breeze",
+   "at": "2026-10-22T20:04:26.671Z"
+  },
+  "n4237920105": {
+   "status": "keep",
+   "pano": "OWWeDS4GMrZ9bSLuMXRUhw",
+   "heading": 198.8,
+   "changed": true,
+   "name": "M&S Smoke Shop",
+   "at": "2026-10-22T20:04:33.165Z"
+  },
+  "n4311121144": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Harry's Habana Hut",
+   "at": "2026-10-22T20:04:42.516Z"
+  },
+  "n4320078396": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:04:51.981Z"
+  },
+  "n4844071628": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Bang Bong",
+   "at": "2026-10-22T20:05:00.627Z"
+  },
+  "n4922310909": {
+   "status": "keep",
+   "pano": "PS9rlmcBGyUcIpCS-GIW2w",
+   "heading": 163.8,
+   "changed": true,
+   "name": "Best Budz",
+   "at": "2026-10-22T20:05:10.170Z"
+  },
+  "n4961122126": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Madison Convenience & Vape",
+   "at": "2026-10-22T20:05:11.748Z"
+  },
+  "n4968861039": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "NYC Convenience",
+   "at": "2026-10-22T20:05:15.170Z"
+  },
+  "n4998805620": {
+   "status": "keep",
+   "pano": "RCsrJr2-ZgEHLN2WwpccCA",
+   "heading": 289.8,
+   "changed": true,
+   "date": "2026-04",
+   "name": "I Smoke and Vape",
+   "at": "2026-10-22T20:05:18.600Z"
+  },
+  "n5156180443": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Astoria Cigar & Candy Corner",
+   "at": "2026-10-22T20:05:20.813Z"
+  },
+  "n5160030824": {
+   "status": "keep",
+   "pano": "bjtrDZUfAkMkDgRROa-qkQ",
+   "heading": 119.4,
+   "date": "2026-08",
+   "name": "Dawn to Dusk Convenience & Smoke Shop",
+   "at": "2026-10-22T20:05:24.772Z"
+  },
+  "n5209294302": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Ooze Plus",
+   "at": "2026-10-22T20:05:29.595Z"
+  },
+  "n5227300286": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Ace's Snack Shop",
+   "at": "2026-10-22T20:05:38.632Z"
+  },
+  "n5246547362": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Exotic Snacks & Convenience",
+   "at": "2026-10-22T20:05:48.525Z"
+  },
+  "n5248093720": {
+   "status": "keep",
+   "pano": "-JAXk0RUZiDOsh_i_pEzmw",
+   "heading": 187.3,
+   "date": "2024-09",
+   "name": "Latinas Exclusive",
+   "at": "2026-10-22T20:05:53.914Z"
+  },
+  "n5311471934": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Ace Convenience",
+   "at": "2026-10-22T20:05:56.442Z"
+  },
+  "n5345171125": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Tobacco Road",
+   "at": "2026-10-22T20:06:02.055Z"
+  },
+  "n5375708436": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Grove Smoke Shop",
+   "at": "2026-10-22T20:06:04.726Z"
+  },
+  "n5402542904": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Plus",
+   "at": "2026-10-22T20:06:06.435Z"
+  },
+  "n5481496605": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Beer Cave",
+   "at": "2026-10-22T20:06:08.095Z"
+  },
+  "n5503350897": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fresh Pond Vape and Gift Shop",
+   "at": "2026-10-22T20:06:11.532Z"
+  },
+  "n5504268730": {
+   "status": "keep",
+   "pano": "SlzhH0HTMhK40ZMZ-FowlA",
+   "heading": 336.3,
+   "date": "2024-08",
+   "name": "Roosevelt Island",
+   "at": "2026-10-22T20:06:14.819Z"
+  },
+  "n5517079876": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Awake",
+   "at": "2026-10-22T20:06:23.555Z"
+  },
+  "n5549150584": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Brooklyn Vape",
+   "at": "2026-10-22T20:06:24.749Z"
+  },
+  "n5558007855": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smith Convenience",
+   "at": "2026-10-22T20:06:26.112Z"
+  },
+  "n5567987135": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "DB Smoke Shop",
+   "at": "2026-10-22T20:06:28.343Z"
+  },
+  "n5589228328": {
+   "status": "keep",
+   "pano": "TJ2d1deDAcviZcy2e3I7PQ",
+   "heading": 140.9,
+   "date": "2022-06",
+   "name": "Smokestax II Inc",
+   "at": "2026-10-22T20:06:34.280Z"
+  },
+  "n5594892845": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Flowery",
+   "at": "2026-10-22T20:06:43.559Z"
+  },
+  "n5613761713": {
+   "status": "keep",
+   "pano": "SpIhJ0eLvWQAIBM4CHsG9g",
+   "heading": 20.2,
+   "date": "2026-04",
+   "name": "VapeNY",
+   "at": "2026-10-22T20:06:47.209Z"
+  },
+  "n5676615644": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Treehouse Dispensary",
+   "at": "2026-10-22T20:06:50.602Z"
+  },
+  "n5709695965": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Portes Cigars",
+   "at": "2026-10-22T20:06:52.672Z"
+  },
+  "n5731405477": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "500 5th Ave. Snacks & Tobacco",
+   "at": "2026-10-22T20:06:54.496Z"
+  },
+  "n5737743049": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Noise NYC",
+   "at": "2026-10-22T20:07:07.980Z"
+  },
+  "n5794767312": {
+   "status": "keep",
+   "pano": "GSSF6GsN3XZudg3caoY3Fg",
+   "heading": 11.8,
+   "changed": true,
+   "date": "2026-09",
+   "name": "Smokers Hub",
+   "at": "2026-10-22T20:07:13.274Z"
+  },
+  "n5800370953": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Trippy Smoke Shop",
+   "at": "2026-10-22T20:07:20.106Z"
+  },
+  "n5802534230": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cannalicious",
+   "at": "2026-10-22T20:07:21.658Z"
+  },
+  "n5805217637": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Essential of NYC",
+   "at": "2026-10-22T20:07:27.446Z"
+  },
+  "n5830803196": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Verdi Cannabis",
+   "at": "2026-10-22T20:07:28.886Z"
+  },
+  "n5837225123": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Noise",
+   "at": "2026-10-22T20:07:29.965Z"
+  },
+  "n5853859981": {
+   "status": "keep",
+   "pano": "zVs5SmbdRLnbvw8LWNJofw",
+   "heading": 129.7,
+   "date": "2026-08",
+   "name": "Beer Smoke",
+   "at": "2026-10-22T20:07:32.668Z"
+  },
+  "n5874658222": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "VIP Mart",
+   "at": "2026-10-22T20:07:33.858Z"
+  },
+  "n5891922456": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "City Vape",
+   "at": "2026-10-22T20:07:36.484Z"
+  },
+  "n5906843686": {
+   "status": "keep",
+   "pano": "FIFNmY3Q9wJMZywRrDuCJA",
+   "heading": 289.6,
+   "date": "2026-04",
+   "name": "Nirvana Vape Cigars & Convenience",
+   "at": "2026-10-22T20:07:39.719Z"
+  },
+  "n5941312314": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Funky Lands",
+   "at": "2026-10-22T20:07:42.290Z"
+  },
+  "n6008596280": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Tobacco and Convenience",
+   "at": "2026-10-22T20:07:50.067Z"
+  },
+  "n6037924848": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Hibrary Club",
+   "at": "2026-10-22T20:07:53.642Z"
+  },
+  "n6049325266": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Master Piece Vape & Smoke Shop",
+   "at": "2026-10-22T20:07:58.729Z"
+  },
+  "n6070812833": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Queens Vapes",
+   "at": "2026-10-22T20:08:00.624Z"
+  },
+  "n6205478925": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "etain",
+   "at": "2026-10-22T20:08:01.584Z"
+  },
+  "n6230657976": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "East Village Smoke Shop",
+   "at": "2026-10-22T20:08:02.388Z"
+  },
+  "n6233725917": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cl9ud",
+   "at": "2026-10-22T20:08:03.206Z"
+  },
+  "n6252219888": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "105th Smoke Shop",
+   "at": "2026-10-22T20:08:07.255Z"
+  },
+  "n6262432208": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Millennium Smoke Shop",
+   "at": "2026-10-22T20:08:08.405Z"
+  },
+  "n6304410643": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Noise",
+   "at": "2026-10-22T20:08:11.003Z"
+  },
+  "n6306935873": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:08:11.906Z"
+  },
+  "n6307022955": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Good Grades",
+   "at": "2026-10-22T20:08:20.748Z"
+  },
+  "n6314905342": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Eve's Leaves",
+   "at": "2026-10-22T20:17:45.738Z"
+  },
+  "n6329541360": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hanson Smoke Shop",
+   "at": "2026-10-22T20:17:49.803Z"
+  },
+  "n6335667328": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Murry Hill Organical & Tobacco",
+   "at": "2026-10-22T20:17:52.318Z"
+  },
+  "n6341905431": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "M Jay's Variety",
+   "at": "2026-10-22T20:18:02.482Z"
+  },
+  "n6372878725": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "High Class Cigars",
+   "at": "2026-10-22T20:18:07.695Z"
+  },
+  "n6426652803": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "NY Cigar & Vape",
+   "at": "2026-10-22T20:18:10.421Z"
+  },
+  "n6534289832": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Atlantic Ave Smoke Shop",
+   "at": "2026-10-22T20:18:11.967Z"
+  },
+  "n6641519173": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Prospect Deli & Smoke Shop",
+   "at": "2026-10-22T20:18:18.176Z"
+  },
+  "n6658196724": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Erudito",
+   "at": "2026-10-22T20:18:21.390Z"
+  },
+  "n6678050877": {
+   "status": "keep",
+   "pano": "Gp_sC8R3RqOQ5xCIaEhVCA",
+   "heading": 232.1,
+   "date": "2026-07",
+   "name": "Stop One",
+   "at": "2026-10-22T20:18:25.746Z"
+  },
+  "n6680340119": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fulton C Store",
+   "at": "2026-10-22T20:18:48.661Z"
+  },
+  "n6682080711": {
+   "status": "keep",
+   "pano": "9JWmt1aITOLV1kxwngs0rA",
+   "heading": 11.3,
+   "changed": true,
+   "name": "Globe Smoke & Convenience",
+   "at": "2026-10-22T20:19:11.543Z"
+  },
+  "n6698815239": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "7 Star Deli and Tobacco",
+   "at": "2026-10-22T20:19:20.872Z"
+  },
+  "n6699139858": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Annadale Smoke Shop Inc.",
+   "at": "2026-10-22T20:19:23.928Z"
+  },
+  "n6703513804": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Organic Snack + Gift Shop",
+   "at": "2026-10-22T20:20:09.215Z"
+  },
+  "n6757130185": {
+   "status": "keep",
+   "pano": "70W48PUYWjeE4kYFSnqVuQ",
+   "heading": 75.8,
+   "date": "2024-11",
+   "name": "Franklin Convenience & Vape",
+   "at": "2026-10-22T20:20:13.685Z"
+  },
+  "n6775487649": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cigar Tobacco & Gift Emporium",
+   "at": "2026-10-22T20:20:16.506Z"
+  },
+  "n6776135936": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "I ❤ New York Convenience",
+   "at": "2026-10-22T20:20:32.491Z"
+  },
+  "n6792753419": {
+   "status": "keep",
+   "pano": "NqEvZ4Pg8EjsY5E0tGYeIA",
+   "heading": 112,
+   "changed": true,
+   "name": "Broadway King Convenience",
+   "at": "2026-10-22T20:20:59.863Z"
+  },
+  "n6833303857": {
+   "status": "keep",
+   "pano": "7bSbDvl1ofgd8yMYjYAcGA",
+   "heading": 277.3,
+   "date": "2024-11",
+   "name": "Gift Shop 2",
+   "at": "2026-10-22T20:21:03.031Z"
+  },
+  "n6852549160": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "My Way Convenience Smoke Shop",
+   "at": "2026-10-22T20:21:04.522Z"
+  },
+  "n6876199947": {
+   "status": "keep",
+   "pano": "hNzgxMnepSbbpLO2fPeHVw",
+   "heading": 138,
+   "changed": true,
+   "date": "2022-07",
+   "name": "Salim Smoke Shop",
+   "at": "2026-10-22T20:21:14.845Z"
+  },
+  "n6909030534": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "CBD Kratom",
+   "at": "2026-10-22T20:21:18.457Z"
+  },
+  "n6991251222": {
+   "status": "keep",
+   "pano": "qEO_9ChAaXjv_W7va1Rubw",
+   "heading": 7.4,
+   "changed": true,
+   "date": "2022-10",
+   "name": "Lime Smoke & Vape",
+   "at": "2026-10-22T20:21:30.186Z"
+  },
+  "n6997290025": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Hempstead Smoke Shop",
+   "at": "2026-10-22T20:21:35.848Z"
+  },
+  "n7004796918": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The 420",
+   "at": "2026-10-22T20:21:41.806Z"
+  },
+  "n7038487817": {
+   "status": "keep",
+   "pano": "xkMKvgToivQjlFNoiIshRw",
+   "heading": 287.5,
+   "date": "2024-11",
+   "name": "Convenience & Smoke Shop",
+   "at": "2026-10-22T20:21:46.828Z"
+  },
+  "n7070903485": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:21:53.674Z"
+  },
+  "n7072414495": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Humidor",
+   "at": "2026-10-22T20:21:54.511Z"
+  },
+  "n7072426846": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "9116 Smoke",
+   "at": "2026-10-22T20:21:57.885Z"
+  },
+  "n7112598584": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "News Stand",
+   "at": "2026-10-22T20:22:10.054Z"
+  },
+  "n7126263262": {
+   "status": "keep",
+   "pano": "fkX6gzxIRhJd7x5l8jTK1w",
+   "heading": 226.9,
+   "changed": true,
+   "date": "2024-09",
+   "name": "Dreamer Tobacco Shop",
+   "at": "2026-10-22T20:22:16.050Z"
+  },
+  "n7143310279": {
+   "status": "keep",
+   "pano": "B4uPLSiDS0QoW1PispUi7Q",
+   "heading": 297.4,
+   "date": "2026-09",
+   "name": "Clinton Convenience & Smoke Shop",
+   "at": "2026-10-22T20:22:19.610Z"
+  },
+  "n7164906279": {
+   "status": "keep",
+   "pano": "gp5I52hMDSMUWe54apEo1w",
+   "heading": 302.1,
+   "changed": true,
+   "date": "2024-10",
+   "name": "4th Ave Essentials",
+   "at": "2026-10-22T20:22:29.954Z"
+  },
+  "n7194157467": {
+   "status": "keep",
+   "pano": "qftJ0S1Fh_Cs-52hmrpu3g",
+   "heading": 54.3,
+   "date": "2024-10",
+   "name": "The Tobacconist",
+   "at": "2026-10-22T20:22:32.710Z"
+  },
+  "n7593868774": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "West Side Cloud",
+   "at": "2026-10-22T20:22:34.975Z"
+  },
+  "n7644156531": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Kushie",
+   "at": "2026-10-22T20:22:38.137Z"
+  },
+  "n7781914566": {
+   "status": "keep",
+   "pano": "lMNl1jyqWRCpqQ3ugsAiAA",
+   "heading": 101.9,
+   "changed": true,
+   "date": "2018-08",
+   "name": "Calipoint",
+   "at": "2026-10-22T20:22:43.722Z"
+  },
+  "n7781943889": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cigar Vault Emporium",
+   "at": "2026-10-22T20:22:47.836Z"
+  },
+  "n7797500142": {
+   "status": "keep",
+   "pano": "iMy_MlGJYu2gZha3-Sb4wA",
+   "heading": 322,
+   "changed": true,
+   "date": "2022-10",
+   "name": "Caviar Mist",
+   "at": "2026-10-22T20:22:55.090Z"
+  },
+  "n7799768740": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Exhale",
+   "at": "2026-10-22T20:22:58.333Z"
+  },
+  "n7802211130": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "King Smoke",
+   "at": "2026-10-22T20:23:01.623Z"
+  },
+  "n8151649115": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:23:02.618Z"
+  },
+  "n8262422509": {
+   "status": "keep",
+   "pano": "b-g0xhodwAODjBh9UoJmMw",
+   "heading": 337.6,
+   "date": "2024-11",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T20:23:56.323Z"
+  },
+  "n8322227633": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Ave B Beer & Cigars",
+   "at": "2026-10-22T20:23:58.380Z"
+  },
+  "n8354908516": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Martinez Cigars",
+   "at": "2026-10-22T20:24:00.734Z"
+  },
+  "n8406371481": {
+   "status": "keep",
+   "pano": "-2pOtlZAtWOwouUPUB5RIg",
+   "heading": 227.3,
+   "changed": true,
+   "date": "2022-10",
+   "name": "Prospect CBD Hemp",
+   "at": "2026-10-22T20:24:12.463Z"
+  },
+  "n8447209377": {
+   "status": "keep",
+   "pano": "tmy_3429JoVK-vUun9gR4A",
+   "heading": 62,
+   "changed": true,
+   "date": "2024-11",
+   "name": "J&A Vapes Smoke Shop",
+   "at": "2026-10-22T20:24:14.835Z"
+  },
+  "n8553169900": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fp Wellness",
+   "at": "2026-10-22T20:24:16.078Z"
+  },
+  "n8553237204": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Sunnyside",
+   "at": "2026-10-22T20:24:17.551Z"
+  },
+  "n8553272102": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Botanist",
+   "at": "2026-10-22T20:24:27.255Z"
+  },
+  "n8553283985": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Verilife",
+   "at": "2026-10-22T20:24:35.423Z"
+  },
+  "n8572129671": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:24:46.982Z"
+  },
+  "n8590260242": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Dekalb Convenience",
+   "at": "2026-10-22T20:24:48.569Z"
+  },
+  "n8630215366": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jubilee Smoke & Vape Shop",
+   "at": "2026-10-22T20:24:53.142Z"
+  },
+  "n8660001941": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Midtown Smoke Shop & Vape",
+   "at": "2026-10-22T20:24:54.316Z"
+  },
+  "n8706930356": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Bed Stuy Finest",
+   "at": "2026-10-22T20:25:05.906Z"
+  },
+  "n8895924630": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Soulmate",
+   "at": "2026-10-22T20:25:11.668Z"
+  },
+  "n9018011108": {
+   "status": "keep",
+   "pano": "S4qbczrZ2nSrphPQhFc-1Q",
+   "heading": 199.4,
+   "date": "2022-10",
+   "name": "R&B Wholesale Smoke & Vape Distribution",
+   "at": "2026-10-22T20:25:17.496Z"
+  },
+  "n9032759785": {
+   "status": "keep",
+   "pano": "9gJO-gNIoZiUUxClj-sU2Q",
+   "heading": 172.3,
+   "date": "2026-09",
+   "name": "Jay St. Convenience",
+   "at": "2026-10-22T20:25:30.048Z"
+  },
+  "n9032759802": {
+   "status": "keep",
+   "pano": "kc-9beZhXq9V4UDblF2rYQ",
+   "heading": 354.7,
+   "changed": true,
+   "date": "2024-07",
+   "name": "Topia News Stand",
+   "at": "2026-10-22T20:25:46.418Z"
+  },
+  "n9115231671": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "2nd Ave Grocery & Smoke Shop",
+   "at": "2026-10-22T20:31:13.824Z"
+  },
+  "n9122683605": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Manhattan Tobacco",
+   "at": "2026-10-22T20:31:16.931Z"
+  },
+  "n9143230743": {
+   "status": "keep",
+   "pano": "LV2nCq-DzIXncG5OxcRi6w",
+   "heading": 217.3,
+   "changed": true,
+   "date": "2017-08",
+   "name": "H&S Deli & Smoke Shop",
+   "at": "2026-10-22T20:31:28.059Z"
+  },
+  "n9194885437": {
+   "status": "keep",
+   "pano": "JFltYnGR7oUK4Pmj5JLfqQ",
+   "heading": 302.3,
+   "date": "2024-10",
+   "name": "BK Convenience",
+   "at": "2026-10-22T20:31:30.232Z"
+  },
+  "n9215449979": {
+   "status": "keep",
+   "pano": "o9njUqQvw22094QPDz29qA",
+   "heading": 302.9,
+   "date": "2026-04",
+   "name": "Smoke Zone",
+   "at": "2026-10-22T20:31:32.384Z"
+  },
+  "n9215560351": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Cigarillos",
+   "at": "2026-10-22T20:31:33.640Z"
+  },
+  "n9219704780": {
+   "status": "keep",
+   "pano": "mxO2j42e_130aJBrxhZzHA",
+   "heading": 272.5,
+   "date": "2024-10",
+   "name": "Sheepshead Vibes",
+   "at": "2026-10-22T20:31:36.055Z"
+  },
+  "n9276228948": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke & Beer",
+   "at": "2026-10-22T20:31:42.399Z"
+  },
+  "n9291191732": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Presidential Convenience",
+   "at": "2026-10-22T20:31:52.766Z"
+  },
+  "n9291596853": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Franklin Convience Store",
+   "at": "2026-10-22T20:31:54.801Z"
+  },
+  "n9330613460": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Roll Up NYC",
+   "at": "2026-10-22T20:32:02.015Z"
+  },
+  "n9339978818": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Organic Snacks & Grocery",
+   "at": "2026-10-22T20:32:03.411Z"
+  },
+  "n9349778615": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Palace Optimo",
+   "at": "2026-10-22T20:32:05.873Z"
+  },
+  "n9352851044": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Vapeology 101",
+   "at": "2026-10-22T20:32:07.475Z"
+  },
+  "n9353655450": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "One Love Vibe & Convenience",
+   "at": "2026-10-22T20:32:12.189Z"
+  },
+  "n9403140744": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fulton Exotic World",
+   "at": "2026-10-22T20:32:16.343Z"
+  },
+  "n9403340363": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Fulton Gourmet Deli",
+   "at": "2026-10-22T20:32:19.008Z"
+  },
+  "n9429324279": {
+   "status": "keep",
+   "pano": "i5aGeOYHVmU3KOSiWWqaGw",
+   "heading": 105.4,
+   "date": "2021-07",
+   "name": "Franklin Smoke Shop",
+   "at": "2026-10-22T20:32:22.287Z"
+  },
+  "n9509016891": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Rivington Exotics",
+   "at": "2026-10-22T20:32:24.736Z"
+  },
+  "n9516743870": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "The Spot Dispensary",
+   "at": "2026-10-22T20:32:26.164Z"
+  },
+  "n9530914619": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke & Toke",
+   "at": "2026-10-22T20:32:42.009Z"
+  },
+  "n9537753230": {
+   "status": "keep",
+   "pano": "zs4kNg8vVtsXpjSVUIIWSw",
+   "heading": 116.5,
+   "date": "2026-08",
+   "name": "PTB",
+   "at": "2026-10-22T20:32:48.137Z"
+  },
+  "n9543560917": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "CBD Kratom",
+   "at": "2026-10-22T20:32:51.353Z"
+  },
+  "n9583805195": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Empire Tobacco Shop",
+   "at": "2026-10-22T20:32:53.922Z"
+  },
+  "n9588378216": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Happy Smoke Shop",
+   "at": "2026-10-22T20:32:55.168Z"
+  },
+  "n9588431430": {
+   "status": "keep",
+   "pano": "Cu10NAnWhH1FmuC7aAoHow",
+   "heading": 167.9,
+   "date": "2024-11",
+   "name": "Underground Exotic Shop",
+   "at": "2026-10-22T20:32:57.294Z"
+  },
+  "n9588494087": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Vape Shop",
+   "at": "2026-10-22T20:32:59.695Z"
+  },
+  "n9588511538": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Mary Jane Convenience",
+   "at": "2026-10-22T20:33:01.010Z"
+  },
+  "n9630409567": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Convenience On 2nd Ave.",
+   "at": "2026-10-22T20:33:02.466Z"
+  },
+  "n9668871101": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:33:08.609Z"
+  },
+  "n9702179031": {
+   "status": "keep",
+   "pano": "f6ZnASTWt2GguMFCG0p4bw",
+   "heading": 112,
+   "date": "2024-08",
+   "name": "Big Apple Smoke Shop",
+   "at": "2026-10-22T20:33:13.089Z"
+  },
+  "n9715918351": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Tony Convenience Smoke Shop",
+   "at": "2026-10-22T20:33:17.465Z"
+  },
+  "n9752798373": {
+   "status": "keep",
+   "pano": "ttOksL2gVG0ElJmnPp-YKA",
+   "heading": 164.6,
+   "changed": true,
+   "name": "Jay Exotics",
+   "at": "2026-10-22T20:33:25.481Z"
+  },
+  "n9779751306": {
+   "status": "keep",
+   "pano": "VWNmKfZQ-N1XQZ-QTlFRTw",
+   "heading": 109.8,
+   "changed": true,
+   "date": "2022-06",
+   "name": "Smoke shop with no name",
+   "at": "2026-10-22T20:33:44.744Z"
+  },
+  "n9783621640": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Smoke Shop",
+   "at": "2026-10-22T20:33:57.188Z"
+  },
+  "n9815263217": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "BlazeMD",
+   "at": "2026-10-22T20:34:01.953Z"
+  },
+  "n9827064202": {
+   "status": "keep",
+   "pano": "cqQI4xVjtBdxNXCgy31FFA",
+   "heading": 166.9,
+   "date": "2024-10",
+   "name": "Hi life Smoking & Vaporizers",
+   "at": "2026-10-22T20:34:11.130Z"
+  },
+  "n9834601286": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "477 News & Tobacco",
+   "at": "2026-10-22T20:34:19.308Z"
+  },
+  "n9882138941": {
+   "status": "keep",
+   "pano": "QD5rLGjmP8naB59ZuMJvAw",
+   "heading": 1.1,
+   "changed": true,
+   "name": "Da Gas Station",
+   "at": "2026-10-22T20:34:27.188Z"
+  },
+  "n9893991362": {
+   "status": "keep",
+   "pano": "tJuBfTzRJ6z3Pzhp4TaKew",
+   "heading": 327.6,
+   "changed": true,
+   "date": "2022-07",
+   "name": "The Smoking Shop",
+   "at": "2026-10-22T20:34:49.847Z"
+  },
+  "n9916729301": {
+   "status": "keep",
+   "pano": "ojt8Qih0O1SY_2U2tnHX-g",
+   "heading": 220.4,
+   "date": "2024-11",
+   "name": "Deli and Smoke Shop",
+   "at": "2026-10-22T20:34:51.946Z"
+  },
+  "n9920051640": {
+   "status": "keep",
+   "pano": "1NbwiQFTsyHORzIV6dxdNA",
+   "heading": 326.3,
+   "date": "2024-11",
+   "name": "Smart Convenience #2",
+   "at": "2026-10-22T20:34:54.595Z"
+  },
+  "w250326205": {
+   "status": "keep",
+   "pano": "BfnRWquXKhkVEOG8V3Ul0w",
+   "heading": 84.8,
+   "changed": true,
+   "date": "2022-10",
+   "name": "Venus",
+   "at": "2026-10-22T20:35:08.229Z"
+  },
+  "w623965075": {
+   "status": "keep",
+   "pano": "9Z75DQzAoHMnu6zJrlCtOw",
+   "heading": 119.2,
+   "changed": true,
+   "date": "2022-09",
+   "name": "Vape Blvd",
+   "at": "2026-10-22T20:35:12.776Z"
+  },
+  "w851896423": {
+   "status": "reject",
+   "reason": "not-shop",
+   "name": "Jackie's Garden",
+   "at": "2026-10-22T20:35:17.867Z"
+  }
+ }
 }
