@@ -678,7 +678,14 @@ async function showRound(cur, wantPaid) {
       paid = await waitForPano(cur.p.pano);
       // two slow or broken rounds in a row: finish this game on the free version
       if (!paid && !paidError && ++state.paidMisses >= 2) state.paidThisGame = false;
-      if (paid) state.paidMisses = 0;
+      if (paid) {
+        state.paidMisses = 0;
+        // Google can reset the camera to the photo's own direction the first time the viewer
+        // appears, so aim at the storefront again once the photo has loaded
+        const aim = () => { if (state.cur === cur && cur.paid) { pano.setPov({ heading: cur.p.heading, pitch: aimPitch() }); pano.setZoom(1); } };
+        setTimeout(aim, 0);
+        setTimeout(aim, 500);
+      }
     } catch (e) {
       paidFailed("load: " + (e && e.message));
     }
