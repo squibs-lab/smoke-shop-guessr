@@ -168,7 +168,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <section class="screen" id="setup" aria-label="Setup">
   <div class="setup">
     <div class="neon"><span class="big">Smoke Shop Guessr</span></div>
-    <p>The rounds come from Google Street View, so the game needs a Google Maps API key with the <b>Maps Embed API</b> turned on. That API is free.</p>
+    <p>The rounds come from Google Street View, so the game needs a Google Maps API key with the <b>Maps Embed API</b> turned on (free), and optionally the <b>Maps JavaScript API</b> for Street View without street names.</p>
     <form id="keyForm">
       <input id="keyInput" placeholder="Paste your key (AIza…)" autocomplete="off" spellcheck="false" aria-label="Google Maps API key">
       <button type="submit">Save key</button>
@@ -249,17 +249,19 @@ button{font:inherit;color:inherit;cursor:pointer}
 /* ============================================================
    CONFIG
    ============================================================ */
-// Browser key. Restrict it to your website and to the Maps Embed API only:
-// the Embed API is free and unlimited, so a stolen key can't cost you anything.
+// Browser key. Restrict it to your website, and to the Maps Embed API + Maps JavaScript API.
+// Cap "Map loads per day" for the Maps JavaScript API at 160 so paid Street View stays inside
+// Google's free 5,000 a month (see README).
 const GOOGLE_KEY = "AIzaSyAfFtpAVkJVG2oO_K9Hm3xwPy4Ce_ZqJHg";
 
-// "embed"   = free, unlimited Street View through the Maps Embed API (default).
-// "dynamic" = paid Maps JavaScript API Street View. Hides street names natively and
-//             adds a stand-still mode, but every game costs money. Only switch if you need it.
-const IMAGERY = "embed";
+// "hybrid" = paid Google Street View with street names and addresses switched off, until the day's
+//            free allowance runs out or Google refuses for any reason; then the free embed.
+// "free"   = always the free embed (street names can show on the road while walking around).
+const STREET_VIEW = "hybrid";
 
-// Only applies to "dynamic": random games allowed per browser per day (daily game is always 1).
-const RANDOM_GAMES_PER_DAY_DYNAMIC = 3;
+// Paid games per browser per day before that browser moves to the free version.
+// Spreads the free daily allowance across more players.
+const PAID_GAMES_PER_BROWSER = 2;
 
 const ROUNDS = 5;
 const MAX_PTS = 5000;
@@ -296,9 +298,7 @@ const KIND = {
   "tobacco": "Tobacco shop", "e-cigarette": "Vape shop", "vape": "Vape shop", "vape_shop": "Vape shop",
   "cannabis": "Dispensary", "headshop": "Head shop", "smoke_shop": "Smoke shop", "hookah": "Hookah shop"
 };
-const RULES = IMAGERY === "embed"
-  ? [["move", "Walk around"], ["nmpz", "No looking around"]]
-  : [["move", "Walk around"], ["nomove", "Stand still"], ["nmpz", "No looking around"]];
+const RULES = [["move", "Walk around"], ["nmpz", "No looking around"]];
 
 /* ============================================================
    STATE
@@ -308,8 +308,8 @@ let shops = [], shopsBaked = false, shopsReady = false;
 let gmap = null, rmap = null, guessMarker = null;
 const rMarkers = [];
 let G = null, sv = null, pano = null, googlePromise = null, mapLibrePromise = null, stylePromise = null;
-let keySource = "", everPlayed = false;
-const state = { mode: "random", move: "move", gameMode: "random", order: [], cursor: 0, rounds: [], cur: null, guess: null, phase: "idle", fromSave: false };
+let keySource = "";
+const state = { mode: "random", move: "move", gameMode: "random", order: [], cursor: 0, rounds: [], cur: null, guess: null, phase: "idle", fromSave: false, paidThisGame: false, paidMisses: 0 };
 
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -567,13 +567,17 @@ function fitTo(map, pts) {
 
 /* ============================================================
    STREET VIEW
-   embed: free iframe, one URL per round. Top strip is cropped off-screen (address card).
-   dynamic: paid. One panorama object per visit, created on the first round and reused.
+   paid (Maps JavaScript API): street names and addresses switched off with Google's own settings.
+     One viewer per visit, created on the first paid round and reused, because Google bills
+     each viewer created. Used until the day's free allowance runs out, then:
+   free (Maps Embed API): one iframe URL per round. The top strip is cropped off-screen to hide
+     the address card. Street names can show on the road while walking around.
    ============================================================ */
+// On tall phone screens the guess map covers the bottom of the view, so aim lower to lift the storefront up.
+const aimPitch = () => (window.innerHeight > window.innerWidth * 1.2 ? -8 : 8);
+
 function embedUrl(shop, key) {
-  // On tall phone screens the guess map covers the bottom of the view, so aim lower to lift the storefront up.
-  const portrait = window.innerHeight > window.innerWidth * 1.2;
-  const p = new URLSearchParams({ key, pitch: portrait ? "-8" : "8", fov: "80" });
+  const p = new URLSearchParams({ key, pitch: String(aimPitch()), fov: "80" });
   if (shop.pano) { p.set("pano", shop.pano); p.set("heading", String(Math.round(shop.heading))); }
   p.set("location", `${shop.lat},${shop.lng}`); // only used if the panorama id is missing or retired
   return "https://www.google.com/maps/embed/v1/streetview?" + p.toString();
@@ -587,15 +591,45 @@ function showEmbed(shop) {
   });
 }
 
+// Google's daily quotas reset at midnight Pacific time, so the paid bookkeeping follows that clock.
+const ptDate = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+const paidOffKey = () => "ssg:paid-off:" + ptDate();
+const paidGamesKey = () => "ssg:paid-games:" + ptDate();
+let paidError = "";
+
+function paidAvailable() {
+  if (STREET_VIEW !== "hybrid" || paidError || store.get(paidOffKey())) return false;
+  return +(store.get(paidGamesKey()) || 0) < PAID_GAMES_PER_BROWSER;
+}
+// Any refusal from Google (daily limit reached, key or billing problem) moves this browser to
+// the free version for the rest of Google's day. Failing toward free is what keeps the bill at $0.
+function paidFailed(reason) {
+  if (paidError) return;
+  paidError = String(reason || "unknown");
+  console.info("[smoke-shop-guessr] paid Street View unavailable (" + paidError + "), using the free version");
+  store.set(paidOffKey(), paidError);
+  if (state.phase === "guess" && state.cur && state.cur.paid) showRound(state.cur, false);
+}
+// Google reports quota and key problems as console errors ("Google Maps JavaScript API error: OverQuotaMapError")
+// and, for key problems, through gm_authFailure.
+(function watchGoogleErrors() {
+  const orig = console.error.bind(console);
+  console.error = (...args) => {
+    try {
+      const m = String(args[0] == null ? "" : args[0]).match(/Google Maps (?:JavaScript )?API error: (\w+)/);
+      if (m) paidFailed(m[1]);
+    } catch (e) {}
+    orig(...args);
+  };
+})();
+window.gm_authFailure = () => paidFailed("gm_authFailure");
+
 function ensureGoogle() {
   if (!googlePromise) googlePromise = new Promise((resolve, reject) => {
-    window.__ssgMapsReady = () => {
-      G = google.maps;
-      sv = new G.StreetViewService();
-      resolve();
-    };
-    loadScript("https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(getKey()) + "&v=weekly&callback=__ssgMapsReady")
-      .catch(reject);
+    const t = setTimeout(() => reject(new Error("Google Maps took too long to load")), 12000);
+    window.__ssgMapsReady = () => { clearTimeout(t); G = google.maps; resolve(); };
+    loadScript("https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(getKey()) + "&v=weekly&loading=async&callback=__ssgMapsReady")
+      .catch(e => { clearTimeout(t); reject(e); });
   });
   return googlePromise;
 }
@@ -607,59 +641,59 @@ function ensurePano() {
     panControl: false, imageDateControl: false,
     zoomControlOptions: { position: G.ControlPosition.LEFT_CENTER }
   });
-  // a retired panorama id shows up here; swap in a different shop for free-of-charge recovery
-  pano.addListener("status_changed", () => {
-    const s = pano.getStatus();
-    if (state.phase === "guess" && s && s !== "OK") skipShop(true);
-  });
-}
-async function lookupPano(shop) {
-  if (shop.pano) return { pano: shop.pano, heading: shop.heading, date: shop.date || "" };
-  try {
-    const res = await sv.getPanorama({ location: ll(shop), radius: PANO_RADIUS_M, source: G.StreetViewSource.OUTDOOR, preference: G.StreetViewPreference.NEAREST });
-    const data = res && res.data;
-    if (!data || !data.location || !data.location.pano) return null;
-    if (data.copyright && !/google/i.test(data.copyright)) return null;
-    const pos = { lat: data.location.latLng.lat(), lng: data.location.latLng.lng() };
-    if (km(pos, shop) > PANO_RADIUS_M / 1000 + 0.015) return null;
-    return { pano: data.location.pano, heading: bearing(pos, shop), date: data.imageDate || "" };
-  } catch (e) {
-    if (e && /OVER_QUERY_LIMIT/.test(String(e.code || e.message))) throw e;
-    return null;
-  }
 }
 function aimAt(p) {
   pano.setPano(p.pano);
-  pano.setPov({ heading: p.heading, pitch: 8 });
+  pano.setPov({ heading: p.heading, pitch: aimPitch() });
   pano.setZoom(1);
   pano.setVisible(true);
+}
+// Resolves true once the requested panorama has actually loaded, false on any problem or after 10s.
+function waitForPano(id) {
+  return new Promise(resolve => {
+    let done = false, iv = 0, t = 0, l = null;
+    const finish = ok => { if (done) return; done = true; clearInterval(iv); clearTimeout(t); if (l) l.remove(); resolve(ok); };
+    const check = () => {
+      if (paidError) return finish(false);
+      const loc = pano.getLocation();
+      const s = pano.getStatus();
+      if (s === "OK" && loc && loc.pano === id) finish(true);
+      else if (s && s !== "OK" && pano.getPano() === id) finish(false);
+    };
+    l = pano.addListener("status_changed", check);
+    iv = setInterval(check, 300);
+    t = setTimeout(() => finish(false), 10000);
+  });
+}
+async function showRound(cur, wantPaid) {
+  let paid = false;
+  if (wantPaid && cur.p.pano) {
+    try {
+      await ensureGoogle();
+      ensurePano();
+      applyMoveMode();
+      $("#embedWrap").hidden = true;
+      $("#pano").hidden = false;
+      aimAt(cur.p);
+      paid = await waitForPano(cur.p.pano);
+      // two slow or broken rounds in a row: finish this game on the free version
+      if (!paid && !paidError && ++state.paidMisses >= 2) state.paidThisGame = false;
+      if (paid) state.paidMisses = 0;
+    } catch (e) {
+      paidFailed("load: " + (e && e.message));
+    }
+  }
+  cur.paid = paid;
+  $("#pano").hidden = !paid;
+  $("#embedWrap").hidden = paid;
+  applyMoveMode();
+  if (!paid) await showEmbed(cur.shop);
 }
 function applyMoveMode() {
   const walking = state.move === "move", nmpz = state.move === "nmpz";
   $("#shield").hidden = !nmpz;
   $("#resetBtn").hidden = !walking;
-  if (IMAGERY === "dynamic" && pano) {
-    pano.setOptions({ linksControl: walking, clickToGo: walking, keyboardShortcuts: walking, disableDoubleClickZoom: !walking, scrollwheel: !nmpz, zoomControl: !nmpz });
-  }
-}
-window.gm_authFailure = () => {
-  if (everPlayed) closedForToday();
-  else keyProblem("Google rejected the key. Check that the Maps JavaScript API is enabled, billing is on, and the key allows this site.");
-};
-function keyProblem(msg) {
-  if (keySource === "browser") store.del(KEY_KEY);
-  const err = $("#keyErr");
-  err.textContent = msg + (keySource === "file" ? " The key is set in GOOGLE_KEY at the top of the script." : "");
-  err.hidden = false;
-  state.phase = "idle";
-  show("setup");
-}
-function closedForToday() {
-  state.phase = "idle";
-  $("#loadTitle").textContent = "Closed for today";
-  $("#loadMsg").textContent = "The shop hit its daily limit. Come back tomorrow.";
-  $("#loadBack").hidden = false;
-  show("loading");
+  if (pano) pano.setOptions({ linksControl: walking, clickToGo: walking, keyboardShortcuts: walking, disableDoubleClickZoom: !walking, scrollwheel: !nmpz, zoomControl: !nmpz });
 }
 
 /* ============================================================
@@ -682,8 +716,6 @@ function checkReady() {
   setStatus(`${shops.length.toLocaleString()} smoke shops on the map. Tap the sign to play.`);
 }
 const dailyKey = () => "ssg:daily:" + nyDate();
-const randomKey = () => "ssg:random:" + nyDate();
-
 async function startGame() {
   if (!shopsReady) return;
   if (!getKey()) { show("setup"); return; }
@@ -695,23 +727,25 @@ async function startGame() {
       await ensureMapLibre();
       return renderFinal();
     }
-  } else if (IMAGERY === "dynamic") {
-    const played = +(store.get(randomKey()) || 0);
-    if (played >= RANDOM_GAMES_PER_DAY_DYNAMIC) {
-      setStatus(`That's all ${RANDOM_GAMES_PER_DAY_DYNAMIC} random games for today. The daily game resets at midnight.`, true);
-      return;
-    }
   }
 
   $("#loadTitle").textContent = "Finding a smoke shop";
   $("#loadMsg").textContent = ""; $("#loadBack").hidden = true;
   show("loading");
+
+  // paid Street View needs the baked panorama ids; decide once per game
+  state.paidThisGame = shopsBaked && paidAvailable();
+  state.paidMisses = 0;
+  if (state.paidThisGame) {
+    store.set(paidGamesKey(), String(+(store.get(paidGamesKey()) || 0) + 1));
+    ensureGoogle().catch(e => paidFailed("load: " + e.message)); // start loading while the map loads
+  }
+
   try {
     if (!gmap) {
       gmap = await makeMap($("#guessMap"), placeGuess);
       gmap.getCanvas().style.cursor = "crosshair";
     }
-    if (IMAGERY === "dynamic") { await ensureGoogle(); ensurePano(); }
   } catch (e) {
     console.error(e);
     $("#loadMsg").textContent = "Part of the game didn't load. Check your connection and try again.";
@@ -719,20 +753,14 @@ async function startGame() {
     return;
   }
 
-  $("#embedWrap").hidden = IMAGERY !== "embed";
-  $("#pano").hidden = IMAGERY !== "dynamic";
   $("#skipBtn").hidden = state.mode !== "random";
 
   const list = shopsBaked ? shops.filter(s => s.pano) : shops.slice();
   state.gameMode = state.mode;
   state.fromSave = false;
   if (state.mode === "daily") shuffle(list, mulberry32(hashStr("smoke-shop-guessr|" + nyDate())));
-  else {
-    shuffle(list, Math.random);
-    if (IMAGERY === "dynamic") store.set(randomKey(), String(+(store.get(randomKey()) || 0) + 1));
-  }
+  else shuffle(list, Math.random);
   state.order = list; state.cursor = 0; state.rounds = []; state.cur = null;
-  everPlayed = true;
   nextRound();
 }
 
@@ -742,29 +770,17 @@ async function nextRound() {
   $("#loadMsg").textContent = ""; $("#loadBack").hidden = true;
   show("loading");
 
-  let found = null, tries = 0;
-  try {
-    while (!found && state.cursor < state.order.length && tries < 40) {
-      const shop = state.order[state.cursor++]; tries++;
-      if (IMAGERY === "embed") { found = { shop, p: { pano: shop.pano || "", heading: shop.heading || 0, date: shop.date || "" } }; break; }
-      const p = await lookupPano(shop);
-      if (p) found = { shop, p };
-    }
-  } catch (e) { return closedForToday(); }
-
-  if (!found) {
-    $("#loadMsg").textContent = tries >= 40
-      ? "Street View isn't answering for these shops right now. Try again in a bit."
-      : "Every shop on the list has been used up.";
+  if (state.cursor >= state.order.length) {
+    $("#loadMsg").textContent = "Every shop on the list has been used up.";
     $("#loadBack").hidden = false; state.phase = "idle"; return;
   }
+  const shop = state.order[state.cursor++];
+  const found = { shop, p: { pano: shop.pano || "", heading: shop.heading || 0, date: shop.date || "" }, paid: false };
 
   state.cur = found; state.guess = null;
   if (guessMarker) { guessMarker.remove(); guessMarker = null; }
   const btn = $("#guessBtn"); btn.disabled = true; btn.textContent = "Drop a pin on the map";
-  applyMoveMode();
-  if (IMAGERY === "embed") await showEmbed(found.shop);
-  else aimAt(found.p);
+  await showRound(found, state.paidThisGame && !paidError);
   gmap.resize();
   gmap.jumpTo({ center: [NYC.lng, NYC.lat], zoom: 9.6 });
   updateHud();
@@ -906,7 +922,7 @@ function bindUI() {
   $("#shareBtn").onclick = shareScore;
   $("#resetBtn").onclick = () => {
     if (!state.cur) return;
-    if (IMAGERY === "embed") showEmbed(state.cur.shop); else aimAt(state.cur.p);
+    if (state.cur.paid) aimAt(state.cur.p); else showEmbed(state.cur.shop);
   };
   $("#skipBtn").onclick = () => skipShop(false);
   $("#loadBack").onclick = () => { state.phase = "idle"; show("start"); };
