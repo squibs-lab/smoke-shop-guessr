@@ -1,5 +1,7 @@
 # Smoke Shop Guessr
 
+Live at **https://smokeshopguessr.com** (the old squibs-lab.github.io link redirects there).
+
 GeoGuessr, but every round is a New York City smoke shop. Unlimited random games of five rounds, plus an optional daily game that everyone gets the same shops for, and a copyable score. Each round has a one-minute timer (`ROUND_SECONDS` at the top of the script): when it runs out, a pin you've placed is locked in as your guess, and no pin scores 0.
 
 ## What it costs to run: $0
@@ -38,7 +40,7 @@ To turn paid off entirely, set `STREET_VIEW = "free"` at the top of the script.
 2. Enable three APIs: **Maps Embed API**, **Maps JavaScript API** and **Street View Static API**.
 3. Create **key 1, the browser key**:
    - API restrictions: **Maps Embed API** and **Maps JavaScript API** only.
-   - Website restrictions: your site, for example `squibs-lab.github.io/*`.
+   - Website restrictions: your site: `https://smokeshopguessr.com/*`, `https://www.smokeshopguessr.com/*` and `https://squibs-lab.github.io/*`.
    - Paste it into `GOOGLE_KEY` at the top of the script in `index.html`.
 4. Create **key 2, the shop-list key**:
    - API restrictions: **Street View Static API** only.
@@ -60,7 +62,7 @@ Open your Pages link. The start screen shows how many shops are on the map.
 
 ## Reviewing shops
 
-Some matched shops aren't good rounds: a truck is parked in front, it isn't actually a smoke shop, or the camera faces the wrong way. `review.html` (at `/smoke-shop-guessr/review.html` on the live site) walks through them one at a time:
+Some matched shops aren't good rounds: a truck is parked in front, it isn't actually a smoke shop, or the camera faces the wrong way. `review.html` (at https://smokeshopguessr.com/review.html) walks through them one at a time:
 
 - **Keep** (K): it's a good round.
 - **Keep with the view I've set** (A): turn the camera or walk to a better spot first, then save. Players get that exact photo and angle.
