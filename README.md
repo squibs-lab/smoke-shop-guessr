@@ -25,7 +25,7 @@ The game uses two kinds of Google Street View:
 Each game starts on paid Street View and switches to free when any of these happen:
 
 - Google refuses for any reason. The daily cap being reached is the main one; a key or billing problem counts too. That browser then stays on free until midnight Pacific time, when Google's daily limits reset.
-- The browser has already played 2 paid games today (`PAID_GAMES_PER_BROWSER`), so one person can't use up the day's allowance.
+- The browser has already had 2 paid visits today (`PAID_VISITS_PER_BROWSER`), so one person can't use up the day's allowance. Google counts one load per visit however many games are played, so every game within a paid visit stays on paid.
 - A Street View photo is slow or broken. That round goes free, and two in a row finish the game on free.
 
 To turn paid off entirely, set `STREET_VIEW = "free"` at the top of the script.

@@ -259,9 +259,10 @@ const GOOGLE_KEY = "AIzaSyAfFtpAVkJVG2oO_K9Hm3xwPy4Ce_ZqJHg";
 // "free"   = always the free embed (street names can show on the road while walking around).
 const STREET_VIEW = "hybrid";
 
-// Paid games per browser per day before that browser moves to the free version.
-// Spreads the free daily allowance across more players.
-const PAID_GAMES_PER_BROWSER = 2;
+// Paid visits per browser per day before that browser moves to the free version.
+// Google counts one load per visit (each Street View viewer created), however many games are
+// played in it, so a visit that started on paid stays on paid. Spreads the daily allowance across more players.
+const PAID_VISITS_PER_BROWSER = 2;
 
 const ROUNDS = 5;
 const MAX_PTS = 5000;
@@ -594,12 +595,13 @@ function showEmbed(shop) {
 // Google's daily quotas reset at midnight Pacific time, so the paid bookkeeping follows that clock.
 const ptDate = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 const paidOffKey = () => "ssg:paid-off:" + ptDate();
-const paidGamesKey = () => "ssg:paid-games:" + ptDate();
+const paidVisitsKey = () => "ssg:paid-visits:" + ptDate();
 let paidError = "";
 
 function paidAvailable() {
   if (STREET_VIEW !== "hybrid" || paidError || store.get(paidOffKey())) return false;
-  return +(store.get(paidGamesKey()) || 0) < PAID_GAMES_PER_BROWSER;
+  if (pano) return true; // this visit's viewer already exists, so more games cost nothing extra
+  return +(store.get(paidVisitsKey()) || 0) < PAID_VISITS_PER_BROWSER;
 }
 // Any refusal from Google (daily limit reached, key or billing problem) moves this browser to
 // the free version for the rest of Google's day. Failing toward free is what keeps the bill at $0.
@@ -635,6 +637,8 @@ function ensureGoogle() {
 }
 function ensurePano() {
   if (pano) return;
+  // this is the moment Google counts (and would bill) a load: one per visit
+  store.set(paidVisitsKey(), String(+(store.get(paidVisitsKey()) || 0) + 1));
   pano = new G.StreetViewPanorama($("#pano"), {
     visible: false, addressControl: false, showRoadLabels: false, fullscreenControl: false,
     motionTracking: false, motionTrackingControl: false, enableCloseButton: false,
@@ -744,8 +748,7 @@ async function startGame() {
   state.paidThisGame = shopsBaked && paidAvailable();
   state.paidMisses = 0;
   if (state.paidThisGame) {
-    store.set(paidGamesKey(), String(+(store.get(paidGamesKey()) || 0) + 1));
-    ensureGoogle().catch(e => paidFailed("load: " + e.message)); // start loading while the map loads
+    ensureGoogle().catch(e => paidFailed("load: " + e.message)); // start loading while the map loads (free)
   }
 
   try {
