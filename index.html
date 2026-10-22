@@ -853,9 +853,19 @@ function submitGuess() {
   renderResult();
 }
 
+// on phones the result text scrolls; always open it at the top so the score is the first thing seen
+function toTop(el) {
+  el.scrollTop = 0;
+  requestAnimationFrame(() => { el.scrollTop = 0; });
+  setTimeout(() => { el.scrollTop = 0; }, 150);
+}
+
 async function resultMap() {
+  const first = !rmap;
   if (!rmap) rmap = await makeMap($("#rmap"));
   await rmap.ready;
+  // creating the results map the first time scrolls the text beside it down; put it back
+  if (first) { toTop($("#roundInfo")); toTop($("#finalInfo")); }
   rMarkers.forEach(m => m.remove()); rMarkers.length = 0;
   return rmap;
 }
@@ -864,6 +874,7 @@ async function renderResult() {
   const r = state.rounds[state.rounds.length - 1];
   $("#roundInfo").hidden = false; $("#finalInfo").hidden = true;
   $("#nextBtn").hidden = false; $("#finalActions").hidden = true;
+  toTop($("#roundInfo"));
   show("result");
 
   countUp($("#rPts"), r.pts);
@@ -892,6 +903,7 @@ async function renderFinal() {
   state.phase = "final";
   $("#roundInfo").hidden = true; $("#finalInfo").hidden = false;
   $("#nextBtn").hidden = true; $("#finalActions").hidden = false;
+  toTop($("#finalInfo"));
   show("result");
 
   const total = sum();
