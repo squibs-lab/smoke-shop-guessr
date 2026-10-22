@@ -97,9 +97,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 #loadMsg{color:var(--dim);max-width:28em;font-size:19px}
 #loadBack{height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:none;font-weight:600}
 #result{align-items:center;justify-content:center;padding:16px;background:rgba(10,5,15,.84);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.result-card{width:min(1100px,100%);height:min(660px,calc(100vh - 32px));height:min(660px,calc(100dvh - 32px));display:grid;grid-template-columns:1.45fr 1fr;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6)}
-#rmap{height:100%;min-height:240px;background:#120b19}
-.info{padding:26px 26px 22px;display:flex;flex-direction:column;gap:18px;overflow:auto}
+.result-card{width:min(1100px,100%);height:min(660px,calc(100vh - 32px));height:min(660px,calc(100dvh - 32px));display:grid;grid-template-columns:1.45fr 1fr;grid-template-rows:1fr auto;grid-template-areas:"map info" "map actions";background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6)}
+#rmap{grid-area:map;height:100%;min-height:240px;background:#120b19}
+.info{grid-area:info;min-height:0;padding:26px 26px 18px;display:flex;flex-direction:column;gap:18px;overflow:auto}
+.result-actions{grid-area:actions;padding:4px 26px 22px}
+.result-actions .cta{width:100%}
 .pts{display:flex;align-items:baseline;gap:8px}
 .pts b{font-family:Bungee;font-weight:400;font-size:58px;line-height:1;color:#fff4d9;text-shadow:0 0 18px rgba(255,179,43,.55);font-variant-numeric:tabular-nums}
 .pts small{color:var(--dim);font-size:20px}
@@ -135,7 +137,9 @@ button{font:inherit;color:inherit;cursor:pointer}
   #guessWrap{left:12px;right:12px;width:auto;bottom:28px;opacity:1}
   #guessMap{height:26vh}
   .side-btns{top:62px;bottom:auto;left:14px}
-  .result-card{grid-template-columns:1fr;grid-template-rows:36vh 1fr}
+  .result-card{grid-template-columns:1fr;grid-template-rows:auto 34vh 1fr;grid-template-areas:"actions" "map" "info"}
+  #rmap{min-height:0}
+  .result-actions{padding:14px 14px 12px}
   .info{padding:18px}
   .pts b{font-size:46px}
 }
@@ -226,16 +230,17 @@ button{font:inherit;color:inherit;cursor:pointer}
         <p id="rDate"></p>
         <a id="rLink" target="_blank" rel="noopener">Open in Google Maps</a>
       </div>
-      <div class="spacer"></div>
-      <button id="nextBtn" class="cta" type="button">Next shop</button>
     </div>
     <div id="finalInfo" class="info" hidden>
       <div class="pts"><b id="fPts">0</b><small id="fOf">of 25,000</small></div>
       <p class="verdict" id="fVerdict"></p>
       <p class="note" id="fNote" hidden></p>
       <ol class="rounds" id="fList"></ol>
-      <div class="spacer"></div>
-      <div class="actions">
+    </div>
+    <!-- outside the scrolling text, so they're always on screen: above the map on phones, bottom right on desktop -->
+    <div class="result-actions">
+      <button id="nextBtn" class="cta" type="button">Next shop</button>
+      <div class="actions" id="finalActions" hidden>
         <button id="shareBtn" class="cta ghost" type="button">Copy score</button>
         <button id="againBtn" class="cta" type="button">Play again</button>
       </div>
@@ -858,6 +863,7 @@ async function resultMap() {
 async function renderResult() {
   const r = state.rounds[state.rounds.length - 1];
   $("#roundInfo").hidden = false; $("#finalInfo").hidden = true;
+  $("#nextBtn").hidden = false; $("#finalActions").hidden = true;
   show("result");
 
   countUp($("#rPts"), r.pts);
@@ -885,6 +891,7 @@ async function renderResult() {
 async function renderFinal() {
   state.phase = "final";
   $("#roundInfo").hidden = true; $("#finalInfo").hidden = false;
+  $("#nextBtn").hidden = true; $("#finalActions").hidden = false;
   show("result");
 
   const total = sum();
