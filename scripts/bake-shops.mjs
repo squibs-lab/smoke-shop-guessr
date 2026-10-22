@@ -165,11 +165,14 @@ export async function matchPanoramas(shops, lookup = streetViewMetadata) {
 }
 
 // reviews: { [shopId]: { status: "keep" | "reject", pano?, heading?, date?, changed?, reason? } }
-export function applyReviews(shops, reviews = {}) {
+// Once any reviews exist, shops without a decision (new on OpenStreetMap) stay out of the game
+// until they're kept on the review page. With no reviews at all, every matched shop plays.
+export function applyReviews(shops, reviews = {}, { onlyReviewed = Object.keys(reviews).length > 0 } = {}) {
   const out = [];
-  let removed = 0, kept = 0, reangled = 0;
+  let removed = 0, kept = 0, reangled = 0, waiting = 0;
   for (const s of shops) {
     const r = reviews[s.id];
+    if (!r && onlyReviewed) { waiting++; continue; }
     if (r && r.status === "reject") { removed++; continue; }
     if (r && r.status === "keep") {
       kept++;
@@ -187,7 +190,7 @@ export function applyReviews(shops, reviews = {}) {
     }
     out.push(s);
   }
-  return { shops: out, removed, kept, reangled };
+  return { shops: out, removed, kept, reangled, waiting };
 }
 
 async function readJSON(path) {
@@ -205,10 +208,13 @@ async function writeGameList(all, updated) {
     attribution: ATTRIBUTION,
     count: r.shops.length,
     reviewed: r.kept,
+    waitingForReview: r.waiting,
     shops: r.shops
   };
   await writeFile(OUT, JSON.stringify(body) + "\n");
-  console.log(`Reviews: ${r.kept} kept (${r.reangled} with a new view), ${r.removed} removed, ${all.length - r.kept - r.removed} not reviewed yet.`);
+  const unreviewed = all.length - r.kept - r.removed;
+  console.log(`Reviews: ${r.kept} kept (${r.reangled} with a new view), ${r.removed} removed, ${unreviewed} not reviewed yet` +
+    (r.waiting ? ` (left out of the game until reviewed).` : `.`));
   console.log(`Wrote ${r.shops.length} shops to ${shown(OUT)}.`);
 }
 

@@ -31,6 +31,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 #hud div{background:rgba(13,7,20,.82);border:1px solid var(--line);border-radius:10px;padding:5px 12px 6px;text-align:right;min-width:82px}
 #hud small{display:block;font-size:13px;color:var(--dim);font-weight:500}
 #hud b{font-weight:700;font-size:24px;line-height:1;font-variant-numeric:tabular-nums}
+#hudTimeBox{transition:border-color .2s ease,background-color .2s ease}
+#hudTimeBox.low{border-color:var(--led-red);background:rgba(60,8,14,.88)}
+#hudTimeBox.low b{color:#ffd0d0;text-shadow:0 0 6px var(--led-red),0 0 14px var(--led-red)}
+#hudTimeBox.low.tick b{animation:tick .45s ease-out}
+@keyframes tick{0%{transform:scale(1.18)}100%{transform:scale(1)}}
 .side-btns{position:absolute;left:14px;bottom:44px;z-index:4;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .side-btns button{height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:rgba(13,7,20,.82);font-weight:600;font-size:16px}
 .side-btns button:hover{border-color:var(--dim)}
@@ -132,7 +137,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (max-width:760px){
   html,body{font-size:17px}
   .corner-sign{font-size:12px;padding:7px 9px 6px}
-  #hud div{min-width:70px;padding:4px 10px 5px}
+  #hud div{min-width:62px;padding:4px 9px 5px}
   #hud b{font-size:20px}
   #guessWrap{left:12px;right:12px;width:auto;bottom:28px;opacity:1}
   #guessMap{height:26vh}
@@ -142,6 +147,11 @@ button{font:inherit;color:inherit;cursor:pointer}
   .result-actions{padding:14px 14px 12px}
   .info{padding:18px}
   .pts b{font-size:46px}
+}
+@media (max-width:520px){
+  /* three HUD boxes need the room on small phones; the start screen already shows the sign */
+  .corner-sign{display:none}
+  .side-btns{top:14px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -155,7 +165,8 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div id="pano" hidden></div>
   <div id="shield" hidden></div>
   <div class="corner-sign" aria-hidden="true">Smoke Shop Guessr</div>
-  <div id="hud" aria-live="polite">
+  <div id="hud">
+    <div id="hudTimeBox" title="Time left to guess"><small>Time</small><b id="hudTime">1:00</b></div>
     <div><small>Round</small><b id="hudRound">1/5</b></div>
     <div><small>Score</small><b id="hudScore">0</b></div>
   </div>
@@ -185,7 +196,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 <section class="screen" id="start" aria-label="Start">
   <div class="storefront">
     <h1 class="neon"><span class="big">Smoke Shop</span><span class="small">Guessr</span></h1>
-    <p class="blurb">Five rounds, five New York smoke shops. You're standing outside one. Find it on the map.</p>
+    <p class="blurb">Five rounds, five New York smoke shops. You're standing outside one. Find it on the map before the minute runs out.</p>
     <div class="opts">
       <div class="opt"><span>Game</span>
         <div class="seg" data-key="mode" role="group" aria-label="Game type">
@@ -270,6 +281,7 @@ const STREET_VIEW = "hybrid";
 const PAID_VISITS_PER_BROWSER = 2;
 
 const ROUNDS = 5;
+const ROUND_SECONDS = 60;  // time to guess each shop; at 0 a placed pin is locked in, no pin scores 0
 const MAX_PTS = 5000;
 const DECAY_KM = 2.5;      // how fast points fall off with distance (NYC-sized)
 const PANO_RADIUS_M = 50;  // how far from the shop a Street View spot can be
@@ -799,7 +811,44 @@ async function startGame() {
   nextRound();
 }
 
+/* ---------- round timer ---------- */
+// Counts from when the round's Street View is on screen. Uses the clock rather than counting
+// ticks, so a backgrounded tab can't stretch the minute.
+let roundTimer = 0, roundEndsAt = 0, lastShown = -1;
+const fmtClock = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+function startRoundTimer() {
+  stopRoundTimer();
+  roundEndsAt = Date.now() + ROUND_SECONDS * 1000;
+  lastShown = -1;
+  tickRoundTimer();
+  roundTimer = setInterval(tickRoundTimer, 200);
+}
+function stopRoundTimer() {
+  clearInterval(roundTimer);
+  roundTimer = 0;
+  $("#hudTimeBox").classList.remove("low", "tick");
+}
+function tickRoundTimer() {
+  const left = Math.max(0, Math.ceil((roundEndsAt - Date.now()) / 1000));
+  if (left !== lastShown) {
+    lastShown = left;
+    const box = $("#hudTimeBox");
+    $("#hudTime").textContent = fmtClock(left);
+    box.classList.toggle("low", left <= 10);
+    if (left <= 10 && left > 0) { box.classList.remove("tick"); void box.offsetWidth; box.classList.add("tick"); }
+    if (left === 10) toast("10 seconds left");
+  }
+  if (left <= 0) {
+    stopRoundTimer();
+    if (state.phase !== "guess") return;
+    toast(state.guess ? "Time's up. Your pin is locked in." : "Time's up");
+    submitGuess({ timedOut: true });
+  }
+}
+
 async function nextRound() {
+  stopRoundTimer();
+  $("#hudTime").textContent = fmtClock(ROUND_SECONDS);
   state.phase = "loading";
   $("#loadTitle").textContent = "Finding a smoke shop";
   $("#loadMsg").textContent = ""; $("#loadBack").hidden = true;
@@ -821,6 +870,7 @@ async function nextRound() {
   updateHud();
   state.phase = "guess";
   show(null);
+  startRoundTimer();
 }
 
 function skipShop(auto) {
@@ -840,14 +890,18 @@ function placeGuess(pos) {
   else guessMarker.setLngLat([pos.lng, pos.lat]);
   const btn = $("#guessBtn"); btn.disabled = false; btn.textContent = "Guess";
 }
-function submitGuess() {
-  if (state.phase !== "guess" || !state.guess) return;
+// opts.timedOut: the clock ran out. With a pin placed it counts as a normal guess; with none the round scores 0.
+function submitGuess(opts) {
+  const timedOut = !!(opts && opts.timedOut === true);
+  if (state.phase !== "guess" || (!state.guess && !timedOut)) return;
+  stopRoundTimer();
   state.phase = "result";
   const { shop, p } = state.cur;
-  const d = km(state.guess, shop);
+  const guess = state.guess || null;
+  const d = guess ? km(guess, shop) : null;
   state.rounds.push({
     shop: { name: shop.name, kind: shop.kind, addr: shop.addr, borough: shop.borough || "", lat: shop.lat, lng: shop.lng },
-    guess: state.guess, km: d, pts: score(d), date: p.date
+    guess, km: d, pts: guess ? score(d) : 0, date: p.date, ...(guess ? {} : { noGuess: true })
   });
   if (state.gameMode === "daily" && state.rounds.length === ROUNDS) store.setJSON(dailyKey(), { rounds: state.rounds });
   renderResult();
@@ -881,10 +935,16 @@ async function renderResult() {
   const bar = $("#rBar");
   bar.style.transition = "none"; bar.style.width = "0"; void bar.offsetWidth;
   bar.style.transition = ""; bar.style.width = (r.pts / MAX_PTS * 100) + "%";
-  const d = fmtDist(r.km);
-  $("#rDist").textContent = d.main;
-  $("#rDistSub").textContent = r.km < 0.025 ? d.sub : `${d.sub} away`;
-  $("#rVerdict").textContent = roundVerdict(r.pts);
+  if (r.guess) {
+    const d = fmtDist(r.km);
+    $("#rDist").textContent = d.main;
+    $("#rDistSub").textContent = r.km < 0.025 ? d.sub : `${d.sub} away`;
+    $("#rVerdict").textContent = roundVerdict(r.pts);
+  } else {
+    $("#rDist").textContent = "No guess";
+    $("#rDistSub").textContent = "the minute ran out";
+    $("#rVerdict").textContent = "Out of time. Here's where it was.";
+  }
   $("#rName").textContent = r.shop.name;
   $("#rKind").textContent = (KIND[r.shop.kind] || "Smoke shop") + (r.shop.borough ? ` in ${r.shop.borough}` : "");
   $("#rAddr").textContent = r.shop.addr || ""; $("#rAddr").hidden = !r.shop.addr;
@@ -894,9 +954,11 @@ async function renderResult() {
   updateHud();
 
   const map = await resultMap();
-  setLines(map, [[r.guess, r.shop]]);
-  rMarkers.push(marker(map, r.guess, "pin-guess"), marker(map, r.shop, "pin-shop"));
-  fitTo(map, [r.guess, r.shop]);
+  setLines(map, r.guess ? [[r.guess, r.shop]] : []);
+  if (r.guess) rMarkers.push(marker(map, r.guess, "pin-guess"));
+  rMarkers.push(marker(map, r.shop, "pin-shop"));
+  if (r.guess) fitTo(map, [r.guess, r.shop]);
+  else { map.resize(); map.jumpTo({ center: [r.shop.lng, r.shop.lat], zoom: 13 }); }
 }
 
 async function renderFinal() {
@@ -915,15 +977,17 @@ async function renderFinal() {
   $("#againBtn").textContent = state.gameMode === "daily" ? "Play a random game" : "Play again";
   $("#fList").innerHTML = state.rounds.map((r, i) => {
     const b = r.shop.borough;
-    return `<li><span class="n">${i + 1}</span><span class="nm">${esc(r.shop.name)}<small>${esc(fmtDist(r.km).main)} off${b ? " in " + esc(b) : ""}</small></span><span class="p">${r.pts.toLocaleString()}</span></li>`;
+    const how = r.guess ? `${fmtDist(r.km).main} off` : "Ran out of time";
+    return `<li><span class="n">${i + 1}</span><span class="nm">${esc(r.shop.name)}<small>${esc(how)}${b ? " in " + esc(b) : ""}</small></span><span class="p">${r.pts.toLocaleString()}</span></li>`;
   }).join("");
 
   const map = await resultMap();
-  setLines(map, state.rounds.map(r => [r.guess, r.shop]));
+  setLines(map, state.rounds.filter(r => r.guess).map(r => [r.guess, r.shop]));
   const pts = [];
   state.rounds.forEach((r, i) => {
-    rMarkers.push(marker(map, r.guess, "pin-guess small"), marker(map, r.shop, "pin-shop numbered", String(i + 1)));
-    pts.push(r.guess, r.shop);
+    if (r.guess) { rMarkers.push(marker(map, r.guess, "pin-guess small")); pts.push(r.guess); }
+    rMarkers.push(marker(map, r.shop, "pin-shop numbered", String(i + 1)));
+    pts.push(r.shop);
   });
   fitTo(map, pts);
 }
@@ -959,13 +1023,14 @@ function bindUI() {
     });
   });
   $("#playBtn").onclick = startGame;
-  $("#guessBtn").onclick = submitGuess;
+  $("#guessBtn").onclick = () => submitGuess();
   $("#nextBtn").onclick = () => (state.rounds.length < ROUNDS ? nextRound() : renderFinal());
   $("#againBtn").onclick = () => {
     if (state.gameMode === "daily") {
       state.mode = "random";
       document.querySelectorAll('.seg[data-key="mode"] button').forEach(x => x.classList.toggle("on", x.dataset.v === "random"));
     }
+    stopRoundTimer();
     state.phase = "idle"; show("start");
   };
   $("#shareBtn").onclick = shareScore;

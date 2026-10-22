@@ -1,6 +1,6 @@
 # Smoke Shop Guessr
 
-GeoGuessr, but every round is a New York City smoke shop. Unlimited random games of five rounds, plus an optional daily game that everyone gets the same shops for, and a copyable score.
+GeoGuessr, but every round is a New York City smoke shop. Unlimited random games of five rounds, plus an optional daily game that everyone gets the same shops for, and a copyable score. Each round has a one-minute timer (`ROUND_SECONDS` at the top of the script): when it runs out, a pin you've placed is locked in as your guess, and no pin scores 0.
 
 ## What it costs to run: $0
 
@@ -73,7 +73,7 @@ Decisions save in your browser as you go, so you can stop and come back. When yo
 How the lists fit together:
 - `shops-all.json`: every shop with Street View, rebuilt weekly. The review page goes through this list.
 - `reviews.json`: your decisions, keyed by OpenStreetMap id, so they carry over week to week.
-- `shops.json`: what the game plays: `shops-all.json` minus removed shops, with kept shops locked to the photo and angle you reviewed. Shops added to OpenStreetMap later show up under "Not reviewed yet".
+- `shops.json`: what the game plays: only the shops you kept, each locked to the photo and angle you reviewed. Shops added to OpenStreetMap later show up on the review page under "Not reviewed yet" and stay out of the game until you keep them. (Before any reviews exist, every matched shop plays.)
 
 The review page uses paid Street View, which counts as 1 of the 160 daily loads per page load, however many shops you go through. Other years come from an undocumented part of Google's Street View lookup, so they're only fetched when you press Y, and Google could change or remove them without notice. If the day's loads are used up, it switches to the free Street View: keep and remove still work, but saving a new view doesn't.
 
