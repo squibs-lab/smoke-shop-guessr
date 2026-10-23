@@ -1,0 +1,25 @@
+{
+ "note": "Hand-picked shops that aren't on OpenStreetMap. They play like kept shops unless removed on the review page. With pano + heading set, the shop is framed exactly; without, the weekly job finds the nearest Street View. needsPhotoAfter (YYYY-MM) holds a shop back until Google has a newer photo than that.",
+ "shops": [
+  {
+   "id": "c-planet-zaza",
+   "name": "Planet Zaza",
+   "kind": "smoke_shop",
+   "borough": "Queens",
+   "lat": 40.7828432,
+   "lng": -73.8457573,
+   "pano": "6Lvf_83Zpv5dqLW0EYqllg",
+   "heading": 99.2,
+   "date": "2024-09"
+  },
+  {
+   "id": "c-southside-zaza",
+   "name": "Southside Zaza",
+   "kind": "smoke_shop",
+   "borough": "Queens",
+   "lat": 40.690072,
+   "lng": -73.786244,
+   "needsPhotoAfter": "2024-10"
+  }
+ ]
+}

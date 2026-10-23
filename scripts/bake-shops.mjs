@@ -23,6 +23,7 @@ const KEY = (process.env.STREETVIEW_KEY || "").trim();
 const OUT = process.env.OUT || new URL("../shops.json", import.meta.url);
 const ALL_OUT = process.env.ALL_OUT || new URL("../shops-all.json", import.meta.url);
 const REVIEWS = process.env.REVIEWS || new URL("../reviews.json", import.meta.url);
+const CUSTOM = process.env.CUSTOM || new URL("../custom-shops.json", import.meta.url);
 const ATTRIBUTION = "Shop data © OpenStreetMap contributors (ODbL). Panorama ids from Google Street View.";
 const RADIUS_M = 50;
 const CONCURRENCY = 6;
@@ -172,7 +173,8 @@ export function applyReviews(shops, reviews = {}, { onlyReviewed = Object.keys(r
   let removed = 0, kept = 0, reangled = 0, waiting = 0;
   for (const s of shops) {
     const r = reviews[s.id];
-    if (!r && onlyReviewed) { waiting++; continue; }
+    // hand-picked shops (custom-shops.json) count as kept unless removed on the review page
+    if (!r && onlyReviewed && !s.custom) { waiting++; continue; }
     if (r && r.status === "reject") { removed++; continue; }
     if (r && r.status === "keep") {
       kept++;
@@ -199,6 +201,30 @@ async function readJSON(path) {
 }
 const shown = p => (p instanceof URL ? fileURLToPath(p) : p);
 
+// custom-shops.json: shops picked by hand that OpenStreetMap doesn't have.
+export async function readCustomShops() {
+  const j = await readJSON(CUSTOM);
+  return ((j && j.shops) || [])
+    .filter(s => s && s.id && s.name && Number.isFinite(s.lat) && Number.isFinite(s.lng))
+    .map(s => ({
+      id: String(s.id).startsWith("c-") ? String(s.id) : "c-" + s.id,
+      name: s.name, kind: s.kind || "smoke_shop", addr: s.addr || "", borough: s.borough || "",
+      lat: s.lat, lng: s.lng, custom: true,
+      ...(s.pano ? { pano: s.pano, heading: Number(s.heading) || 0, date: s.date || "" } : {}),
+      ...(s.needsPhotoAfter ? { needsPhotoAfter: s.needsPhotoAfter } : {})
+    }));
+}
+// Framed customs (pano set) are used as written. Unframed ones need a Street View lookup, which only
+// the full build does; one with needsPhotoAfter waits until the photo found is newer than that month.
+function mergeCustom(list, custom) {
+  const byId = new Map(list.filter(s => !s.custom).map(s => [s.id, s]));
+  for (const c of custom) if (c.pano) byId.set(c.id, c);
+  // keep customs the full build already matched, unless they've been taken out of custom-shops.json
+  const ids = new Set(custom.map(c => c.id));
+  for (const s of list) if (s.custom && ids.has(s.id) && !byId.has(s.id)) byId.set(s.id, s);
+  return [...byId.values()];
+}
+
 async function writeGameList(all, updated) {
   const reviewsFile = await readJSON(REVIEWS);
   const reviews = (reviewsFile && reviewsFile.reviews) || {};
@@ -222,7 +248,14 @@ export async function main() {
   if (process.argv.includes("--apply-reviews")) {
     const all = await readJSON(ALL_OUT);
     if (!all || !Array.isArray(all.shops)) throw new Error(`${shown(ALL_OUT)} doesn't exist yet. Run the full build first.`);
-    return writeGameList(all.shops, all.updated);
+    const custom = await readCustomShops();
+    const merged = mergeCustom(all.shops, custom);
+    const unframed = custom.filter(c => !c.pano && !merged.some(s => s.id === c.id));
+    if (unframed.length) console.log(`Hand-picked shops waiting for the full build to find their Street View: ${unframed.map(c => c.name).join(", ")}.`);
+    if (merged.length !== all.shops.length || custom.length) {
+      await writeFile(ALL_OUT, JSON.stringify({ ...all, count: merged.length, shops: merged }) + "\n");
+    }
+    return writeGameList(merged, all.updated);
   }
 
   console.log("Asking OpenStreetMap for NYC smoke shops…");
@@ -238,6 +271,27 @@ export async function main() {
     if (final.length < 50) throw new Error(`Only ${final.length} shops matched a panorama, which looks wrong. Not overwriting shops.json.`);
   } else {
     console.warn("STREETVIEW_KEY isn't set, so shops are saved without panoramas. The game will still work, but the camera won't face each storefront and some rounds may have no imagery.");
+  }
+
+  const custom = await readCustomShops();
+  if (custom.length) {
+    const framed = custom.filter(c => c.pano);
+    let matched = [];
+    const toMatch = custom.filter(c => !c.pano);
+    if (toMatch.length && KEY) {
+      matched = await matchPanoramas(toMatch);
+      matched = matched.filter(m => {
+        if (m.needsPhotoAfter && !((m.date || "") > m.needsPhotoAfter)) {
+          console.log(`${m.name}: newest Street View is ${m.date || "undated"}, still waiting for a photo after ${m.needsPhotoAfter}.`);
+          return false;
+        }
+        return true;
+      });
+    }
+    const missing = toMatch.filter(c => !matched.some(m => m.id === c.id) && !c.needsPhotoAfter);
+    if (missing.length) console.warn(`No Street View within ${RADIUS_M} m for: ${missing.map(c => c.name).join(", ")}.`);
+    final = [...final.filter(s => !s.custom), ...framed, ...matched];
+    console.log(`Hand-picked shops: ${framed.length + matched.length} of ${custom.length} added.`);
   }
 
   const updated = new Date().toISOString();

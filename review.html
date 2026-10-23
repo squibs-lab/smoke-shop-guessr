@@ -202,10 +202,12 @@ const KIND = {
 const REASON_LABEL = Object.fromEntries(REASONS);
 
 /* ---------- decisions: the repo's reviews.json, plus anything newer from this browser ---------- */
+let customIds = new Set(); // hand-picked shops (custom-shops.json) count as kept unless you remove them
 function decisionFor(id) {
   const l = local[id], s = server[id];
   const d = l && (!s || (l.at || "") >= (s.at || "")) ? l : s;
-  return d && d.status !== "clear" ? d : null;
+  if (d && d.status !== "clear") return d;
+  return customIds.has(id) ? { status: "keep", auto: true } : null;
 }
 function allDecisions() {
   const out = {};
@@ -434,7 +436,7 @@ function render() {
   if (d) {
     st.className = "status " + (d.status === "keep" ? "keep" : "reject");
     st.textContent = d.status === "keep"
-      ? (d.changed ? "Kept with your view" + (d.date ? `, ${fmtDate(d.date)} photo` : "") : "Kept")
+      ? (d.auto ? "Hand-picked" : d.changed ? "Kept with your view" + (d.date ? `, ${fmtDate(d.date)} photo` : "") : "Kept")
       : "Removed: " + (REASON_LABEL[d.reason] || d.reason || "no reason");
   }
   $("#prevBtn").disabled = idx === 0;
@@ -526,6 +528,7 @@ async function boot() {
     loadJSON("reviews.json")
   ]);
   shops = ((all && all.shops) || []).filter(s => s.pano);
+  customIds = new Set(shops.filter(s => s.custom).map(s => s.id));
   server = (reviews && reviews.reviews) || {};
   local = store.get();
   buildList();

@@ -79,6 +79,14 @@ How the lists fit together:
 
 The review page uses paid Street View, which counts as 1 of the 160 daily loads per page load, however many shops you go through. Other years come from an undocumented part of Google's Street View lookup, so they're only fetched when you press Y, and Google could change or remove them without notice. If the day's loads are used up, it switches to the free Street View: keep and remove still work, but saving a new view doesn't.
 
+## Adding shops by hand
+
+Shops that aren't on OpenStreetMap go in `custom-shops.json` (name, lat, lng, borough). They play like kept shops; remove one on the review page to take it out.
+
+- With `pano` and `heading` set, the shop is framed exactly and goes live within a minute of the file changing.
+- Without them, the next full build (weekly, or Actions → Bake shop list → Run workflow) finds the nearest Street View.
+- `needsPhotoAfter: "YYYY-MM"` holds a shop back until Google has a newer Street View photo than that month, for shops that opened after Google's last drive-by. The weekly build keeps checking, and the shop goes live by itself when a newer photo appears.
+
 ## Testing on your own computer
 
 Opening `index.html` straight from your files works, with two limits:
@@ -92,6 +100,7 @@ Opening `index.html` straight from your files works, with two limits:
 - `review.html`: the shop review page.
 - `shops.json`, `shops-all.json`: the shop lists, rebuilt by the job. Don't edit them by hand.
 - `reviews.json`: your review decisions, exported from `review.html`.
+- `custom-shops.json`: shops added by hand.
 - `scripts/bake-shops.mjs`: builds the lists. Run it yourself with `STREETVIEW_KEY=... node scripts/bake-shops.mjs`, or `node scripts/bake-shops.mjs --apply-reviews` to only re-apply `reviews.json`.
 - `.github/workflows/bake-shops.yml`: the weekly job, which also runs when `reviews.json` changes.
 

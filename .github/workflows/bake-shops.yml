@@ -4,15 +4,16 @@ name: Bake shop list
 # you run it by hand from the Actions tab. Free: GitHub Actions minutes are free for public repos,
 # and the Street View metadata lookups it makes are never billed.
 #
-# When reviews.json changes (decisions from review.html), it only re-applies the reviews to the
-# existing shops-all.json, which takes a second and needs no key.
+# When reviews.json or custom-shops.json changes, it only re-applies reviews and hand-picked shops to
+# the existing shops-all.json, which takes a second and needs no key. (Hand-picked shops without a
+# pano set wait for the next full build to find their Street View.)
 on:
   schedule:
     - cron: "17 10 * * 1"
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [reviews.json]
+    paths: [reviews.json, custom-shops.json]
 
 permissions:
   contents: write
